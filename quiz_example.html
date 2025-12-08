@@ -1,26 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="he">
 <head>
 <meta charset="UTF-8">
-<title>Vocab Quiz Demo</title>
+<title>מבחן אוצר מילים – דוגמה</title>
+
 <script src="progress.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  direction: ltr;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.question {
+  margin-bottom: 12px;
+}
+
+.word {
+  display: inline-block;
+  width: 70px;
+}
+
+.answer {
+  width: 120px;
+}
+
+.feedback {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.correct {
+  color: green;
+}
+
+.wrong {
+  color: red;
+}
+
+button {
+  margin-top: 15px;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+</style>
 </head>
+
 <body>
 
 <h2>מבחן אוצר מילים – דוגמה</h2>
 
 <div class="question" data-word-id="w001">
-  bear:
+  <span class="word">bear:</span>
   <input type="text" class="answer" data-correct="דב">
+  <span class="feedback"></span>
 </div>
 
 <div class="question" data-word-id="w003">
-  chess:
+  <span class="word">chess:</span>
   <input type="text" class="answer" data-correct="שחמט">
+  <span class="feedback"></span>
 </div>
 
 <button onclick="checkQuiz()">בדוק</button>
+
 <div id="result"></div>
 
 <script>
@@ -32,13 +85,30 @@ function checkQuiz() {
   questions.forEach(q => {
     const id = q.dataset.wordId;
     const input = q.querySelector('.answer');
-    const correctAns = input.dataset.correct;
-    const isCorrect = input.value.trim() === correctAns;
-    if (isCorrect) correct++;
+    const feedback = q.querySelector('.feedback');
+    const correctAns = input.dataset.correct.trim();
+    const user = input.value.trim();
+
+    const isCorrect = user === correctAns;
+
+    if (isCorrect) {
+      feedback.textContent = '✓';
+      feedback.className = 'feedback correct';
+      correct++;
+    } else {
+      feedback.textContent = `✗ (${correctAns})`;
+      feedback.className = 'feedback wrong';
+    }
+
+    // נועל שדות אחרי בדיקה
+    input.disabled = true;
+
+    // שומר סטטיסטיקה
     recordAnswer(progress, id, isCorrect);
   });
 
   saveProgress(progress);
+
   document.getElementById('result').textContent =
     `ציון: ${correct} מתוך ${questions.length}`;
 }
