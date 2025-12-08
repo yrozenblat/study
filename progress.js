@@ -24,3 +24,5 @@ function recordAnswer(progress, wordId, isCorrect) {
   }
   rec.lastSeen = new Date().toISOString().slice(0,10);
 }
+
+
