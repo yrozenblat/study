@@ -41,7 +41,7 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 <div id="meta">
   גררו את המילים בעברית אל המשבצות המתאימות באנגלית.<br>
   המבחן בוחר <span id="numQuestionsLabel"></span> מילים מתוך מחסן המילים,<br>
-  עם עדיפות למילים חלשות לפי הסטטיסטיקה.
+  לפי אחוזים ניתנים להגדרה לכל סוג מילה (חלשה / לא נבדקה / בינונית / חזקה).
 </div>
 
 <div class="questions" id="questionsContainer"></div>
@@ -60,6 +60,13 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 let NUM_QUESTIONS = 10;
 let VOCAB_FILE    = 'vocab_all_with_ids.json';
 const CONFIG_FILE = 'quiz_config.json';
+
+let SELECTION_WEIGHTS = {
+  weak: 80,
+  untested: 20,
+  medium: 0,
+  strong: 0
+};
 
 let currentWords = [];
 let quizLocked   = false;
@@ -80,46 +87,89 @@ function selectWords(vocab, progress, numQuestions) {
     return { ...word, level };
   });
 
-  const weak     = annotated.filter(w => w.level === 'weak');
-  const untested = annotated.filter(w => w.level === 'untested');
-  const medium   = annotated.filter(w => w.level === 'medium');
-  const strong   = annotated.filter(w => w.level === 'strong');
+  let weak     = annotated.filter(w => w.level === 'weak');
+  let untested = annotated.filter(w => w.level === 'untested');
+  let medium   = annotated.filter(w => w.level === 'medium');
+  let strong   = annotated.filter(w => w.level === 'strong');
 
   const selected = [];
 
-  if (weak.length > 0) {
-    selected.push(...pickRandom(weak, Math.min(numQuestions - selected.length, weak.length)));
+  const cats = [
+    { name: 'weak',     words: weak.slice(),     weight: SELECTION_WEIGHTS.weak     || 0 },
+    { name: 'untested', words: untested.slice(), weight: SELECTION_WEIGHTS.untested || 0 },
+    { name: 'medium',   words: medium.slice(),   weight: SELECTION_WEIGHTS.medium   || 0 },
+    { name: 'strong',   words: strong.slice(),   weight: SELECTION_WEIGHTS.strong   || 0 }
+  ];
+
+  let activeCats = cats.filter(c => c.words.length > 0 && c.weight > 0);
+
+  if (activeCats.length === 0) {
+    return pickRandom(annotated, Math.min(numQuestions, annotated.length));
   }
 
-  if (selected.length < numQuestions && untested.length > 0) {
-    selected.push(...pickRandom(
-      untested,
-      Math.min(numQuestions - selected.length, untested.length)
-    ));
+  let totalWeight = activeCats.reduce((sum, c) => sum + c.weight, 0);
+  if (totalWeight <= 0) {
+    return pickRandom(annotated, Math.min(numQuestions, annotated.length));
   }
 
-  if (selected.length < numQuestions && medium.length > 0) {
-    selected.push(...pickRandom(
-      medium,
-      Math.min(numQuestions - selected.length, medium.length)
-    ));
-  }
+  const targets = {};
+  activeCats.forEach(c => {
+    const ratio = c.weight / totalWeight;
+    targets[c.name] = Math.floor(ratio * numQuestions);
+  });
 
-  if (selected.length < numQuestions && strong.length > 0) {
-    selected.push(...pickRandom(
-      strong,
-      Math.min(numQuestions - selected.length, strong.length)
-    ));
+  let totalSelected = 0;
+  activeCats.forEach(c => {
+    const target = targets[c.name] || 0;
+    const take = Math.min(target, c.words.length);
+    if (take > 0) {
+      const chosen = pickRandom(c.words, take);
+      chosen.forEach(w => {
+        selected.push(w);
+        const idx = c.words.findIndex(x => x.id === w.id);
+        if (idx !== -1) c.words.splice(idx, 1);
+      });
+      totalSelected += take;
+    }
+  });
+
+  let remaining = numQuestions - totalSelected;
+  while (remaining > 0) {
+    activeCats = cats.filter(c => c.words.length > 0 && c.weight > 0);
+    if (activeCats.length === 0) break;
+
+    totalWeight = activeCats.reduce((sum, c) => sum + c.weight, 0);
+    if (totalWeight <= 0) break;
+
+    const r = Math.random() * totalWeight;
+    let acc = 0;
+    let chosenCat = activeCats[0];
+    for (const c of activeCats) {
+      acc += c.weight;
+      if (r <= acc) {
+        chosenCat = c;
+        break;
+      }
+    }
+
+    if (chosenCat.words.length > 0) {
+      const idx = Math.floor(Math.random() * chosenCat.words.length);
+      const w = chosenCat.words.splice(idx, 1)[0];
+      selected.push(w);
+      remaining--;
+    } else {
+      break;
+    }
   }
 
   if (selected.length < numQuestions) {
-    selected.push(...pickRandom(
-      annotated,
-      Math.min(numQuestions - selected.length, annotated.length)
-    ));
+    const already = new Set(selected.map(w => w.id));
+    const leftovers = annotated.filter(w => !already.has(w.id));
+    const extra = pickRandom(leftovers, Math.min(numQuestions - selected.length, leftovers.length));
+    selected.push(...extra);
   }
 
-  return selected;
+  return selected.slice(0, Math.min(numQuestions, selected.length));
 }
 
 async function loadConfig() {
@@ -132,6 +182,14 @@ async function loadConfig() {
     }
     if (typeof cfg.vocabFile === 'string') {
       VOCAB_FILE = cfg.vocabFile;
+    }
+    if (cfg.selectionWeights && typeof cfg.selectionWeights === 'object') {
+      SELECTION_WEIGHTS = {
+        weak:     cfg.selectionWeights.weak     ?? SELECTION_WEIGHTS.weak,
+        untested: cfg.selectionWeights.untested ?? SELECTION_WEIGHTS.untested,
+        medium:   cfg.selectionWeights.medium   ?? SELECTION_WEIGHTS.medium,
+        strong:   cfg.selectionWeights.strong   ?? SELECTION_WEIGHTS.strong
+      };
     }
   } catch (e) {
     console.warn('לא נטען quiz_config.json, משתמשים בברירת מחדל');
