@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>מבחן אוצר מילים – התאמה עם גרירה</title>
+
+<script src="progress.js"></script>
+
+<style>
+body { font-family: Arial, sans-serif; direction: ltr; padding: 20px; }
+h2 { margin-bottom: 10px; }
+#meta { margin-bottom: 15px; font-size: 14px; }
+.questions { margin-bottom: 20px; }
+.question { margin-bottom: 10px; }
+.question-label { display:inline-block; width:130px; }
+.drop-zone {
+  display:inline-block; min-width:120px; min-height:24px;
+  padding:3px 6px; border:1px dashed #999; background:#f9f9f9; margin-right:5px;
+}
+.drop-zone.filled { border-style:solid; background:#eef; }
+.drop-zone.disabled { background:#eee; border-color:#ccc; }
+.feedback { margin-left:8px; font-weight:bold; }
+.correct { color:green; }
+.wrong { color:red; }
+#bankTitle { margin-top:10px; font-weight:bold; }
+#wordBank { margin-top:6px; border:1px solid #ddd; padding:8px; min-height:40px; }
+.bank-word {
+  display:inline-block; margin:4px; padding:3px 8px;
+  border:1px solid #999; border-radius:4px; cursor:grab; background:#fff;
+}
+.bank-word.used { opacity:0.4; cursor:default; }
+button { margin-top:15px; padding:6px 14px; font-size:14px; }
+#result { margin-top:15px; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<h2>מבחן אוצר מילים – התאמה עם גרירה</h2>
+
+<div id="meta">
+  גררו את המילים בעברית אל המשבצות המתאימות באנגלית.<br>
+  המבחן בוחר <span id="numQuestionsLabel"></span> מילים באקראי מתוך מחסן המילים.
+</div>
+
+<div class="questions" id="questionsContainer"></div>
+
+<button id="checkBtn" onclick="checkQuiz()">בדוק</button>
+
+<div id="result"></div>
+
+<div id="bankTitle">בנק מילים (עברית לגרירה):</div>
+<div id="wordBank"></div>
+
+<script>
+// ===== הגדרות =====
+let NUM_QUESTIONS = 10;
+let VOCAB_FILE    = 'vocab_all_with_ids.json';
+const CONFIG_FILE = 'quiz_config.json';
+
+let currentWords = [];
+let quizLocked   = false;
+
+// טעינת קובץ ההגדרות (אם קיים)
+async function loadConfig() {
+  try {
+    const res = await fetch(CONFIG_FILE);
+    if (!res.ok) return;
+    const cfg = await res.json();
+    if (typeof cfg.numQuestions === 'number') {
+      NUM_QUESTIONS = cfg.numQuestions;
+    }
+    if (typeof cfg.vocabFile === 'string') {
+      VOCAB_FILE = cfg.vocabFile;
+    }
+  } catch (e) {
+    console.warn('לא נטען quiz_config.json, משתמשים בברירת מחדל');
+  }
+}
+
+// ===== טעינת מחסן המילים ובניית המבחן =====
+async function initQuiz() {
+  await loadConfig();
+  document.getElementById('numQuestionsLabel').textContent = NUM_QUESTIONS;
+
+  try {
+    const res = await fetch(VOCAB_FILE);
+    const vocab = await res.json();
+
+    if (!Array.isArray(vocab) || vocab.length === 0) {
+      document.getElementById('questionsContainer').textContent =
+        'שגיאה: קובץ אוצר המילים ריק או לא תקין.';
+      return;
+    }
+
+    currentWords = pickRandom(vocab, Math.min(NUM_QUESTIONS, vocab.length));
+    buildQuestions(currentWords);
+    buildWordBank(currentWords);
+  } catch (e) {
+    console.error(e);
+    document.getElementById('questionsContainer').textContent =
+      'לא ניתן לטעון את קובץ אוצר המילים.';
+  }
+}
+
+// בחירת N פריטים אקראיים
+function pickRandom(arr, n) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, n);
+}
+
+// בניית שאלות
+function buildQuestions(words) {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+
+  words.forEach(word => {
+    const row = document.createElement('div');
+    row.className = 'question';
+    row.dataset.wordId = word.id;
+    row.dataset.correctHebrew = word.hebrew || '';
+
+    const label = document.createElement('span');
+    label.className = 'question-label';
+    label.textContent = word.english + ':';
+
+    const drop = document.createElement('div');
+    drop.className = 'drop-zone';
+    drop.dataset.wordId = '';
+    drop.textContent = '';
+
+    drop.addEventListener('dragover', ev => {
+      if (quizLocked) return;
+      ev.preventDefault();
+    });
+
+    drop.addEventListener('drop', ev => {
+      if (quizLocked) return;
+      ev.preventDefault();
+      const draggedId = ev.dataTransfer.getData('text/plain');
+      if (!draggedId) return;
+
+      const draggedEl = document.querySelector(`.bank-word[data-word-id="${draggedId}"]`);
+      if (!draggedEl || draggedEl.classList.contains('used')) return;
+
+      // אם כבר הייתה מילה על המשבצת – להחזיר אותה לבנק
+      if (drop.dataset.wordId) {
+        const prevEl = document.querySelector(`.bank-word[data-word-id="${drop.dataset.wordId}"]`);
+        if (prevEl) prevEl.classList.remove('used');
+      }
+
+      drop.textContent = draggedEl.dataset.hebrew;
+      drop.classList.add('filled');
+      drop.dataset.wordId = draggedId;
+      draggedEl.classList.add('used');
+    });
+
+    const feedback = document.createElement('span');
+    feedback.className = 'feedback';
+
+    row.appendChild(label);
+    row.appendChild(drop);
+    row.appendChild(feedback);
+    container.appendChild(row);
+  });
+}
+
+// בניית בנק מילים לגרירה
+function buildWordBank(words) {
+  const bank = document.getElementById('wordBank');
+  bank.innerHTML = '';
+
+  const shuffled = pickRandom(words, words.length);
+
+  shuffled.forEach(word => {
+    const span = document.createElement('span');
+    span.className = 'bank-word';
+    span.draggable = true;
+    span.dataset.wordId = word.id;
+    span.dataset.hebrew = word.hebrew || '';
+    span.textContent = word.hebrew || '';
+
+    span.addEventListener('dragstart', ev => {
+      if (quizLocked || span.classList.contains('used')) {
+        ev.preventDefault();
+        return;
+      }
+      ev.dataTransfer.setData('text/plain', span.dataset.wordId);
+    });
+
+    bank.appendChild(span);
+  });
+}
+
+// ===== בדיקה =====
+function checkQuiz() {
+  if (quizLocked) return;
+
+  const questions = document.querySelectorAll('.question');
+  if (!questions.length) return;
+
+  const progress = loadProgress();
+  let correctCount = 0;
+
+  questions.forEach(q => {
+    const id = q.dataset.wordId;
+    const correctHebrew = (q.dataset.correctHebrew || '').trim();
+
+    const drop = q.querySelector('.drop-zone');
+    const feedback = q.querySelector('.feedback');
+
+    const chosenWordId = drop.dataset.wordId;
+    let chosenHebrew = '';
+
+    if (chosenWordId) {
+      const wordObj = currentWords.find(w => w.id === chosenWordId);
+      chosenHebrew = wordObj ? (wordObj.hebrew || '').trim() : '';
+    }
+
+    const isCorrect = chosenHebrew === correctHebrew && chosenHebrew !== '';
+
+    if (isCorrect) {
+      feedback.textContent = '✓';
+      feedback.className = 'feedback correct';
+      correctCount++;
+    } else {
+      feedback.textContent = `✗ (${correctHebrew})`;
+      feedback.className = 'feedback wrong';
+    }
+
+    drop.classList.add('disabled');
+  });
+
+  document.querySelectorAll('.bank-word').forEach(el => {
+    el.draggable = false;
+  });
+
+  quizLocked = true;
+
+  questions.forEach(q => {
+    const id = q.dataset.wordId;
+    const correctHebrew = (q.dataset.correctHebrew || '').trim();
+    const drop = q.querySelector('.drop-zone');
+    const chosenWordId = drop.dataset.wordId;
+    let chosenHebrew = '';
+
+    if (chosenWordId) {
+      const wordObj = currentWords.find(w => w.id === chosenWordId);
+      chosenHebrew = wordObj ? (wordObj.hebrew || '').trim() : '';
+    }
+
+    const isCorrect = chosenHebrew === correctHebrew && chosenHebrew !== '';
+    recordAnswer(progress, id, isCorrect);
+  });
+
+  saveProgress(progress);
+
+  document.getElementById('result').textContent =
+    `ציון: ${correctCount} מתוך ${questions.length}`;
+}
+
+// התחלה
+initQuiz();
+</script>
+
+</body>
+</html>
