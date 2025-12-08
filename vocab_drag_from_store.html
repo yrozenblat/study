@@ -47,7 +47,7 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 
 <div id="controls">
   <button id="checkBtn" onclick="checkQuiz()">בדוק</button>
-  <button onclick="resetStatsWithCode()">אפס סטטיסטיקה</button>
+  <button id="newQuizBtn" onclick="startNewQuiz()" style="display:none;">מבחן חדש</button>
 </div>
 
 <div id="result"></div>
@@ -80,6 +80,10 @@ async function loadConfig() {
 }
 
 async function initQuiz() {
+  document.getElementById('result').textContent = '';
+  document.getElementById('newQuizBtn').style.display = 'none';
+  quizLocked = false;
+
   await loadConfig();
   document.getElementById('numQuestionsLabel').textContent = NUM_QUESTIONS;
 
@@ -256,18 +260,12 @@ function checkQuiz() {
 
   document.getElementById('result').textContent =
     `ציון: ${correctCount} מתוך ${questions.length}`;
+
+  document.getElementById('newQuizBtn').style.display = 'inline-block';
 }
 
-// איפוס סטטיסטיקה עם קוד 3333
-function resetStatsWithCode() {
-  const code = prompt('הכנס קוד לאיפוס הסטטיסטיקה:');
-  if (code === null) return;
-  if (code === '3333') {
-    clearProgress();
-    alert('הסטטיסטיקה אופסה בהצלחה.');
-  } else {
-    alert('קוד שגוי.');
-  }
+function startNewQuiz() {
+  initQuiz();
 }
 
 initQuiz();
