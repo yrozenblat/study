@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>Modular English Test – Part 1 (Vocabulary)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{font-family:Arial,sans-serif;margin:20px;max-width:900px}
+    h1{text-align:center}
+    .part{margin-top:30px;padding:15px;border:1px solid #ccc;border-radius:10px}
+    .part h2{text-align:center}
+    .container{display:flex;gap:20px;flex-wrap:wrap}
+    .bank,.questions{flex:1 1 45%;min-width:260px}
+    .word{padding:6px 10px;border:1px solid #666;border-radius:6px;background:#f5f5f5;cursor:grab;margin:5px;display:inline-block}
+    .word.disabled{opacity:.6;cursor:default}
+    .drop{min-height:30px;border:1px dashed #aaa;border-radius:6px;padding:4px;background:#fff}
+    .row{display:flex;align-items:flex-start;gap:10px;margin:6px 0}
+    .row.correct{background:#e8f5e9}
+    .row.incorrect{background:#ffebee}
+    .explain{font-size:.85em;color:#333;margin-top:4px}
+    button{padding:8px 16px;font-size:1em;cursor:pointer;margin-top:15px}
+    #summary{margin-top:20px;padding:10px;border-radius:8px;background:#e3f2fd;font-weight:bold}
+  </style>
+</head>
+<body>
+  <h1>מבחן מודולרי – חלק 1 (אוצר מילים)</h1>
+  <p>
+    חלק זה לוקח <b>5 מילים רנדומליות</b> מתוך קובץ אוצר המילים המלא (<code>data/vocab_full.json</code>).<br>
+    בהמשך נוכל להוסיף חלקים נוספים (am/is/are, there is/are וכו') באותה שיטה.
+  </p>
+
+  <div id="vocabPart" class="part">
+    <h2>חלק 1 – אוצר מילים (גרירה והתאמה)</h2>
+    <div class="container">
+      <div class="bank"></div>
+      <div class="questions"></div>
+    </div>
+  </div>
+
+  <button id="checkBtn">בדוק את המבחן</button>
+  <div id="summary" style="display:none"></div>
+
+  <script>
+    const NUM_QUESTIONS = 5;  // כמה שאלות לקחת רנדומלית
+    let locked = false;
+    let vocabData = [];
+
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){
+        const j = Math.floor(Math.random() * (i+1));
+        [arr[i],arr[j]] = [arr[j],arr[i]];
+      }
+      return arr;
+    }
+
+    async function loadVocab(){
+      const res = await fetch('data/vocab_full.json');
+      vocabData = await res.json();
+      buildVocabPart();
+    }
+
+    function buildVocabPart(){
+      const part = document.getElementById('vocabPart');
+      const bank = part.querySelector('.bank');
+      const qs   = part.querySelector('.questions');
+      bank.innerHTML = '';
+      qs.innerHTML   = '';
+
+      const selected = shuffle([...vocabData]).slice(0, NUM_QUESTIONS);
+
+      selected.forEach(item => {
+        const w = document.createElement('div');
+        w.className = 'word';
+        w.textContent = item.english;
+        w.draggable = true;
+        w.dataset.word = item.english;
+        w.addEventListener('dragstart', e => {
+          if(locked) return;
+          e.dataTransfer.setData('text', item.english);
+        });
+        bank.appendChild(w);
+      });
+
+      selected.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.dataset.answer = item.english;
+        row.dataset.rule   = item.rule || '';
+        row.innerHTML = `
+          <div style="min-width:150px" dir="rtl">${idx+1}. ${item.hebrew}</div>
+          <div class="drop"></div>
+          <div class="explain"></div>
+        `;
+        const drop = row.querySelector('.drop');
+        drop.addEventListener('dragover', e => {!locked && e.preventDefault()});
+        drop.addEventListener('drop', e => {
+          if(locked) return;
+          e.preventDefault();
+          const word = e.dataTransfer.getData('text');
+          drop.textContent = word;
+        });
+        qs.appendChild(row);
+      });
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+      if(locked) return;
+      locked = true;
+      let total = 0;
+      let correct = 0;
+
+      document.querySelectorAll('#vocabPart .row').forEach(row => {
+        total++;
+        const ans = row.dataset.answer;
+        const rule = row.dataset.rule;
+        const drop = row.querySelector('.drop');
+        const explain = row.querySelector('.explain');
+        const val = (drop.textContent || '').trim();
+
+        row.classList.remove('correct','incorrect');
+        if(val === ans){
+          row.classList.add('correct');
+          explain.textContent = '';
+          correct++;
+        } else {
+          row.classList.add('incorrect');
+          explain.textContent =
+            '✔ תשובה נכונה: ' + ans +
+            (rule ? ' | כלל: ' + rule : '');
+        }
+      });
+
+      document.querySelectorAll('.word').forEach(w => {
+        w.draggable = false;
+        w.classList.add('disabled');
+      });
+
+      const summary = document.getElementById('summary');
+      summary.style.display = 'block';
+      summary.textContent = 'ציון חלק 1: ' + correct + ' / ' + total;
+    });
+
+    loadVocab();
+  </script>
+</body>
+</html>

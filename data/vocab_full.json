@@ -1,0 +1,77 @@
+[
+  {
+    "english": "book",
+    "hebrew": "ספר",
+    "rule": "book = ספר (חפץ בכיתה)"
+  },
+  {
+    "english": "bag",
+    "hebrew": "תיק",
+    "rule": "bag = תיק (אפשר לשים בו ספרים)"
+  },
+  {
+    "english": "desk",
+    "hebrew": "שולחן כתיבה",
+    "rule": "desk = שולחן כתיבה (שולחן של תלמיד/מורה)"
+  },
+  {
+    "english": "chair",
+    "hebrew": "כיסא",
+    "rule": "chair = כיסא (יושבים עליו)"
+  },
+  {
+    "english": "table",
+    "hebrew": "שולחן",
+    "rule": "table = שולחן (באופן כללי, לא רק לכיתה)"
+  },
+  {
+    "english": "teacher",
+    "hebrew": "מורה",
+    "rule": "teacher = מורה (איש/אשת הוראה)"
+  },
+  {
+    "english": "student",
+    "hebrew": "תלמיד",
+    "rule": "student = תלמיד/ה (לומד בבית ספר)"
+  },
+  {
+    "english": "pencil",
+    "hebrew": "עיפרון",
+    "rule": "pencil = עיפרון (כותבים איתו)"
+  },
+  {
+    "english": "pen",
+    "hebrew": "עט",
+    "rule": "pen = עט (כותבים בדיו)"
+  },
+  {
+    "english": "eraser",
+    "hebrew": "מחק",
+    "rule": "eraser = מחק (מוחק טעויות)"
+  },
+  {
+    "english": "ruler",
+    "hebrew": "סרגל",
+    "rule": "ruler = סרגל (מודדים קווים)"
+  },
+  {
+    "english": "window",
+    "hebrew": "חלון",
+    "rule": "window = חלון (בכיתה/בית)"
+  },
+  {
+    "english": "door",
+    "hebrew": "דלת",
+    "rule": "door = דלת (נכנסים ויוצאים דרכה)"
+  },
+  {
+    "english": "school",
+    "hebrew": "בית ספר",
+    "rule": "school = בית ספר (המקום שבו לומדים)"
+  },
+  {
+    "english": "classroom",
+    "hebrew": "כיתה",
+    "rule": "classroom = כיתה (החדר שבו מתקיימים השיעורים)"
+  }
+]
