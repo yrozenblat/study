@@ -2,8 +2,9 @@
 <html lang="he">
 <head>
 <meta charset="UTF-8">
-<title>מבחן אוצר מילים – דוגמה</title>
+<title>מבחן אוצר מילים – ממחסן המילים</title>
 
+<!-- מנוע הסטטיסטיקה -->
 <script src="progress.js"></script>
 
 <style>
@@ -14,7 +15,12 @@ body {
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+#meta {
+  margin-bottom: 15px;
+  font-size: 14px;
 }
 
 .question {
@@ -23,11 +29,11 @@ h2 {
 
 .word {
   display: inline-block;
-  width: 70px;
+  width: 100px;
 }
 
 .answer {
-  width: 120px;
+  width: 150px;
 }
 
 .feedback {
@@ -53,40 +59,134 @@ button {
   margin-top: 15px;
   font-weight: bold;
 }
+
+/* “בנק מילים” למטה – כמו ב-index.html */
+#wordBank {
+  margin-top: 20px;
+  font-size: 14px;
+}
+#wordBank span {
+  display: inline-block;
+  margin: 2px 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
 </style>
 </head>
 
 <body>
 
-<h2>מבחן אוצר מילים – דוגמה</h2>
+<h2>מבחן אוצר מילים – דוגמה ממחסן המילים</h2>
 
-<div class="question" data-word-id="w001">
-  <span class="word">bear:</span>
-  <input type="text" class="answer" data-correct="דב">
-  <span class="feedback"></span>
+<div id="meta">
+  המבחן בוחר <span id="numQuestionsLabel"></span> מילים באקראי מתוך מחסן המילים.
 </div>
 
-<div class="question" data-word-id="w003">
-  <span class="word">chess:</span>
-  <input type="text" class="answer" data-correct="שחמט">
-  <span class="feedback"></span>
+<div id="questionsContainer">
+  <!-- השאלות ייבנו כאן דינמית -->
 </div>
 
 <button onclick="checkQuiz()">בדוק</button>
 
 <div id="result"></div>
 
+<div id="wordBank"></div>
+
 <script>
+// ===== הגדרות =====
+const NUM_QUESTIONS = 5;      // כמה מילים לכל מבחן
+const VOCAB_FILE = 'vocab_all_with_ids.json';
+
+// ===== טעינת מחסן המילים ובניית המבחן =====
+async function initQuiz() {
+  document.getElementById('numQuestionsLabel').textContent = NUM_QUESTIONS;
+
+  try {
+    const res = await fetch(VOCAB_FILE);
+    const vocab = await res.json();
+
+    if (!Array.isArray(vocab) || vocab.length === 0) {
+      document.getElementById('questionsContainer').textContent =
+        'שגיאה: קובץ אוצר המילים ריק או לא תקין.';
+      return;
+    }
+
+    const selected = pickRandom(vocab, Math.min(NUM_QUESTIONS, vocab.length));
+    buildQuiz(selected);
+    buildWordBank(selected);
+  } catch (e) {
+    console.error(e);
+    document.getElementById('questionsContainer').textContent =
+      'לא ניתן לטעון את קובץ אוצר המילים.';
+  }
+}
+
+// בחירת N אקראיות
+function pickRandom(arr, n) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, n);
+}
+
+// בניית HTML של השאלות
+function buildQuiz(words) {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+
+  words.forEach(word => {
+    // מצופה: { id, english, hebrew, unit }
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.dataset.wordId = word.id;
+
+    const label = document.createElement('span');
+    label.className = 'word';
+    label.textContent = word.english + ':';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'answer';
+    input.dataset.correct = word.hebrew || '';   // התרגום לעברית
+
+    const feedback = document.createElement('span');
+    feedback.className = 'feedback';
+
+    div.appendChild(label);
+    div.appendChild(input);
+    div.appendChild(feedback);
+    container.appendChild(div);
+  });
+}
+
+// בנק מילים למטה (העברית – אפשר להשתמש כהצצה)
+function buildWordBank(words) {
+  const bank = document.getElementById('wordBank');
+  bank.innerHTML = '<strong>בנק מילים (עברית):</strong> ';
+
+  words.forEach(w => {
+    const span = document.createElement('span');
+    span.textContent = w.hebrew;
+    bank.appendChild(span);
+  });
+}
+
+// ===== בדיקת המבחן =====
 function checkQuiz() {
   const questions = document.querySelectorAll('.question');
+  if (!questions.length) return;
+
   const progress = loadProgress();
-  let correct = 0;
+  let correctCount = 0;
 
   questions.forEach(q => {
     const id = q.dataset.wordId;
     const input = q.querySelector('.answer');
     const feedback = q.querySelector('.feedback');
-    const correctAns = input.dataset.correct.trim();
+    const correctAns = (input.dataset.correct || '').trim();
     const user = input.value.trim();
 
     const isCorrect = user === correctAns;
@@ -94,24 +194,27 @@ function checkQuiz() {
     if (isCorrect) {
       feedback.textContent = '✓';
       feedback.className = 'feedback correct';
-      correct++;
+      correctCount++;
     } else {
       feedback.textContent = `✗ (${correctAns})`;
       feedback.className = 'feedback wrong';
     }
 
-    // נועל שדות אחרי בדיקה
+    // נועל תשובות אחרי בדיקה
     input.disabled = true;
 
-    // שומר סטטיסטיקה
+    // סטטיסטיקה
     recordAnswer(progress, id, isCorrect);
   });
 
   saveProgress(progress);
 
   document.getElementById('result').textContent =
-    `ציון: ${correct} מתוך ${questions.length}`;
+    `ציון: ${correctCount} מתוך ${questions.length}`;
 }
+
+// התחלה
+initQuiz();
 </script>
 
 </body>
