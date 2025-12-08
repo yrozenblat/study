@@ -31,6 +31,7 @@ h2 { margin-bottom: 10px; }
 .bank-word.used { opacity:0.4; cursor:default; }
 button { margin-top:15px; padding:6px 14px; font-size:14px; }
 #result { margin-top:15px; font-weight:bold; }
+#controls { margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -44,7 +45,10 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 
 <div class="questions" id="questionsContainer"></div>
 
-<button id="checkBtn" onclick="checkQuiz()">בדוק</button>
+<div id="controls">
+  <button id="checkBtn" onclick="checkQuiz()">בדוק</button>
+  <button onclick="resetStatsWithCode()">אפס סטטיסטיקה</button>
+</div>
 
 <div id="result"></div>
 
@@ -52,7 +56,6 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 <div id="wordBank"></div>
 
 <script>
-// ===== הגדרות =====
 let NUM_QUESTIONS = 10;
 let VOCAB_FILE    = 'vocab_all_with_ids.json';
 const CONFIG_FILE = 'quiz_config.json';
@@ -60,7 +63,6 @@ const CONFIG_FILE = 'quiz_config.json';
 let currentWords = [];
 let quizLocked   = false;
 
-// טעינת קובץ ההגדרות (אם קיים)
 async function loadConfig() {
   try {
     const res = await fetch(CONFIG_FILE);
@@ -77,7 +79,6 @@ async function loadConfig() {
   }
 }
 
-// ===== טעינת מחסן המילים ובניית המבחן =====
 async function initQuiz() {
   await loadConfig();
   document.getElementById('numQuestionsLabel').textContent = NUM_QUESTIONS;
@@ -102,7 +103,6 @@ async function initQuiz() {
   }
 }
 
-// בחירת N פריטים אקראיים
 function pickRandom(arr, n) {
   const copy = arr.slice();
   for (let i = copy.length - 1; i > 0; i--) {
@@ -112,7 +112,6 @@ function pickRandom(arr, n) {
   return copy.slice(0, n);
 }
 
-// בניית שאלות
 function buildQuestions(words) {
   const container = document.getElementById('questionsContainer');
   container.innerHTML = '';
@@ -146,7 +145,6 @@ function buildQuestions(words) {
       const draggedEl = document.querySelector(`.bank-word[data-word-id="${draggedId}"]`);
       if (!draggedEl || draggedEl.classList.contains('used')) return;
 
-      // אם כבר הייתה מילה על המשבצת – להחזיר אותה לבנק
       if (drop.dataset.wordId) {
         const prevEl = document.querySelector(`.bank-word[data-word-id="${drop.dataset.wordId}"]`);
         if (prevEl) prevEl.classList.remove('used');
@@ -168,7 +166,6 @@ function buildQuestions(words) {
   });
 }
 
-// בניית בנק מילים לגרירה
 function buildWordBank(words) {
   const bank = document.getElementById('wordBank');
   bank.innerHTML = '';
@@ -195,7 +192,6 @@ function buildWordBank(words) {
   });
 }
 
-// ===== בדיקה =====
 function checkQuiz() {
   if (quizLocked) return;
 
@@ -262,7 +258,18 @@ function checkQuiz() {
     `ציון: ${correctCount} מתוך ${questions.length}`;
 }
 
-// התחלה
+// איפוס סטטיסטיקה עם קוד 3333
+function resetStatsWithCode() {
+  const code = prompt('הכנס קוד לאיפוס הסטטיסטיקה:');
+  if (code === null) return;
+  if (code === '3333') {
+    clearProgress();
+    alert('הסטטיסטיקה אופסה בהצלחה.');
+  } else {
+    alert('קוד שגוי.');
+  }
+}
+
 initQuiz();
 </script>
 
