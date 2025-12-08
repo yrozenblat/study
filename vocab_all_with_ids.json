@@ -1,0 +1,32 @@
+[
+  {
+    "id": "w001",
+    "english": "bear",
+    "hebrew": "דב",
+    "unit": "animals"
+  },
+  {
+    "id": "w002",
+    "english": "zebra",
+    "hebrew": "זברה",
+    "unit": "animals"
+  },
+  {
+    "id": "w003",
+    "english": "chess",
+    "hebrew": "שחמט",
+    "unit": "games"
+  },
+  {
+    "id": "w004",
+    "english": "important",
+    "hebrew": "חשוב",
+    "unit": "adjectives"
+  },
+  {
+    "id": "w005",
+    "english": "young",
+    "hebrew": "צעיר",
+    "unit": "adjectives"
+  }
+]

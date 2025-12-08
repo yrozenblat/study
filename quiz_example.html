@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>Vocab Quiz Demo</title>
+<script src="progress.js"></script>
+</head>
+<body>
+
+<h2>מבחן אוצר מילים – דוגמה</h2>
+
+<div class="question" data-word-id="w001">
+  bear:
+  <input type="text" class="answer" data-correct="דב">
+</div>
+
+<div class="question" data-word-id="w003">
+  chess:
+  <input type="text" class="answer" data-correct="שחמט">
+</div>
+
+<button onclick="checkQuiz()">בדוק</button>
+<div id="result"></div>
+
+<script>
+function checkQuiz() {
+  const questions = document.querySelectorAll('.question');
+  const progress = loadProgress();
+  let correct = 0;
+
+  questions.forEach(q => {
+    const id = q.dataset.wordId;
+    const input = q.querySelector('.answer');
+    const correctAns = input.dataset.correct;
+    const isCorrect = input.value.trim() === correctAns;
+    if (isCorrect) correct++;
+    recordAnswer(progress, id, isCorrect);
+  });
+
+  saveProgress(progress);
+  document.getElementById('result').textContent =
+    `ציון: ${correct} מתוך ${questions.length}`;
+}
+</script>
+
+</body>
+</html>
