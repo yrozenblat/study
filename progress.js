@@ -1,28 +1,26 @@
-
-const PROGRESS_KEY = 'vocabProgress';
+const PROGRESS_KEY = 'progress';
 
 function loadProgress() {
   const raw = localStorage.getItem(PROGRESS_KEY);
   return raw ? JSON.parse(raw) : {};
 }
 
-function saveProgress(progress) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+function saveProgress(data) {
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(data));
 }
 
 function recordAnswer(progress, wordId, isCorrect) {
   if (!progress[wordId]) {
-    progress[wordId] = { correct: 0, wrong: 0, streak: 0, lastSeen: null };
+    progress[wordId] = { correct: 0, wrong: 0 };
   }
-  const rec = progress[wordId];
   if (isCorrect) {
-    rec.correct++;
-    rec.streak++;
+    progress[wordId].correct++;
   } else {
-    rec.wrong++;
-    rec.streak = 0;
+    progress[wordId].wrong++;
   }
-  rec.lastSeen = new Date().toISOString().slice(0,10);
 }
 
-
+// איפוס מלא של הסטטיסטיקה
+function clearProgress() {
+  localStorage.removeItem(PROGRESS_KEY);
+}
