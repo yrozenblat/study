@@ -1,4 +1,10 @@
 {
   "numQuestions": 10,
-  "vocabFile": "vocab_all_with_ids.json"
+  "vocabFile": "vocab_all_with_ids.json",
+  "selectionWeights": {
+    "weak": 80,
+    "untested": 20,
+    "medium": 0,
+    "strong": 0
+  }
 }
