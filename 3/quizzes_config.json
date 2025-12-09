@@ -3,9 +3,9 @@
     {
       "id": "vocab_drag",
       "title": "אוצר מילים – התאמה",
-      "type": "drag",
+      "type": "vocab_drag",
       "enabled": true,
-      "questionsFile": "questions/vocab_drag.json",
+      "questionsFile": "vocab_all_with_ids.json",
       "numQuestions": 10,
       "selectionWeights": {
         "weak": 80,
