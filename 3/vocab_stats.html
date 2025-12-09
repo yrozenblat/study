@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>סטטיסטיקת אוצר מילים</title>
+<script src="progress.js"></script>
+<style>
+body { font-family: Arial, sans-serif; direction: rtl; padding: 20px; }
+h2 { margin-bottom: 10px; }
+table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+th, td { border: 1px solid #ccc; padding: 4px 6px; font-size: 13px; text-align: center; }
+th { background: #f0f0f0; }
+tr.weak { background: #ffe5e5; }
+tr.medium { background: #fff9d6; }
+tr.strong { background: #e6ffe6; }
+#controls { margin-top: 10px; }
+button { padding: 5px 12px; margin-right: 8px; }
+</style>
+</head>
+<body>
 
+<h2>סטטיסטיקת אוצר מילים</h2>
+
+<div id="controls">
+  <button onclick="loadStats()">רענן סטטיסטיקה</button>
+  <button onclick="resetStatsWithCode()">אפס סטטיסטיקה</button>
+</div>
+
+<div id="summary"></div>
+<table id="statsTable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>English</th>
+      <th>עברית</th>
+      <th>נכון</th>
+      <th>לא נכון</th>
+      <th>סה"כ</th>
+      <th>% הצלחה</th>
+      <th>רמה</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const VOCAB_FILE = 'vocab_all_with_ids.json';
+
+function classify(rec) {
+  const total = rec.correct + rec.wrong;
+  if (total === 0) return { level: 'לא נבדק', className: '' };
+  const p = rec.correct / total;
+  if (p < 0.4) return { level: 'חלש', className: 'weak' };
+  if (p < 0.8) return { level: 'בינוני', className: 'medium' };
+  return { level: 'חזק', className: 'strong' };
+}
+
+async function loadStats() {
+  const tbody = document.querySelector('#statsTable tbody');
+  tbody.innerHTML = '';
+  const summaryDiv = document.getElementById('summary');
+  summaryDiv.textContent = 'טוען נתונים...';
+
+  try {
+    const [vocabRes,] = await Promise.all([
+      fetch(VOCAB_FILE)
+    ]);
+    const vocab = await vocabRes.json();
+    const progress = loadProgress();
+
+    let idx = 0;
+    let totalWords = vocab.length;
+    let testedWords = 0;
+
+    vocab.forEach(word => {
+      const id = word.id;
+      const rec = progress[id] || { correct: 0, wrong: 0 };
+      const total = rec.correct + rec.wrong;
+      if (total > 0) testedWords++;
+
+      const cls = classify(rec);
+      const tr = document.createElement('tr');
+      if (cls.className) tr.classList.add(cls.className);
+
+      const percent = total > 0 ? Math.round((rec.correct / total) * 100) : '';
+
+      tr.innerHTML = `
+        <td>${++idx}</td>
+        <td>${word.english}</td>
+        <td>${word.hebrew}</td>
+        <td>${rec.correct}</td>
+        <td>${rec.wrong}</td>
+        <td>${total}</td>
+        <td>${percent}</td>
+        <td>${cls.level}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    summaryDiv.textContent =
+      `סה"כ מילים במחסן: ${totalWords}, מילים שנבדקו לפחות פעם אחת: ${testedWords}.`;
+  } catch (e) {
+    console.error(e);
+    summaryDiv.textContent = 'שגיאה בטעינת הנתונים.';
+  }
+}
+
+function resetStatsWithCode() {
+  const code = prompt('הכנס קוד לאיפוס הסטטיסטיקה:');
+  if (code === null) return;
+  if (code === '3333') {
+    clearProgress();
+    alert('הסטטיסטיקה אופסה בהצלחה.');
+    loadStats();
+  } else {
+    alert('קוד שגוי.');
+  }
+}
+
+loadStats();
+</script>
+
+</body>
+</html>
