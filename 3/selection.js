@@ -1,3 +1,4 @@
+// בחירת פריטים למבחן לפי סטטיסטיקה + משקלים
 export function selectItems(items, progress, numQuestions, weights) {
   const annotated = items.map(it => {
     const rec = progress[it.id] || { correct: 0, wrong: 0 };
@@ -9,9 +10,10 @@ export function selectItems(items, progress, numQuestions, weights) {
     return { ...it, total, strength };
   });
 
+  // rare = אלו עם מספר הניסיונות המינימלי
   const minTotal = Math.min(...annotated.map(i => i.total));
-  const rare = annotated.filter(i => i.total == minTotal);
-  const others = annotated.filter(i => i.total != minTotal);
+  const rare = annotated.filter(i => i.total === minTotal);
+  const others = annotated.filter(i => i.total !== minTotal);
 
   const buckets = {
     rare,
@@ -25,17 +27,29 @@ export function selectItems(items, progress, numQuestions, weights) {
 
   while (remaining > 0) {
     const pool = [];
-    Object.keys(buckets).forEach(k => {
-      const w = weights[k] || 0;
-      if (buckets[k].length === 0 || w <= 0) return;
-      for (let i = 0; i < w; i++) pool.push(k);
-    });
+    for (const key of Object.keys(buckets)) {
+      const w = weights[key] || 0;
+      if (!buckets[key].length || w <= 0) continue;
+      for (let i = 0; i < w; i++) pool.push(key);
+    }
     if (!pool.length) break;
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    const arr = buckets[pick];
+
+    const bucketKey = pool[Math.floor(Math.random() * pool.length)];
+    const arr = buckets[bucketKey];
     const idx = Math.floor(Math.random() * arr.length);
     selected.push(arr.splice(idx, 1)[0]);
     remaining--;
   }
+
+  // אם לא הגענו לכמות המבוקשת – נמשלים באקראי מתוך השאר
+  if (selected.length < numQuestions) {
+    const remainingPool = [];
+    Object.values(buckets).forEach(arr => remainingPool.push(...arr));
+    while (selected.length < numQuestions && remainingPool.length) {
+      const idx = Math.floor(Math.random() * remainingPool.length);
+      selected.push(remainingPool.splice(idx, 1)[0]);
+    }
+  }
+
   return selected;
 }
