@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>מבחן דקדוק – a/an, am/is/are, there is/are</title>
+<style>
+body { font-family: Arial, sans-serif; direction: rtl; padding: 20px; }
+h1 { margin-top: 0; }
+.question { margin: 10px 0; padding: 8px; border-bottom: 1px solid #ddd; }
+.correct { color: green; font-weight: bold; margin-right: 8px; }
+.incorrect { color: red; font-weight: bold; margin-right: 8px; }
+.rule { font-size: 0.9em; color: #555; margin-right: 8px; }
+button { margin-top: 10px; }
+</style>
+</head>
+<body>
+<h1>מבחן דקדוק</h1>
+<label for="topicSelect">בחר נושא:</label>
+<select id="topicSelect">
+  <option value="a_an">a / an</option>
+  <option value="am_is_are">am / is / are</option>
+  <option value="there_is_are">there is / there are</option>
+</select>
+<button id="newQuizBtn">מבחן חדש</button>
+
+<div id="quizContainer" style="margin-top:15px;"></div>
+
+<script type="module">
+import { loadProgress, saveProgress } from './storage.js';
+import { QUESTIONS } from './grammar_quiz.js';
+
+const topicSelect = document.getElementById('topicSelect');
+const newQuizBtn = document.getElementById('newQuizBtn');
+const quizContainer = document.getElementById('quizContainer');
+
+let currentTopic = topicSelect.value;
+let currentQuestions = [];
+let checked = false;
+
+topicSelect.addEventListener('change', () => {
+  currentTopic = topicSelect.value;
+  buildQuiz();
+});
+
+newQuizBtn.addEventListener('click', () => {
+  buildQuiz();
+});
+
+function sampleQuestions(all, count) {
+  const arr = [...all];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, Math.min(count, arr.length));
+}
+
+function buildQuiz() {
+  checked = false;
+  quizContainer.innerHTML = '';
+  const all = QUESTIONS[currentTopic];
+  if (!all) {
+    quizContainer.textContent = 'לא נמצאו שאלות לנושא הזה.';
+    return;
+  }
+  const num = 8;
+  currentQuestions = sampleQuestions(all, num);
+
+  currentQuestions.forEach((q, idx) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    const qId = `q_${idx}`;
+
+    const sentenceSpan = document.createElement('span');
+    sentenceSpan.textContent = q.sentence.replace('___', '_____');
+    div.appendChild(document.createTextNode((idx+1) + '. '));
+    div.appendChild(sentenceSpan);
+    div.appendChild(document.createElement('br'));
+
+    q.options.forEach((opt, oi) => {
+      const id = `${qId}_opt${oi}`;
+      const label = document.createElement('label');
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = qId;
+      radio.value = opt;
+      radio.id = id;
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(' ' + opt + ' '));
+      div.appendChild(label);
+    });
+
+    const feedbackSpan = document.createElement('span');
+    feedbackSpan.className = 'feedback';
+    div.appendChild(document.createElement('br'));
+    div.appendChild(feedbackSpan);
+
+    quizContainer.appendChild(div);
+  });
+
+  const checkBtn = document.createElement('button');
+  checkBtn.textContent = 'בדוק';
+  checkBtn.addEventListener('click', () => {
+    if (checked) return;
+    checked = true;
+    checkAnswers();
+  });
+  quizContainer.appendChild(checkBtn);
+
+  const resultP = document.createElement('p');
+  resultP.id = 'resultLine';
+  quizContainer.appendChild(resultP);
+}
+
+function checkAnswers() {
+  let correctCount = 0;
+  const quizId = 'grammar_' + currentTopic;
+  const progress = loadProgress(quizId);
+
+  currentQuestions.forEach((q, idx) => {
+    const qId = `q_${idx}`;
+    const radios = quizContainer.querySelectorAll(`input[name="${qId}"]`);
+    let chosen = null;
+    radios.forEach(r => { if (r.checked) chosen = r.value; });
+
+    const feedbackSpan = quizContainer.querySelectorAll('.feedback')[idx];
+    if (!chosen) {
+      feedbackSpan.textContent = ' (לא נבחרה תשובה)';
+      feedbackSpan.className = 'feedback incorrect';
+    } else if (chosen === q.correct) {
+      feedbackSpan.textContent = ' ✓ נכון';
+      feedbackSpan.className = 'feedback correct';
+      correctCount++;
+      if (!progress[q.id]) progress[q.id] = { correct: 0, wrong: 0 };
+      progress[q.id].correct++;
+    } else {
+      feedbackSpan.innerHTML = ` ✗ שגוי – התשובה הנכונה: <b>${q.correct}</b>. <span class="rule">${q.rule}</span>`;
+      feedbackSpan.className = 'feedback incorrect';
+      if (!progress[q.id]) progress[q.id] = { correct: 0, wrong: 0 };
+      progress[q.id].wrong++;
+    }
+  });
+
+  saveProgress(quizId, progress);
+  const resultP = document.getElementById('resultLine');
+  resultP.textContent = `ציון: ${correctCount} מתוך ${currentQuestions.length}`;
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
