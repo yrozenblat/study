@@ -1,220 +1,394 @@
-export const QUESTIONS = {
-  a_an: [
-    {
-      id: 'aa01',
-      sentence: '___ apple',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'לפני צליל שמתחיל באות ניקוד (a, e, i, o, u) משתמשים ב-an.'
-    },
-    {
-      id: 'aa02',
-      sentence: '___ orange',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'orange מתחיל בצליל של אות ניקוד, לכן צריך an.'
-    },
-    {
-      id: 'aa03',
-      sentence: '___ egg',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'egg מתחיל ב-e, לכן משתמשים ב-an.'
-    },
-    {
-      id: 'aa04',
-      sentence: '___ umbrella',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'umbrella מתחיל בצליל /ʌ/ (אות ניקוד), לכן an.'
-    },
-    {
-      id: 'aa05',
-      sentence: '___ avocado',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'avocado מתחיל ב-a, אות ניקוד, לכן an.'
-    },
-    {
-      id: 'aa06',
-      sentence: '___ pencil',
-      options: ['a', 'an'],
-      correct: 'a',
-      rule: 'pencil מתחיל בעיצור p, לכן משתמשים ב-a.'
-    },
-    {
-      id: 'aa07',
-      sentence: '___ computer',
-      options: ['a', 'an'],
-      correct: 'a',
-      rule: 'computer מתחיל בעיצור c, לכן a.'
-    },
-    {
-      id: 'aa08',
-      sentence: '___ box',
-      options: ['a', 'an'],
-      correct: 'a',
-      rule: 'box מתחיל בעיצור b, לכן a.'
-    },
-    {
-      id: 'aa09',
-      sentence: '___ mango',
-      options: ['a', 'an'],
-      correct: 'a',
-      rule: 'mango מתחיל בעיצור m, לכן a.'
-    },
-    {
-      id: 'aa10',
-      sentence: '___ eraser',
-      options: ['a', 'an'],
-      correct: 'an',
-      rule: 'eraser מתחיל ב-e, לכן an.'
-    }
-  ],
+// grammar_quiz.js
+// מבחן דקדוק: a/an, am/is/are, there is/there are
+// שומר סטטיסטיקה ב-localStorage (לכל שאלה לפי id ולפי נושא)
 
-  am_is_are: [
-    {
-      id: 'be01',
-      sentence: 'I ___ ten years old.',
-      options: ['am', 'is', 'are'],
-      correct: 'am',
-      rule: 'עם I משתמשים ב-am.'
-    },
-    {
-      id: 'be02',
-      sentence: 'She ___ my sister.',
-      options: ['am', 'is', 'are'],
-      correct: 'is',
-      rule: 'עם she / he / it משתמשים ב-is.'
-    },
-    {
-      id: 'be03',
-      sentence: 'They ___ in the park.',
-      options: ['am', 'is', 'are'],
-      correct: 'are',
-      rule: 'עם we / you / they משתמשים ב-are.'
-    },
-    {
-      id: 'be04',
-      sentence: 'We ___ friends.',
-      options: ['am', 'is', 'are'],
-      correct: 'are',
-      rule: 'עם we משתמשים ב-are.'
-    },
-    {
-      id: 'be05',
-      sentence: 'It ___ a nice day.',
-      options: ['am', 'is', 'are'],
-      correct: 'is',
-      rule: 'It בגוף שלישי יחיד – לכן is.'
-    },
-    {
-      id: 'be06',
-      sentence: 'You ___ at school now.',
-      options: ['am', 'is', 'are'],
-      correct: 'are',
-      rule: 'עם you משתמשים ב-are.'
-    },
-    {
-      id: 'be07',
-      sentence: 'My mother and father ___ at work.',
-      options: ['am', 'is', 'are'],
-      correct: 'are',
-      rule: 'נושא ברבים – לכן are.'
-    },
-    {
-      id: 'be08',
-      sentence: 'He ___ not hungry.',
-      options: ['am', 'is', 'are'],
-      correct: 'is',
-      rule: 'He בגוף שלישי יחיד – therefore is.'
-    },
-    {
-      id: 'be09',
-      sentence: 'We ___ not tired.',
-      options: ['am', 'is', 'are'],
-      correct: 'are',
-      rule: 'We – בגוף ראשון רבים – לכן are.'
-    },
-    {
-      id: 'be10',
-      sentence: 'I ___ in grade five.',
-      options: ['am', 'is', 'are'],
-      correct: 'am',
-      rule: 'עם I תמיד am.'
-    }
-  ],
+const GRAMMAR_STORAGE_KEY = "grammar_stats_v1";
+const QUESTIONS_PER_QUIZ = 6;
 
-  there_is_are: [
-    {
-      id: 'th01',
-      sentence: '___ a computer on the desk.',
-      options: ['There is', 'There are'],
-      correct: 'There is',
-      rule: 'עם שם עצם יחיד משתמשים ב-There is.'
-    },
-    {
-      id: 'th02',
-      sentence: '___ two pencils in the bag.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'עם שם עצם ברבים (two pencils) משתמשים ב-There are.'
-    },
-    {
-      id: 'th03',
-      sentence: '___ some books on the table.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'some books זה רבים – לכן There are.'
-    },
-    {
-      id: 'th04',
-      sentence: '___ a cat on the blanket.',
-      options: ['There is', 'There are'],
-      correct: 'There is',
-      rule: 'a cat – יחיד – לכן There is.'
-    },
-    {
-      id: 'th05',
-      sentence: '___ six cars in the street.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'six cars – רבים – לכן There are.'
-    },
-    {
-      id: 'th06',
-      sentence: '___ an egg in the fridge.',
-      options: ['There is', 'There are'],
-      correct: 'There is',
-      rule: 'an egg – יחיד – לכן There is.'
-    },
-    {
-      id: 'th07',
-      sentence: '___ some bananas on the plate.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'bananas – רבים – לכן There are.'
-    },
-    {
-      id: 'th08',
-      sentence: '___ a big bus at the station.',
-      options: ['There is', 'There are'],
-      correct: 'There is',
-      rule: 'a big bus – יחיד – לכן There is.'
-    },
-    {
-      id: 'th09',
-      sentence: '___ nine red markers in the box.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'nine red markers – רבים – לכן There are.'
-    },
-    {
-      id: 'th10',
-      sentence: '___ some children in the class.',
-      options: ['There is', 'There are'],
-      correct: 'There are',
-      rule: 'children – רבים – לכן There are.'
-    }
-  ]
+// --------------------------------------------------------
+// מאגר שאלות
+// --------------------------------------------------------
+const grammarBank = {
+  a_an: {
+    label: "a / an",
+    topicId: "a_an",
+    questions: [
+      {
+        id: "aa01",
+        text: "apple _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "משתמשים ב-an לפני צליל תנועה (a, e, i, o, u)."
+      },
+      {
+        id: "aa02",
+        text: "banana _____",
+        options: ["a", "an"],
+        correctIndex: 0,
+        rule: "banana לא מתחיל בצליל תנועה, לכן משתמשים ב-a."
+      },
+      {
+        id: "aa03",
+        text: "orange _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "orange מתחיל בצליל תנועה, לכן an."
+      },
+      {
+        id: "aa04",
+        text: "umbrella _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "umbrella מתחיל בצליל תנועה (u נהגה כמו ‘א-’), לכן an."
+      },
+      {
+        id: "aa05",
+        text: "mango _____",
+        options: ["a", "an"],
+        correctIndex: 0,
+        rule: "mango מתחיל בעיצור m, לכן a."
+      },
+      {
+        id: "aa06",
+        text: "egg _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "egg מתחיל בצליל תנועה, לכן an."
+      },
+      {
+        id: "aa07",
+        text: "box _____",
+        options: ["a", "an"],
+        correctIndex: 0,
+        rule: "box מתחיל בעיצור b, לכן a."
+      },
+      {
+        id: "aa08",
+        text: "eraser _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "eraser מתחיל בצליל תנועה, לכן an."
+      },
+      {
+        id: "aa09",
+        text: "house _____",
+        options: ["a", "an"],
+        correctIndex: 0,
+        rule: "house מתחיל בעיצור h (נהגה), לכן a."
+      },
+      {
+        id: "aa10",
+        text: "avocado _____",
+        options: ["a", "an"],
+        correctIndex: 1,
+        rule: "avocado מתחיל בצליל תנועה, לכן an."
+      }
+    ]
+  },
+
+  be_verb: {
+    label: "am / is / are",
+    topicId: "be_verb",
+    questions: [
+      {
+        id: "be01",
+        text: "I _____ ten years old.",
+        options: ["am", "is", "are"],
+        correctIndex: 0,
+        rule: "עם I משתמשים ב-am."
+      },
+      {
+        id: "be02",
+        text: "She _____ my sister.",
+        options: ["am", "is", "are"],
+        correctIndex: 1,
+        rule: "עם he / she / it משתמשים ב-is."
+      },
+      {
+        id: "be03",
+        text: "They _____ at school.",
+        options: ["am", "is", "are"],
+        correctIndex: 2,
+        rule: "עם we / you / they משתמשים ב-are."
+      },
+      {
+        id: "be04",
+        text: "We _____ happy.",
+        options: ["am", "is", "are"],
+        correctIndex: 2,
+        rule: "עם we / you / they משתמשים ב-are."
+      },
+      {
+        id: "be05",
+        text: "It _____ hot today.",
+        options: ["am", "is", "are"],
+        correctIndex: 1,
+        rule: "עם he / she / it משתמשים ב-is."
+      },
+      {
+        id: "be06",
+        text: "My mother _____ at the supermarket.",
+        options: ["am", "is", "are"],
+        correctIndex: 1,
+        rule: "My mother = she → is."
+      },
+      {
+        id: "be07",
+        text: "Tim and Dan _____ friends.",
+        options: ["am", "is", "are"],
+        correctIndex: 2,
+        rule: "Tim and Dan = they → are."
+      },
+      {
+        id: "be08",
+        text: "You _____ a good pupil.",
+        options: ["am", "is", "are"],
+        correctIndex: 2,
+        rule: "עם you משתמשים ב-are."
+      }
+    ]
+  },
+
+  there_is_are: {
+    label: "there is / there are",
+    topicId: "there_is_are",
+    questions: [
+      {
+        id: "th01",
+        text: "_____ a computer on the table.",
+        options: ["There is", "There are"],
+        correctIndex: 0,
+        rule: "there is עם שם עצם יחיד."
+      },
+      {
+        id: "th02",
+        text: "_____ two pencils in the box.",
+        options: ["There is", "There are"],
+        correctIndex: 1,
+        rule: "there are עם שם עצם ברבים (two pencils)."
+      },
+      {
+        id: "th03",
+        text: "_____ some markers on the desk.",
+        options: ["There is", "There are"],
+        correctIndex: 1,
+        rule: "some markers → רבים, לכן there are."
+      },
+      {
+        id: "th04",
+        text: "_____ a bag under the chair.",
+        options: ["There is", "There are"],
+        correctIndex: 0,
+        rule: "a bag → יחיד, לכן there is."
+      },
+      {
+        id: "th05",
+        text: "_____ an elephant in the picture.",
+        options: ["There is", "There are"],
+        correctIndex: 0,
+        rule: "an elephant → יחיד, לכן there is."
+      },
+      {
+        id: "th06",
+        text: "_____ some books on the shelf.",
+        options: ["There is", "There are"],
+        correctIndex: 1,
+        rule: "some books → רבים, לכן there are."
+      },
+      {
+        id: "th07",
+        text: "_____ nine red markers in the box.",
+        options: ["There is", "There are"],
+        correctIndex: 1,
+        rule: "nine red markers → רבים, לכן there are."
+      },
+      {
+        id: "th08",
+        text: "_____ some children in the park.",
+        options: ["There is", "There are"],
+        correctIndex: 1,
+        rule: "some children → רבים, לכן there are."
+      }
+    ]
+  }
 };
+
+// --------------------------------------------------------
+// כלי סטטיסטיקה
+// --------------------------------------------------------
+function loadGrammarStats() {
+  try {
+    const raw = localStorage.getItem(GRAMMAR_STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error("Failed to load grammar stats", e);
+    return {};
+  }
+}
+
+function saveGrammarStats(stats) {
+  try {
+    localStorage.setItem(GRAMMAR_STORAGE_KEY, JSON.stringify(stats));
+  } catch (e) {
+    console.error("Failed to save grammar stats", e);
+  }
+}
+
+function updateGrammarStat(topicId, questionId, isCorrect) {
+  const stats = loadGrammarStats();
+  if (!stats[topicId]) stats[topicId] = {};
+  if (!stats[topicId][questionId]) {
+    stats[topicId][questionId] = { correct: 0, total: 0 };
+  }
+  stats[topicId][questionId].total += 1;
+  if (isCorrect) stats[topicId][questionId].correct += 1;
+  saveGrammarStats(stats);
+}
+
+// --------------------------------------------------------
+// יצירת מבחן
+// --------------------------------------------------------
+let currentTopicId = "a_an";
+let currentQuestions = [];
+
+function pickRandomQuestions(allQuestions, count) {
+  const copy = [...allQuestions];
+  // ערבוב
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, Math.min(count, copy.length));
+}
+
+function generateQuiz() {
+  const topic = grammarBank[currentTopicId];
+  if (!topic) return;
+
+  currentQuestions = pickRandomQuestions(topic.questions, QUESTIONS_PER_QUIZ);
+
+  const container = document.getElementById("questionsContainer");
+  container.innerHTML = "";
+
+  currentQuestions.forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+
+    const row = document.createElement("div");
+    row.className = "question-row";
+
+    const numSpan = document.createElement("span");
+    numSpan.className = "q-number";
+    numSpan.textContent = (index + 1) + ".";
+
+    const textSpan = document.createElement("span");
+    textSpan.className = "question-text";
+    textSpan.textContent = q.text.replace("_____", "_____");
+
+    row.appendChild(numSpan);
+    row.appendChild(textSpan);
+
+    const optionsDiv = document.createElement("div");
+    optionsDiv.className = "options";
+
+    q.options.forEach((opt, optIndex) => {
+      const label = document.createElement("label");
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "q" + index;
+      radio.value = optIndex;
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(" " + opt));
+
+      optionsDiv.appendChild(label);
+    });
+
+    const feedbackDiv = document.createElement("div");
+    feedbackDiv.className = "feedback";
+    feedbackDiv.id = "fb-" + index;
+
+    qDiv.appendChild(row);
+    qDiv.appendChild(optionsDiv);
+    qDiv.appendChild(feedbackDiv);
+
+    container.appendChild(qDiv);
+  });
+
+  document.getElementById("resultBox").textContent = "";
+  document.getElementById("resultDetails").textContent = "";
+}
+
+function checkAnswers() {
+  if (!currentQuestions.length) return;
+
+  let correctCount = 0;
+  let total = currentQuestions.length;
+  let details = [];
+
+  currentQuestions.forEach((q, index) => {
+    const radios = document.querySelectorAll(`input[name="q${index}"]`);
+    let chosenIndex = null;
+    radios.forEach(r => {
+      if (r.checked) chosenIndex = parseInt(r.value, 10);
+      // לאחר בדיקה ננעל את התשובות – אין תיקון
+      r.disabled = true;
+    });
+
+    const feedbackDiv = document.getElementById("fb-" + index);
+    feedbackDiv.classList.remove("correct", "wrong");
+
+    if (chosenIndex === null) {
+      feedbackDiv.classList.add("wrong");
+      feedbackDiv.textContent = "✗ לא סומן פתרון. התשובה הנכונה: " +
+        q.options[q.correctIndex] + ". כלל: " + q.rule;
+      updateGrammarStat(currentTopicId, q.id, false);
+      details.push(`שאלה ${index + 1}: לא נענתה`);
+    } else if (chosenIndex === q.correctIndex) {
+      feedbackDiv.classList.add("correct");
+      feedbackDiv.textContent = "✓ נכון";
+      correctCount++;
+      updateGrammarStat(currentTopicId, q.id, true);
+      details.push(`שאלה ${index + 1}: נכון`);
+    } else {
+      feedbackDiv.classList.add("wrong");
+      feedbackDiv.textContent = "✗ לא נכון. התשובה הנכונה: " +
+        q.options[q.correctIndex] + ". כלל: " + q.rule;
+      updateGrammarStat(currentTopicId, q.id, false);
+      details.push(`שאלה ${index + 1}: לא נכון`);
+    }
+  });
+
+  const resultBox = document.getElementById("resultBox");
+  const resultDetails = document.getElementById("resultDetails");
+  resultBox.textContent = `ציון: ${correctCount} מתוך ${total}`;
+  resultDetails.textContent = details.join(" | ");
+}
+
+// --------------------------------------------------------
+// חיבור לאירועים
+// --------------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const topicSelect = document.getElementById("topicSelect");
+  const newQuizBtn = document.getElementById("newQuizBtn");
+  const checkBtn = document.getElementById("checkBtn");
+
+  topicSelect.addEventListener("change", () => {
+    currentTopicId = topicSelect.value;
+    generateQuiz();
+  });
+
+  newQuizBtn.addEventListener("click", () => {
+    generateQuiz();
+  });
+
+  checkBtn.addEventListener("click", () => {
+    checkAnswers();
+  });
+
+  // התחלה ראשונית
+  currentTopicId = topicSelect.value;
+  generateQuiz();
+});
