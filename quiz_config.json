@@ -2,8 +2,8 @@
   "numQuestions": 10,
   "vocabFile": "vocab_all_with_ids.json",
   "selectionWeights": {
-    "weak": 80,
-    "rare": 20,
+    "weak": 70,
+    "rare": 30,
     "medium": 0,
     "strong": 0
   }
