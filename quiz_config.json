@@ -3,7 +3,7 @@
   "vocabFile": "vocab_all_with_ids.json",
   "selectionWeights": {
     "weak": 80,
-    "untested": 20,
+    "rare": 20,
     "medium": 0,
     "strong": 0
   }
