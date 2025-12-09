@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>מערכת מבחנים</title>
+<style>
+body { font-family: Arial; padding: 20px; direction: rtl; }
+#menu button { margin: 5px; }
+pre { background:#f5f5f5; padding:10px; }
+</style>
+</head>
+<body>
+
+<h2>מערכת מבחנים</h2>
+<div id="menu"></div>
+<hr>
+<div id="quizArea">בחר מבחן</div>
+
+<script type="module">
+import { loadProgress } from './storage.js';
+import { selectItems } from './selection.js';
+
+async function init() {
+  try {
+    const cfg = await (await fetch('quizzes_config.json')).json();
+    const menu = document.getElementById('menu');
+
+    cfg.quizzes.filter(q => q.enabled).forEach(q => {
+      const btn = document.createElement('button');
+      btn.textContent = q.title;
+      btn.onclick = () => loadQuiz(q);
+      menu.appendChild(btn);
+    });
+  } catch (e) {
+    document.getElementById('quizArea').textContent = 'שגיאה בטעינת הקונפיג: ' + e;
+    console.error(e);
+  }
+}
+
+async function loadQuiz(q) {
+  const quizArea = document.getElementById('quizArea');
+  quizArea.textContent = 'טוען שאלות...';
+  try {
+    const data = await (await fetch(q.questionsFile)).json();
+    const progress = loadProgress(q.id);
+    const selected = selectItems(data.items, progress, q.numQuestions, q.selectionWeights);
+    quizArea.innerHTML = '<h3>שאלות שנבחרו (דיבג זמני)</h3><pre>' + JSON.stringify(selected, null, 2) + '</pre>';
+  } catch (e) {
+    quizArea.textContent = 'שגיאה בטעינת השאלות: ' + e;
+    console.error(e);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
