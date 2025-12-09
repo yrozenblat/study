@@ -41,7 +41,8 @@ button { margin-top:15px; padding:6px 14px; font-size:14px; }
 <div id="meta">
   גררו את המילים בעברית אל המשבצות המתאימות באנגלית.<br>
   המבחן בוחר <span id="numQuestionsLabel"></span> מילים מתוך מחסן המילים,<br>
-  לפי אחוזים ניתנים להגדרה לכל סוג מילה (חלשה / לא נבדקה / בינונית / חזקה).
+  לפי אחוזים ניתנים להגדרה לכל סוג מילה (חלשה / נדירה / בינונית / חזקה).<br>
+  "נדירה" = המילים שנבדקו הכי מעט פעמים (בהתחלה 0, אחר כך 1, 2 וכו').
 </div>
 
 <div class="questions" id="questionsContainer"></div>
@@ -63,7 +64,7 @@ const CONFIG_FILE = 'quiz_config.json';
 
 let SELECTION_WEIGHTS = {
   weak: 80,
-  untested: 20,
+  rare: 20,
   medium: 0,
   strong: 0
 };
@@ -71,38 +72,53 @@ let SELECTION_WEIGHTS = {
 let currentWords = [];
 let quizLocked   = false;
 
-function classifyWord(rec) {
+// סיווג לפי רמת הצלחה (חזק/בינוני/חלש) – בלי קשר ל-rare
+function classifyStrength(rec) {
   const total = rec.correct + rec.wrong;
-  if (total === 0) return 'untested';
+  if (total === 0) return 'unknown';
   const p = rec.correct / total;
   if (p < 0.4) return 'weak';
   if (p < 0.8) return 'medium';
   return 'strong';
 }
 
+// בחירה עם קטגוריית rare = מילים עם מספר החשיפות הנמוך ביותר
 function selectWords(vocab, progress, numQuestions) {
   const annotated = vocab.map(word => {
     const rec = progress[word.id] || { correct: 0, wrong: 0 };
-    const level = classifyWord(rec);
-    return { ...word, level };
+    const total = rec.correct + rec.wrong;
+    const strength = classifyStrength(rec);
+    return { ...word, rec, total, strength };
   });
 
-  let weak     = annotated.filter(w => w.level === 'weak');
-  let untested = annotated.filter(w => w.level === 'untested');
-  let medium   = annotated.filter(w => w.level === 'medium');
-  let strong   = annotated.filter(w => w.level === 'strong');
+  if (annotated.length === 0) return [];
+
+  // מוצאים את מספר החשיפות המינימלי בכלל המילים
+  let minTotal = annotated.reduce((min, w) => Math.min(min, w.total), Infinity);
+  if (!isFinite(minTotal)) minTotal = 0;
+
+  // rare = מילים עם מספר החשיפות המינימלי
+  const rareWords = annotated.filter(w => w.total === minTotal);
+
+  // שאר המילים יסווגו לפי strength, בלי rare
+  const nonRare = annotated.filter(w => w.total !== minTotal);
+
+  const weak   = nonRare.filter(w => w.strength === 'weak');
+  const medium = nonRare.filter(w => w.strength === 'medium');
+  const strong = nonRare.filter(w => w.strength === 'strong' || w.strength === 'unknown');
 
   const selected = [];
 
   const cats = [
-    { name: 'weak',     words: weak.slice(),     weight: SELECTION_WEIGHTS.weak     || 0 },
-    { name: 'untested', words: untested.slice(), weight: SELECTION_WEIGHTS.untested || 0 },
-    { name: 'medium',   words: medium.slice(),   weight: SELECTION_WEIGHTS.medium   || 0 },
-    { name: 'strong',   words: strong.slice(),   weight: SELECTION_WEIGHTS.strong   || 0 }
+    { name: 'rare',   words: rareWords.slice(), weight: SELECTION_WEIGHTS.rare   || 0 },
+    { name: 'weak',   words: weak.slice(),      weight: SELECTION_WEIGHTS.weak   || 0 },
+    { name: 'medium', words: medium.slice(),    weight: SELECTION_WEIGHTS.medium || 0 },
+    { name: 'strong', words: strong.slice(),    weight: SELECTION_WEIGHTS.strong || 0 }
   ];
 
   let activeCats = cats.filter(c => c.words.length > 0 && c.weight > 0);
 
+  // אם אין שום קטגוריה פעילה – ניפול לרנדומלי מלא
   if (activeCats.length === 0) {
     return pickRandom(annotated, Math.min(numQuestions, annotated.length));
   }
@@ -185,10 +201,10 @@ async function loadConfig() {
     }
     if (cfg.selectionWeights && typeof cfg.selectionWeights === 'object') {
       SELECTION_WEIGHTS = {
-        weak:     cfg.selectionWeights.weak     ?? SELECTION_WEIGHTS.weak,
-        untested: cfg.selectionWeights.untested ?? SELECTION_WEIGHTS.untested,
-        medium:   cfg.selectionWeights.medium   ?? SELECTION_WEIGHTS.medium,
-        strong:   cfg.selectionWeights.strong   ?? SELECTION_WEIGHTS.strong
+        weak:   cfg.selectionWeights.weak   ?? SELECTION_WEIGHTS.weak,
+        rare:   cfg.selectionWeights.rare   ?? SELECTION_WEIGHTS.rare,
+        medium: cfg.selectionWeights.medium ?? SELECTION_WEIGHTS.medium,
+        strong: cfg.selectionWeights.strong ?? SELECTION_WEIGHTS.strong
       };
     }
   } catch (e) {
