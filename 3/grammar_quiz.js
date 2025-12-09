@@ -1,394 +1,205 @@
-// grammar_quiz.js
-// מבחן דקדוק: a/an, am/is/are, there is/there are
-// שומר סטטיסטיקה ב-localStorage (לכל שאלה לפי id ולפי נושא)
+// grammar_quiz.js - self contained version
 
-const GRAMMAR_STORAGE_KEY = "grammar_stats_v1";
-const QUESTIONS_PER_QUIZ = 6;
-
-// --------------------------------------------------------
-// מאגר שאלות
-// --------------------------------------------------------
-const grammarBank = {
-  a_an: {
-    label: "a / an",
-    topicId: "a_an",
-    questions: [
-      {
-        id: "aa01",
-        text: "apple _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "משתמשים ב-an לפני צליל תנועה (a, e, i, o, u)."
-      },
-      {
-        id: "aa02",
-        text: "banana _____",
-        options: ["a", "an"],
-        correctIndex: 0,
-        rule: "banana לא מתחיל בצליל תנועה, לכן משתמשים ב-a."
-      },
-      {
-        id: "aa03",
-        text: "orange _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "orange מתחיל בצליל תנועה, לכן an."
-      },
-      {
-        id: "aa04",
-        text: "umbrella _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "umbrella מתחיל בצליל תנועה (u נהגה כמו ‘א-’), לכן an."
-      },
-      {
-        id: "aa05",
-        text: "mango _____",
-        options: ["a", "an"],
-        correctIndex: 0,
-        rule: "mango מתחיל בעיצור m, לכן a."
-      },
-      {
-        id: "aa06",
-        text: "egg _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "egg מתחיל בצליל תנועה, לכן an."
-      },
-      {
-        id: "aa07",
-        text: "box _____",
-        options: ["a", "an"],
-        correctIndex: 0,
-        rule: "box מתחיל בעיצור b, לכן a."
-      },
-      {
-        id: "aa08",
-        text: "eraser _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "eraser מתחיל בצליל תנועה, לכן an."
-      },
-      {
-        id: "aa09",
-        text: "house _____",
-        options: ["a", "an"],
-        correctIndex: 0,
-        rule: "house מתחיל בעיצור h (נהגה), לכן a."
-      },
-      {
-        id: "aa10",
-        text: "avocado _____",
-        options: ["a", "an"],
-        correctIndex: 1,
-        rule: "avocado מתחיל בצליל תנועה, לכן an."
-      }
-    ]
-  },
-
-  be_verb: {
-    label: "am / is / are",
-    topicId: "be_verb",
-    questions: [
-      {
-        id: "be01",
-        text: "I _____ ten years old.",
-        options: ["am", "is", "are"],
-        correctIndex: 0,
-        rule: "עם I משתמשים ב-am."
-      },
-      {
-        id: "be02",
-        text: "She _____ my sister.",
-        options: ["am", "is", "are"],
-        correctIndex: 1,
-        rule: "עם he / she / it משתמשים ב-is."
-      },
-      {
-        id: "be03",
-        text: "They _____ at school.",
-        options: ["am", "is", "are"],
-        correctIndex: 2,
-        rule: "עם we / you / they משתמשים ב-are."
-      },
-      {
-        id: "be04",
-        text: "We _____ happy.",
-        options: ["am", "is", "are"],
-        correctIndex: 2,
-        rule: "עם we / you / they משתמשים ב-are."
-      },
-      {
-        id: "be05",
-        text: "It _____ hot today.",
-        options: ["am", "is", "are"],
-        correctIndex: 1,
-        rule: "עם he / she / it משתמשים ב-is."
-      },
-      {
-        id: "be06",
-        text: "My mother _____ at the supermarket.",
-        options: ["am", "is", "are"],
-        correctIndex: 1,
-        rule: "My mother = she → is."
-      },
-      {
-        id: "be07",
-        text: "Tim and Dan _____ friends.",
-        options: ["am", "is", "are"],
-        correctIndex: 2,
-        rule: "Tim and Dan = they → are."
-      },
-      {
-        id: "be08",
-        text: "You _____ a good pupil.",
-        options: ["am", "is", "are"],
-        correctIndex: 2,
-        rule: "עם you משתמשים ב-are."
-      }
-    ]
-  },
-
-  there_is_are: {
-    label: "there is / there are",
-    topicId: "there_is_are",
-    questions: [
-      {
-        id: "th01",
-        text: "_____ a computer on the table.",
-        options: ["There is", "There are"],
-        correctIndex: 0,
-        rule: "there is עם שם עצם יחיד."
-      },
-      {
-        id: "th02",
-        text: "_____ two pencils in the box.",
-        options: ["There is", "There are"],
-        correctIndex: 1,
-        rule: "there are עם שם עצם ברבים (two pencils)."
-      },
-      {
-        id: "th03",
-        text: "_____ some markers on the desk.",
-        options: ["There is", "There are"],
-        correctIndex: 1,
-        rule: "some markers → רבים, לכן there are."
-      },
-      {
-        id: "th04",
-        text: "_____ a bag under the chair.",
-        options: ["There is", "There are"],
-        correctIndex: 0,
-        rule: "a bag → יחיד, לכן there is."
-      },
-      {
-        id: "th05",
-        text: "_____ an elephant in the picture.",
-        options: ["There is", "There are"],
-        correctIndex: 0,
-        rule: "an elephant → יחיד, לכן there is."
-      },
-      {
-        id: "th06",
-        text: "_____ some books on the shelf.",
-        options: ["There is", "There are"],
-        correctIndex: 1,
-        rule: "some books → רבים, לכן there are."
-      },
-      {
-        id: "th07",
-        text: "_____ nine red markers in the box.",
-        options: ["There is", "There are"],
-        correctIndex: 1,
-        rule: "nine red markers → רבים, לכן there are."
-      },
-      {
-        id: "th08",
-        text: "_____ some children in the park.",
-        options: ["There is", "There are"],
-        correctIndex: 1,
-        rule: "some children → רבים, לכן there are."
-      }
-    ]
-  }
+// --- data ---
+const GRAMMAR_QUESTIONS = {
+  a_an: [
+    { id: 'ga01', text: 'apple _____', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga02', text: 'banana _____', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga03', text: 'egg _____', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga04', text: 'orange _____', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga05', text: 'umbrella _____', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga06', text: 'mango _____', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga07', text: 'eraser _____', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga08', text: 'house _____', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga09', text: 'computer _____', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga10', text: 'eggplant _____', options: ['a', 'an'], correct: 'an' }
+  ],
+  am_is_are: [
+    { id: 'gi01', text: 'I _____ ten years old.', options: ['am', 'is', 'are'], correct: 'am' },
+    { id: 'gi02', text: 'She _____ my sister.', options: ['am', 'is', 'are'], correct: 'is' },
+    { id: 'gi03', text: 'They _____ at school now.', options: ['am', 'is', 'are'], correct: 'are' },
+    { id: 'gi04', text: 'We _____ in the park.', options: ['am', 'is', 'are'], correct: 'are' },
+    { id: 'gi05', text: 'It _____ my bag.', options: ['am', 'is', 'are'], correct: 'is' },
+    { id: 'gi06', text: 'You _____ a good friend.', options: ['am', 'is', 'are'], correct: 'are' },
+    { id: 'gi07', text: 'My mother _____ at work.', options: ['am', 'is', 'are'], correct: 'is' },
+    { id: 'gi08', text: 'The boys _____ happy.', options: ['am', 'is', 'are'], correct: 'are' }
+  ],
+  there_is_are: [
+    { id: 'gt01', text: '_____ a computer on the desk.', options: ['There is', 'There are'], correct: 'There is' },
+    { id: 'gt02', text: '_____ two chairs in the room.', options: ['There is', 'There are'], correct: 'There are' },
+    { id: 'gt03', text: '_____ some books on the table.', options: ['There is', 'There are'], correct: 'There are' },
+    { id: 'gt04', text: '_____ a bag under the chair.', options: ['There is', 'There are'], correct: 'There is' },
+    { id: 'gt05', text: '_____ six cars in the street.', options: ['There is', 'There are'], correct: 'There are' },
+    { id: 'gt06', text: '_____ an orange on the plate.', options: ['There is', 'There are'], correct: 'There is' }
+  ]
 };
 
-// --------------------------------------------------------
-// כלי סטטיסטיקה
-// --------------------------------------------------------
+const GRAMMAR_STATS_KEY = 'grammar_quiz_stats_v1';
+
+let currentTopic = 'a_an';
+let currentQuizQuestions = [];
+let checked = false;
+
+// --- helpers for stats in localStorage (using storage.js if exists) ---
 function loadGrammarStats() {
   try {
-    const raw = localStorage.getItem(GRAMMAR_STORAGE_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw);
+    if (window.studyStorage) {
+      return window.studyStorage.load(GRAMMAR_STATS_KEY, {});
+    }
+    const raw = localStorage.getItem(GRAMMAR_STATS_KEY);
+    return raw ? JSON.parse(raw) : {};
   } catch (e) {
-    console.error("Failed to load grammar stats", e);
+    console.error('loadGrammarStats', e);
     return {};
   }
 }
 
 function saveGrammarStats(stats) {
   try {
-    localStorage.setItem(GRAMMAR_STORAGE_KEY, JSON.stringify(stats));
+    if (window.studyStorage) {
+      window.studyStorage.save(GRAMMAR_STATS_KEY, stats);
+    } else {
+      localStorage.setItem(GRAMMAR_STATS_KEY, JSON.stringify(stats));
+    }
   } catch (e) {
-    console.error("Failed to save grammar stats", e);
+    console.error('saveGrammarStats', e);
   }
 }
 
-function updateGrammarStat(topicId, questionId, isCorrect) {
-  const stats = loadGrammarStats();
-  if (!stats[topicId]) stats[topicId] = {};
-  if (!stats[topicId][questionId]) {
-    stats[topicId][questionId] = { correct: 0, total: 0 };
-  }
-  stats[topicId][questionId].total += 1;
-  if (isCorrect) stats[topicId][questionId].correct += 1;
-  saveGrammarStats(stats);
+// choose random subset
+function pickRandomQuestions(topic, count = 6) {
+  const all = GRAMMAR_QUESTIONS[topic] || [];
+  const shuffled = [...all].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, all.length));
 }
 
-// --------------------------------------------------------
-// יצירת מבחן
-// --------------------------------------------------------
-let currentTopicId = "a_an";
-let currentQuestions = [];
+// render quiz
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  const topicQuestions = currentQuizQuestions;
 
-function pickRandomQuestions(allQuestions, count) {
-  const copy = [...allQuestions];
-  // ערבוב
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy.slice(0, Math.min(count, copy.length));
-}
+  topicQuestions.forEach((q, index) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
 
-function generateQuiz() {
-  const topic = grammarBank[currentTopicId];
-  if (!topic) return;
+    const qTextDiv = document.createElement('div');
+    qTextDiv.className = 'question-text';
+    qTextDiv.textContent = (index + 1) + '. ' + q.text;
+    block.appendChild(qTextDiv);
 
-  currentQuestions = pickRandomQuestions(topic.questions, QUESTIONS_PER_QUIZ);
+    const optionsDiv = document.createElement('div');
+    optionsDiv.className = 'options';
 
-  const container = document.getElementById("questionsContainer");
-  container.innerHTML = "";
-
-  currentQuestions.forEach((q, index) => {
-    const qDiv = document.createElement("div");
-    qDiv.className = "question";
-
-    const row = document.createElement("div");
-    row.className = "question-row";
-
-    const numSpan = document.createElement("span");
-    numSpan.className = "q-number";
-    numSpan.textContent = (index + 1) + ".";
-
-    const textSpan = document.createElement("span");
-    textSpan.className = "question-text";
-    textSpan.textContent = q.text.replace("_____", "_____");
-
-    row.appendChild(numSpan);
-    row.appendChild(textSpan);
-
-    const optionsDiv = document.createElement("div");
-    optionsDiv.className = "options";
-
-    q.options.forEach((opt, optIndex) => {
-      const label = document.createElement("label");
-
-      const radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = "q" + index;
-      radio.value = optIndex;
-
+    q.options.forEach(opt => {
+      const label = document.createElement('label');
+      label.className = 'option-label';
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = q.id;
+      radio.value = opt;
       label.appendChild(radio);
-      label.appendChild(document.createTextNode(" " + opt));
-
+      label.appendChild(document.createTextNode(' ' + opt));
       optionsDiv.appendChild(label);
     });
 
-    const feedbackDiv = document.createElement("div");
-    feedbackDiv.className = "feedback";
-    feedbackDiv.id = "fb-" + index;
-
-    qDiv.appendChild(row);
-    qDiv.appendChild(optionsDiv);
-    qDiv.appendChild(feedbackDiv);
-
-    container.appendChild(qDiv);
+    block.appendChild(optionsDiv);
+    container.appendChild(block);
   });
 
-  document.getElementById("resultBox").textContent = "";
-  document.getElementById("resultDetails").textContent = "";
+  document.getElementById('resultSummary').textContent = '';
+  document.getElementById('status').textContent = '';
+  checked = false;
 }
 
-function checkAnswers() {
-  if (!currentQuestions.length) return;
+// check answers
+function checkQuiz() {
+  if (!currentQuizQuestions.length) return;
 
   let correctCount = 0;
-  let total = currentQuestions.length;
-  let details = [];
+  let total = currentQuizQuestions.length;
 
-  currentQuestions.forEach((q, index) => {
-    const radios = document.querySelectorAll(`input[name="q${index}"]`);
-    let chosenIndex = null;
-    radios.forEach(r => {
-      if (r.checked) chosenIndex = parseInt(r.value, 10);
-      // לאחר בדיקה ננעל את התשובות – אין תיקון
-      r.disabled = true;
-    });
+  const stats = loadGrammarStats();
+  if (!stats[currentTopic]) {
+    stats[currentTopic] = { total: 0, correct: 0 };
+  }
 
-    const feedbackDiv = document.getElementById("fb-" + index);
-    feedbackDiv.classList.remove("correct", "wrong");
-
-    if (chosenIndex === null) {
-      feedbackDiv.classList.add("wrong");
-      feedbackDiv.textContent = "✗ לא סומן פתרון. התשובה הנכונה: " +
-        q.options[q.correctIndex] + ". כלל: " + q.rule;
-      updateGrammarStat(currentTopicId, q.id, false);
-      details.push(`שאלה ${index + 1}: לא נענתה`);
-    } else if (chosenIndex === q.correctIndex) {
-      feedbackDiv.classList.add("correct");
-      feedbackDiv.textContent = "✓ נכון";
+  currentQuizQuestions.forEach(q => {
+    const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+    const userAnswer = selected ? selected.value : null;
+    if (userAnswer === q.correct) {
       correctCount++;
-      updateGrammarStat(currentTopicId, q.id, true);
-      details.push(`שאלה ${index + 1}: נכון`);
-    } else {
-      feedbackDiv.classList.add("wrong");
-      feedbackDiv.textContent = "✗ לא נכון. התשובה הנכונה: " +
-        q.options[q.correctIndex] + ". כלל: " + q.rule;
-      updateGrammarStat(currentTopicId, q.id, false);
-      details.push(`שאלה ${index + 1}: לא נכון`);
     }
   });
 
-  const resultBox = document.getElementById("resultBox");
-  const resultDetails = document.getElementById("resultDetails");
-  resultBox.textContent = `ציון: ${correctCount} מתוך ${total}`;
-  resultDetails.textContent = details.join(" | ");
+  // update stats only once per quiz
+  stats[currentTopic].total += total;
+  stats[currentTopic].correct += correctCount;
+  saveGrammarStats(stats);
+
+  document.getElementById('resultSummary').textContent =
+    `ציון: ${correctCount} מתוך ${total}`;
+
+  checked = true;
+
+  // lock answers
+  currentQuizQuestions.forEach(q => {
+    const inputs = document.querySelectorAll(`input[name="${q.id}"]`);
+    inputs.forEach(inp => inp.disabled = true);
+  });
+
+  updateStatsBox();
 }
 
-// --------------------------------------------------------
-// חיבור לאירועים
-// --------------------------------------------------------
-document.addEventListener("DOMContentLoaded", () => {
-  const topicSelect = document.getElementById("topicSelect");
-  const newQuizBtn = document.getElementById("newQuizBtn");
-  const checkBtn = document.getElementById("checkBtn");
+// show global stats
+function updateStatsBox() {
+  const box = document.getElementById('statsBox');
+  const stats = loadGrammarStats();
+  const topicStats = stats[currentTopic];
 
-  topicSelect.addEventListener("change", () => {
-    currentTopicId = topicSelect.value;
-    generateQuiz();
+  if (!topicStats || topicStats.total === 0) {
+    box.textContent = 'עדיין אין סטטיסטיקה לנושא זה.';
+    return;
+  }
+
+  const percent = Math.round(100 * topicStats.correct / topicStats.total);
+  let topicLabel = '';
+  if (currentTopic === 'a_an') topicLabel = 'a/an';
+  else if (currentTopic === 'am_is_are') topicLabel = 'am/is/are';
+  else if (currentTopic === 'there_is_are') topicLabel = 'There is/There are';
+
+  box.textContent =
+    `סטטיסטיקה כוללת (${topicLabel}): ${topicStats.correct} נכונות מתוך ${topicStats.total} (${percent}%).`;
+}
+
+// new quiz
+function newQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = 'טוען...';
+  currentTopic = document.getElementById('topicSelect').value;
+  currentQuizQuestions = pickRandomQuestions(currentTopic, 6);
+  setTimeout(renderQuiz, 0);
+}
+
+// init
+window.addEventListener('DOMContentLoaded', () => {
+  const topicSelect = document.getElementById('topicSelect');
+  const newQuizBtn = document.getElementById('newQuizBtn');
+  const checkBtn = document.getElementById('checkBtn');
+
+  topicSelect.addEventListener('change', () => {
+    newQuiz();
   });
 
-  newQuizBtn.addEventListener("click", () => {
-    generateQuiz();
+  newQuizBtn.addEventListener('click', () => {
+    newQuiz();
   });
 
-  checkBtn.addEventListener("click", () => {
-    checkAnswers();
+  checkBtn.addEventListener('click', () => {
+    checkQuiz();
   });
 
-  // התחלה ראשונית
-  currentTopicId = topicSelect.value;
-  generateQuiz();
+  // first quiz
+  newQuiz();
+  updateStatsBox();
 });
