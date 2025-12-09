@@ -3,16 +3,16 @@
 // --- data ---
 const GRAMMAR_QUESTIONS = {
   a_an: [
-    { id: 'ga01', text: 'apple _____', options: ['a', 'an'], correct: 'an' },
-    { id: 'ga02', text: 'banana _____', options: ['a', 'an'], correct: 'a' },
-    { id: 'ga03', text: 'egg _____', options: ['a', 'an'], correct: 'an' },
-    { id: 'ga04', text: 'orange _____', options: ['a', 'an'], correct: 'an' },
-    { id: 'ga05', text: 'umbrella _____', options: ['a', 'an'], correct: 'an' },
-    { id: 'ga06', text: 'mango _____', options: ['a', 'an'], correct: 'a' },
-    { id: 'ga07', text: 'eraser _____', options: ['a', 'an'], correct: 'an' },
-    { id: 'ga08', text: 'house _____', options: ['a', 'an'], correct: 'a' },
-    { id: 'ga09', text: 'computer _____', options: ['a', 'an'], correct: 'a' },
-    { id: 'ga10', text: 'eggplant _____', options: ['a', 'an'], correct: 'an' }
+    { id: 'ga01', text: '_____ apple', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga02', text: '_____ banana', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga03', text: '_____ egg', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga04', text: '_____ orange', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga05', text: '_____ umbrella', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga06', text: '_____ mango', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga07', text: '_____ eraser', options: ['a', 'an'], correct: 'an' },
+    { id: 'ga08', text: '_____ house', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga09', text: '_____ computer', options: ['a', 'an'], correct: 'a' },
+    { id: 'ga10', text: '_____ eggplant', options: ['a', 'an'], correct: 'an' }
   ],
   am_is_are: [
     { id: 'gi01', text: 'I _____ ten years old.', options: ['am', 'is', 'are'], correct: 'am' },
