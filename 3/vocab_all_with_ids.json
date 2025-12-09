@@ -1,0 +1,632 @@
+[
+  {
+    "english": "animal",
+    "hebrew": "חיה",
+    "id": "w001"
+  },
+  {
+    "english": "bird",
+    "hebrew": "ציפור",
+    "id": "w002"
+  },
+  {
+    "english": "bear",
+    "hebrew": "דב",
+    "id": "w003"
+  },
+  {
+    "english": "cat",
+    "hebrew": "חתול",
+    "id": "w004"
+  },
+  {
+    "english": "dog",
+    "hebrew": "כלב",
+    "id": "w005"
+  },
+  {
+    "english": "lion",
+    "hebrew": "אריה",
+    "id": "w006"
+  },
+  {
+    "english": "zebra",
+    "hebrew": "זברה",
+    "id": "w007"
+  },
+  {
+    "english": "panda",
+    "hebrew": "פנדה",
+    "id": "w008"
+  },
+  {
+    "english": "rabbit",
+    "hebrew": "ארנב",
+    "id": "w009"
+  },
+  {
+    "english": "kangaroo",
+    "hebrew": "קנגורו",
+    "id": "w010"
+  },
+  {
+    "english": "dolphin",
+    "hebrew": "דולפין",
+    "id": "w011"
+  },
+  {
+    "english": "penguin",
+    "hebrew": "פינגווין",
+    "id": "w012"
+  },
+  {
+    "english": "monkey",
+    "hebrew": "קוף",
+    "id": "w013"
+  },
+  {
+    "english": "snake",
+    "hebrew": "נחש",
+    "id": "w014"
+  },
+  {
+    "english": "giraffe",
+    "hebrew": "ג’ירפה",
+    "id": "w015"
+  },
+  {
+    "english": "elephant",
+    "hebrew": "פיל",
+    "id": "w016"
+  },
+  {
+    "english": "man",
+    "hebrew": "גבר",
+    "id": "w017"
+  },
+  {
+    "english": "woman",
+    "hebrew": "אישה",
+    "id": "w018"
+  },
+  {
+    "english": "men",
+    "hebrew": "גברים",
+    "id": "w019"
+  },
+  {
+    "english": "women",
+    "hebrew": "נשים",
+    "id": "w020"
+  },
+  {
+    "english": "child",
+    "hebrew": "ילד",
+    "id": "w021"
+  },
+  {
+    "english": "children",
+    "hebrew": "ילדים",
+    "id": "w022"
+  },
+  {
+    "english": "people",
+    "hebrew": "אנשים",
+    "id": "w023"
+  },
+  {
+    "english": "pupil",
+    "hebrew": "תלמיד",
+    "id": "w024"
+  },
+  {
+    "english": "friend",
+    "hebrew": "חבר",
+    "id": "w025"
+  },
+  {
+    "english": "friends",
+    "hebrew": "חברים",
+    "id": "w026"
+  },
+  {
+    "english": "mother",
+    "hebrew": "אמא",
+    "id": "w027"
+  },
+  {
+    "english": "father",
+    "hebrew": "אבא",
+    "id": "w028"
+  },
+  {
+    "english": "school",
+    "hebrew": "בית ספר",
+    "id": "w029"
+  },
+  {
+    "english": "class",
+    "hebrew": "כיתה",
+    "id": "w030"
+  },
+  {
+    "english": "park",
+    "hebrew": "פארק",
+    "id": "w031"
+  },
+  {
+    "english": "pool",
+    "hebrew": "בריכה",
+    "id": "w032"
+  },
+  {
+    "english": "house",
+    "hebrew": "בית",
+    "id": "w033"
+  },
+  {
+    "english": "table",
+    "hebrew": "שולחן",
+    "id": "w034"
+  },
+  {
+    "english": "blanket",
+    "hebrew": "שמיכה",
+    "id": "w035"
+  },
+  {
+    "english": "bag",
+    "hebrew": "תיק",
+    "id": "w036"
+  },
+  {
+    "english": "toy",
+    "hebrew": "צעצוע",
+    "id": "w037"
+  },
+  {
+    "english": "apple",
+    "hebrew": "תפוח",
+    "id": "w038"
+  },
+  {
+    "english": "banana",
+    "hebrew": "בננה",
+    "id": "w039"
+  },
+  {
+    "english": "orange",
+    "hebrew": "תפוז",
+    "id": "w040"
+  },
+  {
+    "english": "lemon",
+    "hebrew": "לימון",
+    "id": "w041"
+  },
+  {
+    "english": "melon",
+    "hebrew": "מלון",
+    "id": "w042"
+  },
+  {
+    "english": "avocado",
+    "hebrew": "אבוקדו",
+    "id": "w043"
+  },
+  {
+    "english": "mango",
+    "hebrew": "מנגו",
+    "id": "w044"
+  },
+  {
+    "english": "egg",
+    "hebrew": "ביצה",
+    "id": "w045"
+  },
+  {
+    "english": "milk",
+    "hebrew": "חלב",
+    "id": "w046"
+  },
+  {
+    "english": "water",
+    "hebrew": "מים",
+    "id": "w047"
+  },
+  {
+    "english": "food",
+    "hebrew": "אוכל",
+    "id": "w048"
+  },
+  {
+    "english": "bus",
+    "hebrew": "אוטובוס",
+    "id": "w049"
+  },
+  {
+    "english": "car",
+    "hebrew": "מכונית",
+    "id": "w050"
+  },
+  {
+    "english": "bike",
+    "hebrew": "אופניים",
+    "id": "w051"
+  },
+  {
+    "english": "computer",
+    "hebrew": "מחשב",
+    "id": "w052"
+  },
+  {
+    "english": "pencil",
+    "hebrew": "עיפרון",
+    "id": "w053"
+  },
+  {
+    "english": "eraser",
+    "hebrew": "מחק",
+    "id": "w054"
+  },
+  {
+    "english": "umbrella",
+    "hebrew": "מטריה",
+    "id": "w055"
+  },
+  {
+    "english": "box",
+    "hebrew": "קופסה",
+    "id": "w056"
+  },
+  {
+    "english": "play",
+    "hebrew": "לשחק",
+    "id": "w057"
+  },
+  {
+    "english": "win",
+    "hebrew": "לנצח",
+    "id": "w058"
+  },
+  {
+    "english": "learn",
+    "hebrew": "ללמוד",
+    "id": "w059"
+  },
+  {
+    "english": "read",
+    "hebrew": "לקרוא",
+    "id": "w060"
+  },
+  {
+    "english": "write",
+    "hebrew": "לכתוב",
+    "id": "w061"
+  },
+  {
+    "english": "draw",
+    "hebrew": "לצייר",
+    "id": "w062"
+  },
+  {
+    "english": "copy",
+    "hebrew": "להעתיק",
+    "id": "w063"
+  },
+  {
+    "english": "match",
+    "hebrew": "להתאים",
+    "id": "w064"
+  },
+  {
+    "english": "complete",
+    "hebrew": "להשלים",
+    "id": "w065"
+  },
+  {
+    "english": "circle",
+    "hebrew": "להקיף בעיגול",
+    "id": "w066"
+  },
+  {
+    "english": "color",
+    "hebrew": "לצבוע",
+    "id": "w067"
+  },
+  {
+    "english": "take out",
+    "hebrew": "להוציא",
+    "id": "w068"
+  },
+  {
+    "english": "open",
+    "hebrew": "לפתוח",
+    "id": "w069"
+  },
+  {
+    "english": "close",
+    "hebrew": "לסגור",
+    "id": "w070"
+  },
+  {
+    "english": "run",
+    "hebrew": "לרוץ",
+    "id": "w071"
+  },
+  {
+    "english": "jump",
+    "hebrew": "לקפוץ",
+    "id": "w072"
+  },
+  {
+    "english": "swim",
+    "hebrew": "לשחות",
+    "id": "w073"
+  },
+  {
+    "english": "climb",
+    "hebrew": "לטפס",
+    "id": "w074"
+  },
+  {
+    "english": "sing",
+    "hebrew": "לשיר",
+    "id": "w075"
+  },
+  {
+    "english": "fly",
+    "hebrew": "לעוף",
+    "id": "w076"
+  },
+  {
+    "english": "dance",
+    "hebrew": "לרקוד",
+    "id": "w077"
+  },
+  {
+    "english": "sit",
+    "hebrew": "לשבת",
+    "id": "w078"
+  },
+  {
+    "english": "stand",
+    "hebrew": "לעמוד",
+    "id": "w079"
+  },
+  {
+    "english": "sleep",
+    "hebrew": "לישון",
+    "id": "w080"
+  },
+  {
+    "english": "talk",
+    "hebrew": "לדבר",
+    "id": "w081"
+  },
+  {
+    "english": "game",
+    "hebrew": "משחק",
+    "id": "w082"
+  },
+  {
+    "english": "chess",
+    "hebrew": "שחמט",
+    "id": "w083"
+  },
+  {
+    "english": "age",
+    "hebrew": "גיל",
+    "id": "w084"
+  },
+  {
+    "english": "year",
+    "hebrew": "שנה",
+    "id": "w085"
+  },
+  {
+    "english": "month",
+    "hebrew": "חודש",
+    "id": "w086"
+  },
+  {
+    "english": "birthday",
+    "hebrew": "יום הולדת",
+    "id": "w087"
+  },
+  {
+    "english": "hobby",
+    "hebrew": "תחביב",
+    "id": "w088"
+  },
+  {
+    "english": "hobbies",
+    "hebrew": "תחביבים",
+    "id": "w089"
+  },
+  {
+    "english": "January",
+    "hebrew": "ינואר",
+    "id": "w090"
+  },
+  {
+    "english": "February",
+    "hebrew": "פברואר",
+    "id": "w091"
+  },
+  {
+    "english": "March",
+    "hebrew": "מרץ",
+    "id": "w092"
+  },
+  {
+    "english": "April",
+    "hebrew": "אפריל",
+    "id": "w093"
+  },
+  {
+    "english": "May",
+    "hebrew": "מאי",
+    "id": "w094"
+  },
+  {
+    "english": "June",
+    "hebrew": "יוני",
+    "id": "w095"
+  },
+  {
+    "english": "July",
+    "hebrew": "יולי",
+    "id": "w096"
+  },
+  {
+    "english": "August",
+    "hebrew": "אוגוסט",
+    "id": "w097"
+  },
+  {
+    "english": "September",
+    "hebrew": "ספטמבר",
+    "id": "w098"
+  },
+  {
+    "english": "October",
+    "hebrew": "אוקטובר",
+    "id": "w099"
+  },
+  {
+    "english": "November",
+    "hebrew": "נובמבר",
+    "id": "w100"
+  },
+  {
+    "english": "December",
+    "hebrew": "דצמבר",
+    "id": "w101"
+  },
+  {
+    "english": "Spring",
+    "hebrew": "אביב",
+    "id": "w102"
+  },
+  {
+    "english": "Summer",
+    "hebrew": "קיץ",
+    "id": "w103"
+  },
+  {
+    "english": "Fall",
+    "hebrew": "סתיו",
+    "id": "w104"
+  },
+  {
+    "english": "Winter",
+    "hebrew": "חורף",
+    "id": "w105"
+  },
+  {
+    "english": "first",
+    "hebrew": "ראשון",
+    "id": "w106"
+  },
+  {
+    "english": "important",
+    "hebrew": "חשוב",
+    "id": "w107"
+  },
+  {
+    "english": "special",
+    "hebrew": "מיוחד",
+    "id": "w108"
+  },
+  {
+    "english": "young",
+    "hebrew": "צעיר",
+    "id": "w109"
+  },
+  {
+    "english": "old",
+    "hebrew": "זקן / ישן",
+    "id": "w110"
+  },
+  {
+    "english": "short",
+    "hebrew": "נמוך / קצר",
+    "id": "w111"
+  },
+  {
+    "english": "tall",
+    "hebrew": "גבוה",
+    "id": "w112"
+  },
+  {
+    "english": "small",
+    "hebrew": "קטן",
+    "id": "w113"
+  },
+  {
+    "english": "big",
+    "hebrew": "גדול",
+    "id": "w114"
+  },
+  {
+    "english": "happy",
+    "hebrew": "שמח",
+    "id": "w115"
+  },
+  {
+    "english": "angry",
+    "hebrew": "כועס",
+    "id": "w116"
+  },
+  {
+    "english": "hungry",
+    "hebrew": "רעב",
+    "id": "w117"
+  },
+  {
+    "english": "dirty",
+    "hebrew": "מלוכלך",
+    "id": "w118"
+  },
+  {
+    "english": "hot",
+    "hebrew": "חם",
+    "id": "w119"
+  },
+  {
+    "english": "together",
+    "hebrew": "ביחד",
+    "id": "w120"
+  },
+  {
+    "english": "a lot of",
+    "hebrew": "הרבה / רבים",
+    "id": "w121"
+  },
+  {
+    "english": "the same",
+    "hebrew": "אותו דבר",
+    "id": "w122"
+  },
+  {
+    "english": "different",
+    "hebrew": "שונה",
+    "id": "w123"
+  },
+  {
+    "english": "also",
+    "hebrew": "גם",
+    "id": "w124"
+  },
+  {
+    "english": "yes",
+    "hebrew": "כן",
+    "id": "w125"
+  },
+  {
+    "english": "no",
+    "hebrew": "לא",
+    "id": "w126"
+  }
+]
