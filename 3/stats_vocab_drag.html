@@ -20,6 +20,7 @@ th { background-color: #f0f0f0; }
 כאן אפשר לראות לכל מילה כמה פעמים נענתה נכון / לא נכון, ומה החוזק שלה.
 מילים המסומנות במסגרת כחולה הן <b>rare</b> – עם מספר ניסיונות נמוך במיוחד.
 </p>
+<button id="refreshBtn">רענן נתונים</button>
 <button id="resetBtn">איפוס סטטיסטיקה</button>
 <div id="status" style="margin-top:10px;"></div>
 <div id="tableContainer"></div>
@@ -29,6 +30,10 @@ import { loadProgress, clearProgress } from './storage.js';
 
 const QUIZ_ID = 'vocab_drag';
 const VOCAB_FILE = 'vocab_all_with_ids.json';
+
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  render();
+});
 
 document.getElementById('resetBtn').addEventListener('click', () => {
   const code = prompt('קוד איפוס סטטיסטיקה?');
@@ -50,7 +55,6 @@ async function render() {
     const vocab = await res.json();
     const progress = loadProgress(QUIZ_ID);
 
-    // חבר ids אם חסרים
     const items = vocab.map((w, idx) => ({
       id: w.id || ('w' + String(idx+1).padStart(3,'0')),
       english: w.english,
@@ -74,14 +78,11 @@ async function render() {
       };
     });
 
-    // חישוב rare: מינימום total
     const minTotal = Math.min(...rows.map(r => r.total));
-    const rareLimit = minTotal; // כרגע אותו מינימום בדיוק
     rows.forEach(r => {
-      r.isRare = (r.total === rareLimit);
+      r.isRare = (r.total === minTotal);
     });
 
-    // מיון: קודם rare/total נמוך, אח"כ לפי strength, ואז אנגלית
     rows.sort((a,b) => {
       if (a.total !== b.total) return a.total - b.total;
       const order = { weak:0, medium:1, strong:2, unknown:3 };
