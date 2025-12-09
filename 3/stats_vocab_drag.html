@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<title>סטטיסטיקת אוצר מילים</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; }
+table { border-collapse: collapse; margin-top: 15px; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+th { background-color: #f0f0f0; }
+.weak { background-color: #ffe0e0; }
+.medium { background-color: #fff7d1; }
+.strong { background-color: #e0ffe0; }
+.rare { border: 2px dashed #0000aa; }
+</style>
+</head>
+<body>
+<h2>סטטיסטיקת אוצר מילים – התאמה</h2>
+<p>
+כאן אפשר לראות לכל מילה כמה פעמים נענתה נכון / לא נכון, ומה החוזק שלה.
+מילים המסומנות במסגרת כחולה הן <b>rare</b> – עם מספר ניסיונות נמוך במיוחד.
+</p>
+<button id="resetBtn">איפוס סטטיסטיקה</button>
+<div id="status" style="margin-top:10px;"></div>
+<div id="tableContainer"></div>
+
+<script type="module">
+import { loadProgress, clearProgress } from './storage.js';
+
+const QUIZ_ID = 'vocab_drag';
+const VOCAB_FILE = 'vocab_all_with_ids.json';
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  const code = prompt('קוד איפוס סטטיסטיקה?');
+  if (code === '3333') {
+    clearProgress(QUIZ_ID);
+    document.getElementById('status').textContent = 'הסטטיסטיקה אופסה.';
+    render();
+  } else if (code !== null) {
+    alert('קוד שגוי.');
+  }
+});
+
+async function render() {
+  const container = document.getElementById('tableContainer');
+  container.textContent = 'טוען...';
+  try {
+    const res = await fetch(VOCAB_FILE);
+    if (!res.ok) throw new Error('שגיאה בטעינת ' + VOCAB_FILE);
+    const vocab = await res.json();
+    const progress = loadProgress(QUIZ_ID);
+
+    // חבר ids אם חסרים
+    const items = vocab.map((w, idx) => ({
+      id: w.id || ('w' + String(idx+1).padStart(3,'0')),
+      english: w.english,
+      hebrew: w.hebrew
+    }));
+
+    const rows = items.map(w => {
+      const rec = progress[w.id] || { correct: 0, wrong: 0 };
+      const total = rec.correct + rec.wrong;
+      let strength = 'strong';
+      if (total === 0) strength = 'unknown';
+      else if (rec.correct / total < 0.4) strength = 'weak';
+      else if (rec.correct / total < 0.8) strength = 'medium';
+
+      return {
+        ...w,
+        correct: rec.correct,
+        wrong: rec.wrong,
+        total,
+        strength
+      };
+    });
+
+    // חישוב rare: מינימום total
+    const minTotal = Math.min(...rows.map(r => r.total));
+    const rareLimit = minTotal; // כרגע אותו מינימום בדיוק
+    rows.forEach(r => {
+      r.isRare = (r.total === rareLimit);
+    });
+
+    // מיון: קודם rare/total נמוך, אח"כ לפי strength, ואז אנגלית
+    rows.sort((a,b) => {
+      if (a.total !== b.total) return a.total - b.total;
+      const order = { weak:0, medium:1, strong:2, unknown:3 };
+      const sa = order[a.strength] ?? 3;
+      const sb = order[b.strength] ?? 3;
+      if (sa !== sb) return sa - sb;
+      return a.english.localeCompare(b.english);
+    });
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>#</th><th>English</th><th>עברית</th><th>נכון</th><th>לא נכון</th><th>סה״כ</th><th>% הצלחה</th><th>חוזק</th></tr>';
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    rows.forEach((r, idx) => {
+      const tr = document.createElement('tr');
+      tr.classList.add(r.strength === 'unknown' ? 'strong' : r.strength);
+      if (r.isRare) tr.classList.add('rare');
+
+      const success = r.total ? Math.round(100 * r.correct / r.total) : 0;
+      const strengthLabel = r.strength === 'unknown' ? 'לא נבדק' :
+                            r.strength === 'weak' ? 'חלש' :
+                            r.strength === 'medium' ? 'בינוני' : 'חזק';
+
+      tr.innerHTML = `
+        <td>${idx+1}</td>
+        <td>${r.english}</td>
+        <td>${r.hebrew}</td>
+        <td>${r.correct}</td>
+        <td>${r.wrong}</td>
+        <td>${r.total}</td>
+        <td>${success}%</td>
+        <td>${strengthLabel}${r.isRare ? ' (rare)' : ''}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    container.innerHTML = '';
+    container.appendChild(table);
+
+    const totalAnswers = rows.reduce((sum,r) => sum + r.total, 0);
+    document.getElementById('status').textContent =
+      `סה״כ תשובות שנרשמו: ${totalAnswers}`;
+
+  } catch (e) {
+    container.textContent = e.message;
+    console.error(e);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
