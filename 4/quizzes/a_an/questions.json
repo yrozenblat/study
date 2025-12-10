@@ -1,0 +1,82 @@
+[
+  {
+    "id": "aa01",
+    "text": "_____ apple",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "an",
+    "rule": "an לפני צליל שמתחיל באות ניקוד (a,e,i,o,u)."
+  },
+  {
+    "id": "aa02",
+    "text": "_____ banana",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "a",
+    "rule": "banana מתחיל בעיצור b, לכן a."
+  },
+  {
+    "id": "aa03",
+    "text": "_____ egg",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "an",
+    "rule": "egg מתחיל ב-e (אות ניקוד), לכן an."
+  },
+  {
+    "id": "aa04",
+    "text": "_____ orange",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "an",
+    "rule": "orange מתחיל בצליל של אות ניקוד, לכן an."
+  },
+  {
+    "id": "aa05",
+    "text": "_____ umbrella",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "an",
+    "rule": "umbrella מתחיל בצליל /ʌ/, לכן an."
+  },
+  {
+    "id": "aa06",
+    "text": "_____ pencil",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "a",
+    "rule": "pencil מתחיל בעיצור p, לכן a."
+  },
+  {
+    "id": "aa07",
+    "text": "_____ computer",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "a",
+    "rule": "computer מתחיל בעיצור c, לכן a."
+  },
+  {
+    "id": "aa08",
+    "text": "_____ eraser",
+    "options": [
+      "a",
+      "an"
+    ],
+    "correct": "an",
+    "rule": "eraser מתחיל ב-e, לכן an."
+  }
+]

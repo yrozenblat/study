@@ -1,0 +1,82 @@
+[
+  {
+    "id": "th01",
+    "text": "_____ a computer on the desk.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There is",
+    "rule": "עם שם עצם יחיד משתמשים ב-There is."
+  },
+  {
+    "id": "th02",
+    "text": "_____ two pencils in the box.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There are",
+    "rule": "עם שם עצם ברבים משתמשים ב-There are."
+  },
+  {
+    "id": "th03",
+    "text": "_____ some books on the table.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There are",
+    "rule": "some books → רבים, לכן There are."
+  },
+  {
+    "id": "th04",
+    "text": "_____ a bag under the chair.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There is",
+    "rule": "a bag יחיד → There is."
+  },
+  {
+    "id": "th05",
+    "text": "_____ six cars in the street.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There are",
+    "rule": "six cars ברבים → There are."
+  },
+  {
+    "id": "th06",
+    "text": "_____ an egg in the fridge.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There is",
+    "rule": "an egg יחיד → There is."
+  },
+  {
+    "id": "th07",
+    "text": "_____ some children in the park.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There are",
+    "rule": "children ברבים → There are."
+  },
+  {
+    "id": "th08",
+    "text": "_____ nine red markers in the box.",
+    "options": [
+      "There is",
+      "There are"
+    ],
+    "correct": "There are",
+    "rule": "nine red markers ברבים → There are."
+  }
+]

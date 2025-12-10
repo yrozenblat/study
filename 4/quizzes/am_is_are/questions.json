@@ -1,0 +1,90 @@
+[
+  {
+    "id": "be01",
+    "text": "I _____ ten years old.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "am",
+    "rule": "עם I משתמשים ב-am."
+  },
+  {
+    "id": "be02",
+    "text": "She _____ my sister.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "is",
+    "rule": "עם he / she / it משתמשים ב-is."
+  },
+  {
+    "id": "be03",
+    "text": "They _____ at school now.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "are",
+    "rule": "עם we / you / they משתמשים ב-are."
+  },
+  {
+    "id": "be04",
+    "text": "We _____ in the park.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "are",
+    "rule": "We ברבים → are."
+  },
+  {
+    "id": "be05",
+    "text": "It _____ a nice day.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "is",
+    "rule": "It יחיד → is."
+  },
+  {
+    "id": "be06",
+    "text": "You _____ a good friend.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "are",
+    "rule": "עם You משתמשים ב-are."
+  },
+  {
+    "id": "be07",
+    "text": "My mother _____ at work.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "is",
+    "rule": "My mother = she → is."
+  },
+  {
+    "id": "be08",
+    "text": "The boys _____ happy.",
+    "options": [
+      "am",
+      "is",
+      "are"
+    ],
+    "correct": "are",
+    "rule": "The boys ברבים → are."
+  }
+]
