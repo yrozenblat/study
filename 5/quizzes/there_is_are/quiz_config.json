@@ -1,6 +1,6 @@
 {
   "quizId": "grammar_there_is_are",
-  "numQuestions": 38,
+  "numQuestions": 10,
   "renderer": "mcq",
   "selectionWeights": {
     "rare": 0.3,
