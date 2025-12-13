@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>אוצר מילים – התאמה בגרירה</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { margin-top: 0; }
+    .word-row { margin-bottom: 8px; }
+    .question { display: inline-block; width: 150px; }
+    .dropzone {
+      display: inline-block;
+      width: 200px;
+      min-height: 24px;
+      border-bottom: 1px solid #000;
+      margin-right: 8px;
+    }
+    .bank {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #aaa;
+    }
+    .bank-word {
+      display: inline-block;
+      padding: 4px 8px;
+      margin: 4px;
+      border: 1px solid #888;
+      cursor: move;
+      background: #f5f5f5;
+    }
+    .correct { color: green; }
+    .incorrect { color: red; }
+    #result { margin-top: 15px; font-weight: bold; }
+    .dropzone.over { background-color: #eef; }
+  </style>
+</head>
+<body>
+  <h2>אוצר מילים – התאמה בגרירה</h2>
+  <p>גררו את המילים בעברית מהמחסן אל המילה באנגלית המתאימה.</p>
+  <div id="questionsContainer"></div>
+
+  <div class="bank">
+    <strong>מחסן מילים (מסודר באקראי בכל מבחן):</strong>
+    <div id="wordBank"></div>
+  </div>
+
+  <button id="checkBtn">בדוק</button>
+  <button id="newQuizBtn">מבחן חדש</button>
+  <div id="result"></div>
+
+  <script src="../../quiz_core/utils.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script>
+    const QUIZ_ID = 'vocab_drag';
+    const NUM_QUESTIONS = 10;
+
+    let allWords = [];
+    let currentQuestions = [];
+
+    async function loadWords() {
+      const res = await fetch('../../data/vocab_all.json');
+      allWords = await res.json();
+    }
+
+    function buildQuiz() {
+      const stats = QuizStorage.load(QUIZ_ID);
+      // choose questions with weighting (rare/weak more likely)
+      const questions = allWords.map(w => Object.assign({ key: w.english }, w));
+      currentQuestions = QuizSelection.pickQuestions(
+        questions,
+        stats,
+        NUM_QUESTIONS,
+        { rare: 0.5, weak: 0.3, medium: 0.15, strong: 0.05 }
+      );
+
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      // build rows
+      currentQuestions.forEach((q, index) => {
+        const row = document.createElement('div');
+        row.className = 'word-row';
+        const engSpan = document.createElement('span');
+        engSpan.className = 'question';
+        engSpan.textContent = (index + 1) + '. ' + q.english;
+
+        const drop = document.createElement('div');
+        drop.className = 'dropzone';
+        drop.dataset.english = q.english;
+
+        const feedback = document.createElement('span');
+        feedback.className = 'feedback';
+
+        row.appendChild(engSpan);
+        row.appendChild(drop);
+        row.appendChild(feedback);
+        container.appendChild(row);
+      });
+
+      // build bank with RANDOM order every quiz
+      const bank = document.getElementById('wordBank');
+      bank.innerHTML = '';
+      const shuffled = shuffleArray(currentQuestions.slice());
+      shuffled.forEach((q) => {
+        const span = document.createElement('span');
+        span.className = 'bank-word';
+        span.textContent = q.hebrew;
+        span.draggable = true;
+        span.dataset.english = q.english;
+        bank.appendChild(span);
+      });
+
+      initDragAndDrop();
+      document.getElementById('result').textContent = '';
+    }
+
+    function initDragAndDrop() {
+      const words = document.querySelectorAll('.bank-word');
+      const drops = document.querySelectorAll('.dropzone');
+
+      words.forEach(word => {
+        word.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', word.dataset.english);
+        });
+      });
+
+      drops.forEach(drop => {
+        drop.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          drop.classList.add('over');
+        });
+        drop.addEventListener('dragleave', () => {
+          drop.classList.remove('over');
+        });
+        drop.addEventListener('drop', (e) => {
+          e.preventDefault();
+          drop.classList.remove('over');
+          const english = e.dataTransfer.getData('text/plain');
+          const word = document.querySelector('.bank-word[data-english="' + english + '"]');
+          if (word) {
+            drop.textContent = word.textContent;
+          }
+        });
+      });
+    }
+
+    function checkAnswers() {
+      let correctCount = 0;
+      currentQuestions.forEach(q => {
+        const drop = document.querySelector('.dropzone[data-english="' + q.english + '"]');
+        const feedback = drop.nextSibling;
+        const userAnswer = drop.textContent.trim();
+        const isCorrect = userAnswer === q.hebrew;
+        if (isCorrect) {
+          feedback.textContent = ' ✔';
+          feedback.className = 'feedback correct';
+          correctCount++;
+        } else {
+          feedback.textContent = ' ✘ (' + q.hebrew + ')';
+          feedback.className = 'feedback incorrect';
+        }
+        QuizStorage.recordResult(QUIZ_ID, q.english, isCorrect);
+      });
+      document.getElementById('result').textContent =
+        'ציון: ' + correctCount + ' מתוך ' + currentQuestions.length;
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+    document.getElementById('newQuizBtn').addEventListener('click', buildQuiz);
+
+    (async function init() {
+      await loadWords();
+      buildQuiz();
+    })();
+  </script>
+</body>
+</html>

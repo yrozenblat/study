@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>סטטיסטיקה – אוצר מילים (גרירה)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; max-width: 700px; }
+    th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    .weak { background: #ffe5e5; }
+    .medium { background: #fff9e0; }
+    .strong { background: #e6ffe6; }
+    .rare { background: #e0f0ff; }
+  </style>
+</head>
+<body>
+  <h2>סטטיסטיקה – אוצר מילים (התאמה בגרירה)</h2>
+  <button id="refreshBtn">רענן</button>
+  <button id="resetBtn">איפוס סטטיסטיקה (קוד: 3333)</button>
+  <div id="summary"></div>
+  <table id="statsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>מילה באנגלית</th>
+        <th>עברית</th>
+        <th>נכונות</th>
+        <th>מספר ניסיונות</th>
+        <th>קטגוריה</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script>
+    const QUIZ_ID = 'vocab_drag';
+
+    async function loadWords() {
+      const res = await fetch('../../data/vocab_all.json');
+      return await res.json();
+    }
+
+    function categorize(stats, key) {
+      const s = stats[key];
+      if (!s || !s.total) return 'rare';
+      const ratio = s.correct / s.total;
+      if (ratio < 0.4) return 'weak';
+      if (ratio < 0.7) return 'medium';
+      return 'strong';
+    }
+
+    async function render() {
+      const words = await loadWords();
+      const stats = QuizStorage.load(QUIZ_ID);
+      const tbody = document.querySelector('#statsTable tbody');
+      tbody.innerHTML = '';
+
+      let totalKnown = 0;
+      words.forEach((w, idx) => {
+        const key = w.english;
+        const s = stats[key] || { correct: 0, total: 0 };
+        const ratio = s.total ? (s.correct / s.total) : 0;
+        const strength = categorize(stats, key);
+
+        if (ratio >= 0.7 && s.total >= 3) totalKnown++;
+
+        const tr = document.createElement('tr');
+        tr.className = strength;
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${w.english}</td>
+          <td>${w.hebrew}</td>
+          <td>${(ratio * 100).toFixed(0)}%</td>
+          <td>${s.total}</td>
+          <td>${strength}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('summary').textContent =
+        'מספר מילים חזקות (לפחות 3 ניסיונות ו־70% הצלחה): ' + totalKnown +
+        ' מתוך ' + words.length;
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', render);
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      const code = prompt('להקליד קוד לאיפוס (3333):');
+      if (code === '3333') {
+        QuizStorage.reset(QUIZ_ID);
+        render();
+      } else {
+        alert('קוד שגוי');
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

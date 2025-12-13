@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>אוצר מילים – שאלות פתוחות</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { margin-top: 0; }
+    .q-row { margin-bottom: 8px; }
+    .q-row span.word { display: inline-block; width: 150px; }
+    .q-row input { width: 200px; }
+    #result { margin-top: 15px; font-weight: bold; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+  </style>
+</head>
+<body>
+  <h2>אוצר מילים – שאלות פתוחות</h2>
+  <p>כתבו את התרגום בעברית לכל מילה באנגלית.</p>
+  <div id="questions"></div>
+  <button id="checkBtn">בדוק</button>
+  <button id="newQuizBtn">מבחן חדש</button>
+  <div id="result"></div>
+
+  <script src="../../quiz_core/utils.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script>
+    const QUIZ_ID = 'vocab_open';
+    const NUM_QUESTIONS = 10;
+
+    let allWords = [];
+    let currentQuestions = [];
+
+    async function loadWords() {
+      const res = await fetch('../../data/vocab_all.json');
+      allWords = await res.json();
+    }
+
+    function buildQuiz() {
+      const stats = QuizStorage.load(QUIZ_ID);
+      const questions = allWords.map(w => Object.assign({ key: w.english }, w));
+      currentQuestions = QuizSelection.pickQuestions(
+        questions,
+        stats,
+        NUM_QUESTIONS,
+        { rare: 0.5, weak: 0.3, medium: 0.15, strong: 0.05 }
+      );
+
+      const container = document.getElementById('questions');
+      container.innerHTML = '';
+
+      currentQuestions.forEach((q, index) => {
+        const row = document.createElement('div');
+        row.className = 'q-row';
+        const label = document.createElement('span');
+        label.className = 'word';
+        label.textContent = (index + 1) + '. ' + q.english;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.dataset.english = q.english;
+
+        const feedback = document.createElement('span');
+        feedback.className = 'feedback';
+
+        row.appendChild(label);
+        row.appendChild(input);
+        row.appendChild(feedback);
+        container.appendChild(row);
+      });
+
+      document.getElementById('result').textContent = '';
+    }
+
+    function normalize(str) {
+      return str.replace(/\s+/g, '').toLowerCase();
+    }
+
+    function checkAnswers() {
+      let correctCount = 0;
+
+      currentQuestions.forEach(q => {
+        const input = document.querySelector('input[data-english="' + q.english + '"]');
+        const feedback = input.nextSibling;
+        const user = normalize(input.value || '');
+        const correctNorm = normalize(q.hebrew);
+        const isCorrect = user === correctNorm;
+
+        if (isCorrect) {
+          feedback.textContent = ' ✔';
+          feedback.className = 'feedback correct';
+          correctCount++;
+        } else {
+          feedback.textContent = ' ✘ (' + q.hebrew + ')';
+          feedback.className = 'feedback incorrect';
+        }
+
+        QuizStorage.recordResult(QUIZ_ID, q.english, isCorrect);
+      });
+
+      document.getElementById('result').textContent =
+        'ציון: ' + correctCount + ' מתוך ' + currentQuestions.length;
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+    document.getElementById('newQuizBtn').addEventListener('click', buildQuiz);
+
+    (async function init() {
+      await loadWords();
+      buildQuiz();
+    })();
+  </script>
+</body>
+</html>
