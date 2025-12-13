@@ -63,68 +63,80 @@ let QuizCore = (() => {
     });
   }
 
-  function renderVocabDrag(questions) {
-    const container = document.getElementById('quiz-container');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const bank = document.createElement('div');
-    bank.id = 'word-bank';
-
-    const title = document.createElement('div');
-    title.textContent = 'מחסן מילים – גרור למקום הנכון:';
-    bank.appendChild(title);
-
-    const bankInner = document.createElement('div');
-    bankInner.className = 'bank-inner';
-
-    questions.forEach(q => {
-      const span = document.createElement('span');
-      span.className = 'draggable-word';
-      span.textContent = q.english;
-      span.draggable = true;
-      span.dataset.id = q.id;
-      span.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', q.id);
-      });
-      bankInner.appendChild(span);
-    });
-
-    bank.appendChild(bankInner);
-    container.appendChild(bank);
-
-    questions.forEach((q, idx) => {
-      const row = document.createElement('div');
-      row.className = 'vocab-row';
-
-      const label = document.createElement('span');
-      label.className = 'hebrew-label';
-      label.textContent = (idx + 1) + '. ' + q.hebrew;
-      row.appendChild(label);
-
-      const drop = document.createElement('div');
-      drop.className = 'dropzone';
-      drop.dataset.qid = q.id;
-      drop.addEventListener('dragover', (e) => e.preventDefault());
-      drop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const id = e.dataTransfer.getData('text/plain');
-        const wordEl = container.querySelector('.draggable-word[data-id="' + id + '"]');
-        if (wordEl) {
-          drop.innerHTML = '';
-          drop.appendChild(wordEl);
-        }
-      });
-      row.appendChild(drop);
-
-      const fb = document.createElement('span');
-      fb.className = 'feedback';
-      fb.id = 'fb-' + q.id;
-      row.appendChild(fb);
-
-      container.appendChild(row);
-    });
+  function shuffle(array) {
+  const a = array.slice(); // לא הורס את המקור
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
+function renderVocabDrag(questions) {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const bank = document.createElement('div');
+  bank.id = 'word-bank';
+
+  const title = document.createElement('div');
+  title.textContent = 'מחסן מילים – גרור למקום הנכון:';
+  bank.appendChild(title);
+
+  const bankInner = document.createElement('div');
+  bankInner.className = 'bank-inner';
+
+  // ⬅️ נקודת השינוי: משתמשים ברשימה מעורבבת למחסן
+  const shuffledForBank = shuffle(questions);
+
+  shuffledForBank.forEach(q => {
+    const span = document.createElement('span');
+    span.className = 'draggable-word';
+    span.textContent = q.english;
+    span.draggable = true;
+    span.dataset.id = q.id;
+    span.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', q.id);
+    });
+    bankInner.appendChild(span);
+  });
+
+  bank.appendChild(bankInner);
+  container.appendChild(bank);
+
+  // ⬅️ החלק הזה נשאר בדיוק לפי questions המקורי – סדר השאלות בעברית
+  questions.forEach((q, idx) => {
+    const row = document.createElement('div');
+    row.className = 'vocab-row';
+
+    const label = document.createElement('span');
+    label.className = 'hebrew-label';
+    label.textContent = (idx + 1) + '. ' + q.hebrew;
+    row.appendChild(label);
+
+    const drop = document.createElement('div');
+    drop.className = 'dropzone';
+    drop.dataset.qid = q.id;
+    drop.addEventListener('dragover', (e) => e.preventDefault());
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const id = e.dataTransfer.getData('text/plain');
+      const wordEl = container.querySelector('.draggable-word[data-id="' + id + '"]');
+      if (wordEl) {
+        drop.innerHTML = '';
+        drop.appendChild(wordEl);
+      }
+    });
+    row.appendChild(drop);
+
+    const fb = document.createElement('span');
+    fb.className = 'feedback';
+    fb.id = 'fb-' + q.id;
+    row.appendChild(fb);
+
+    container.appendChild(row);
+  });
+}
 
   function checkQuiz() {
     if (!currentQuestions.length || !currentConfig) return;
