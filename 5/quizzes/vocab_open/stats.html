@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <title>סטטיסטיקה – אוצר מילים (תשובה פתוחה)</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; max-width: 800px; }
+    th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+    .weak { background-color: #ffe0e0; }
+    .strong { background-color: #e0ffe0; }
+    #resetSection { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h1>סטטיסטיקה – אוצר מילים (תשובה פתוחה)</h1>
+  <p>הטבלה מציגה כמה פעמים כל מילה הופיעה וכמה פעמים נענתה נכון.</p>
+  <table id="statsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>English</th>
+        <th>עברית</th>
+        <th>ניסיונות</th>
+        <th>נכונות</th>
+        <th>אחוז הצלחה</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="resetSection">
+    <h3>איפוס סטטיסטיקה</h3>
+    <p>להזין קוד (3333) ואז ללחוץ איפוס.</p>
+    <input type="password" id="resetCode" />
+    <button id="resetBtn">אפס סטטיסטיקה</button>
+    <span id="resetMsg"></span>
+  </div>
+
+<script>
+const STORAGE_KEY = 'vocab_open_stats_v1';
+
+const WORDS = [
+  {"english":"animal","hebrew":"חיה"},
+  {"english":"bird","hebrew":"ציפור"},
+  {"english":"bear","hebrew":"דב"},
+  {"english":"cat","hebrew":"חתול"},
+  {"english":"dog","hebrew":"כלב"},
+  {"english":"lion","hebrew":"אריה"},
+  {"english":"zebra","hebrew":"זברה"},
+  {"english":"panda","hebrew":"פנדה"},
+  {"english":"rabbit","hebrew":"ארנב"},
+  {"english":"kangaroo","hebrew":"קנגורו"},
+  {"english":"dolphin","hebrew":"דולפין"},
+  {"english":"penguin","hebrew":"פינגווין"},
+  {"english":"monkey","hebrew":"קוף"},
+  {"english":"snake","hebrew":"נחש"},
+  {"english":"giraffe","hebrew":"ג’ירפה"},
+  {"english":"elephant","hebrew":"פיל"},
+  {"english":"apple","hebrew":"תפוח"},
+  {"english":"banana","hebrew":"בננה"},
+  {"english":"orange","hebrew":"תפוז"},
+  {"english":"lemon","hebrew":"לימון"},
+  {"english":"melon","hebrew":"מלון"},
+  {"english":"avocado","hebrew":"אבוקדו"},
+  {"english":"mango","hebrew":"מנגו"},
+  {"english":"egg","hebrew":"ביצה"},
+  {"english":"milk","hebrew":"חלב"},
+  {"english":"water","hebrew":"מים"},
+  {"english":"food","hebrew":"אוכל"},
+  {"english":"bus","hebrew":"אוטובוס"},
+  {"english":"car","hebrew":"מכונית"},
+  {"english":"bike","hebrew":"אופניים"},
+  {"english":"computer","hebrew":"מחשב"},
+  {"english":"pencil","hebrew":"עיפרון"},
+  {"english":"eraser","hebrew":"מחק"},
+  {"english":"umbrella","hebrew":"מטריה"},
+  {"english":"box","hebrew":"קופסה"}
+];
+
+function loadStats() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch(e) {
+    console.error('Error loading stats', e);
+    return {};
+  }
+}
+
+function renderTable() {
+  const stats = loadStats();
+  const tbody = document.querySelector('#statsTable tbody');
+  tbody.innerHTML = '';
+
+  WORDS.forEach((w, idx) => {
+    const key = w.english;
+    const ws = stats[key] || { total: 0, correct: 0 };
+    const percent = ws.total > 0 ? Math.round(ws.correct * 100 / ws.total) : 0;
+
+    const tr = document.createElement('tr');
+    if (ws.total === 0 || percent <= 50) {
+      tr.className = 'weak';
+    } else if (percent >= 80 && ws.total >= 3) {
+      tr.className = 'strong';
+    }
+
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${w.english}</td>
+      <td>${w.hebrew}</td>
+      <td>${ws.total}</td>
+      <td>${ws.correct}</td>
+      <td>${percent}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function resetStats() {
+  const code = document.getElementById('resetCode').value.trim();
+  const msg = document.getElementById('resetMsg');
+  if (code !== '3333') {
+    msg.textContent = 'קוד שגוי.';
+    msg.style.color = 'red';
+    return;
+  }
+  localStorage.removeItem(STORAGE_KEY);
+  msg.textContent = 'סטטיסטיקה אופסה.';
+  msg.style.color = 'green';
+  renderTable();
+}
+
+document.getElementById('resetBtn').addEventListener('click', resetStats);
+renderTable();
+</script>
+</body>
+</html>
