@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>מערכת מבחנים באנגלית</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h1 { margin-top: 0; }
+    #selector { margin-bottom: 15px; }
+    iframe { width: 100%; height: 600px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>מערכת מבחנים באנגלית</h1>
+  <div id="selector">
+    <label for="quizSelect">בחר מבחן:</label>
+    <select id="quizSelect">
+      <option value="quizzes/vocab_drag/quiz.html">אוצר מילים – גרירה</option>
+      <option value="quizzes/vocab_open/quiz.html">אוצר מילים – פתוח</option>
+      <option value="quizzes/a_an/quiz.html">a / an</option>
+      <option value="quizzes/am_is_are/quiz.html">am / is / are</option>
+      <option value="quizzes/there_is_are/quiz.html">There is / There are</option>
+    </select>
+  </div>
+  <iframe id="quizFrame" src="quizzes/vocab_drag/quiz.html"></iframe>
+
+  <script>
+    const sel = document.getElementById('quizSelect');
+    const frame = document.getElementById('quizFrame');
+    sel.addEventListener('change', () => {
+      frame.src = sel.value;
+    });
+  </script>
+</body>
+</html>

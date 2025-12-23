@@ -1,0 +1,11 @@
+{
+  "quizId": "grammar_am_is_are",
+  "numQuestions": 10,
+  "renderer": "mcq",
+  "selectionWeights": {
+    "rare": 0.3,
+    "weak": 0.5,
+    "medium": 0.2,
+    "strong": 0.0
+  }
+}

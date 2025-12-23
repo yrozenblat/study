@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>אוצר מילים – גרירה</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+    #word-bank { margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; }
+    .bank-inner { margin-top: 5px; direction: ltr; }
+    .draggable-word { display: inline-block; padding: 4px 8px; margin: 3px; border: 1px solid #666; border-radius: 4px; cursor: grab; background: #f7f7f7; }
+    .vocab-row { margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .hebrew-label { min-width: 160px; }
+    .dropzone { min-width: 120px; min-height: 24px; border: 1px dashed #999; padding: 2px 4px; background: #fafafa; direction: ltr; }
+    .feedback.correct { color: green; margin-right: 8px; }
+    .feedback.wrong { color: red; margin-right: 8px; }
+    #result { margin-top: 15px; font-weight: bold; }
+  </style>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2>אוצר מילים – התאמה בגרירה</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button onclick="checkQuiz()">בדוק</button>
+  <!-- <a href="stats.html" target="_blank">סטטיסטיקה</a> -->
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+  <script>
+    function startQuiz() {
+      QuizCore.init({
+        configUrl: 'quiz_config.json',
+        questionsUrl: 'questions.json'
+      });
+    }
+    startQuiz();
+  </script>
+</body>
+</html>

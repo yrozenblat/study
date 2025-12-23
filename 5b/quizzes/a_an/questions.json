@@ -1,0 +1,212 @@
+[
+  {
+    "id": "aa09",
+    "text": "_____ car",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "car מתחיל בצליל עיצור /k/."
+  },
+  {
+    "id": "aa10",
+    "text": "_____ animal",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "animal מתחיל בצליל ניקוד /æ/."
+  },
+  {
+    "id": "aa11",
+    "text": "_____ house",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "house מתחיל בצליל עיצור /h/."
+  },
+  {
+    "id": "aa12",
+    "text": "_____ ice cream",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "ice מתחיל בצליל ניקוד /aɪ/."
+  },
+  {
+    "id": "aa13",
+    "text": "_____ dog",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "dog מתחיל בעיצור d."
+  },
+  {
+    "id": "aa14",
+    "text": "_____ elephant",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "elephant מתחיל בצליל ניקוד /e/."
+  },
+  {
+    "id": "aa15",
+    "text": "_____ book",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "book מתחיל בעיצור b."
+  },
+  {
+    "id": "aa16",
+    "text": "_____ island",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "island מתחיל בצליל ניקוד, האות s לא נשמעת."
+  },
+  {
+    "id": "aa17",
+    "text": "_____ teacher",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "teacher מתחיל בעיצור t."
+  },
+  {
+    "id": "aa18",
+    "text": "_____ orange juice",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "orange מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa19",
+    "text": "_____ bike",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "bike מתחיל בעיצור b."
+  },
+  {
+    "id": "aa20",
+    "text": "_____ hour",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "hour מתחיל בצליל ניקוד, h לא נשמעת."
+  },
+  {
+    "id": "aa21",
+    "text": "_____ uniform",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "uniform מתחיל בצליל /ju/ ולכן a."
+  },
+  {
+    "id": "aa22",
+    "text": "_____ apple pie",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "apple מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa23",
+    "text": "_____ cat",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "cat מתחיל בעיצור c."
+  },
+  {
+    "id": "aa24",
+    "text": "_____ eggplant",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "eggplant מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa25",
+    "text": "_____ school",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "school מתחיל בצליל עיצור."
+  },
+  {
+    "id": "aa26",
+    "text": "_____ uncle",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "uncle מתחיל בצליל ניקוד /ʌ/."
+  },
+  {
+    "id": "aa27",
+    "text": "_____ ball",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "ball מתחיל בעיצור b."
+  },
+  {
+    "id": "aa28",
+    "text": "_____ umbrella stand",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "umbrella מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa29",
+    "text": "_____ friend",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "friend מתחיל בעיצור f."
+  },
+  {
+    "id": "aa30",
+    "text": "_____ insect",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "insect מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa31",
+    "text": "_____ computer game",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "computer מתחיל בעיצור c."
+  },
+  {
+    "id": "aa32",
+    "text": "_____ artist",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "artist מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa33",
+    "text": "_____ table",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "table מתחיל בעיצור t."
+  },
+  {
+    "id": "aa34",
+    "text": "_____ airplane",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "airplane מתחיל בצליל ניקוד."
+  },
+  {
+    "id": "aa35",
+    "text": "_____ sandwich",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "sandwich מתחיל בעיצור s."
+  },
+  {
+    "id": "aa36",
+    "text": "_____ octopus",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "octopus מתחיל בצליל ניקוד /ɒ/."
+  },
+  {
+    "id": "aa37",
+    "text": "_____ pen",
+    "options": ["a", "an"],
+    "correct": "a",
+    "rule": "pen מתחיל בעיצור p."
+  },
+  {
+    "id": "aa38",
+    "text": "_____ engineer",
+    "options": ["a", "an"],
+    "correct": "an",
+    "rule": "engineer מתחיל בצליל ניקוד."
+  }
+]

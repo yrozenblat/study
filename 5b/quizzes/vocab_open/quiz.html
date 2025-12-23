@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <title>מבחן אוצר מילים – תשובה פתוחה</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; margin: 20px; }
+    h1 { margin-top: 0; }
+    .question-row { margin-bottom: 12px; }
+    .question-row span.word { display: inline-block; min-width: 120px; }
+    .answer-input { width: 200px; padding: 4px; }
+    .result-ok { color: green; margin-right: 8px; }
+    .result-bad { color: red; margin-right: 8px; }
+    .buttons { margin-top: 15px; }
+    #score { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>מבחן אוצר מילים – תשובה פתוחה</h1>
+  <p>כתוב את התרגום <strong>בעברית</strong> לכל מילה באנגלית.</p>
+  <div id="questions"></div>
+  <div class="buttons">
+    <button id="checkBtn">בדוק</button>
+    <button id="newQuizBtn">מבחן חדש</button>
+    <a href="stats.html" target="_blank">טבלת סטטיסטיקה</a>
+  </div>
+  <div id="score"></div>
+
+<script>
+const STORAGE_KEY = 'vocab_open_stats_v1';
+
+// אפשר להחליף/להרחיב את הרשימה כרצונך
+const WORDS = [
+  {"english":"animal","hebrew":"חיה"},
+  {"english":"bird","hebrew":"ציפור"},
+  {"english":"bear","hebrew":"דב"},
+  {"english":"cat","hebrew":"חתול"},
+  {"english":"dog","hebrew":"כלב"},
+  {"english":"lion","hebrew":"אריה"},
+  {"english":"zebra","hebrew":"זברה"},
+  {"english":"panda","hebrew":"פנדה"},
+  {"english":"rabbit","hebrew":"ארנב"},
+  {"english":"kangaroo","hebrew":"קנגורו"},
+  {"english":"dolphin","hebrew":"דולפין"},
+  {"english":"penguin","hebrew":"פינגווין"},
+  {"english":"monkey","hebrew":"קוף"},
+  {"english":"snake","hebrew":"נחש"},
+  {"english":"giraffe","hebrew":"ג’ירפה"},
+  {"english":"elephant","hebrew":"פיל"},
+  {"english":"apple","hebrew":"תפוח"},
+  {"english":"banana","hebrew":"בננה"},
+  {"english":"orange","hebrew":"תפוז"},
+  {"english":"lemon","hebrew":"לימון"},
+  {"english":"melon","hebrew":"מלון"},
+  {"english":"avocado","hebrew":"אבוקדו"},
+  {"english":"mango","hebrew":"מנגו"},
+  {"english":"egg","hebrew":"ביצה"},
+  {"english":"milk","hebrew":"חלב"},
+  {"english":"water","hebrew":"מים"},
+  {"english":"food","hebrew":"אוכל"},
+  {"english":"bus","hebrew":"אוטובוס"},
+  {"english":"car","hebrew":"מכונית"},
+  {"english":"bike","hebrew":"אופניים"},
+  {"english":"computer","hebrew":"מחשב"},
+  {"english":"pencil","hebrew":"עיפרון"},
+  {"english":"eraser","hebrew":"מחק"},
+  {"english":"umbrella","hebrew":"מטריה"},
+  {"english":"box","hebrew":"קופסה"}
+];
+
+const QUIZ_SIZE = 10;
+let currentQuizWords = [];
+let hasChecked = false;
+let stats = loadStats();
+
+function loadStats() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch(e) {
+    console.error('Error loading stats', e);
+    return {};
+  }
+}
+
+function saveStats() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+}
+
+function getWordKey(word) {
+  return word.english; // מפתח פשוט
+}
+
+function getWordStats(word) {
+  const key = getWordKey(word);
+  if (!stats[key]) {
+    stats[key] = { total: 0, correct: 0 };
+  }
+  return stats[key];
+}
+
+function computeStrength(word) {
+  const ws = getWordStats(word);
+  if (ws.total === 0) return 0;           // הכי חלש
+  return ws.correct / ws.total;          // 0..1
+}
+
+function pickQuizWords() {
+  // נחשב "חוזק" לכל מילה ונמיין מהחלשות לחזקות
+  const withStrength = WORDS.map(w => ({
+    word: w,
+    strength: computeStrength(w)
+  }));
+  withStrength.sort((a, b) => a.strength - b.strength);
+  const sortedWords = withStrength.map(x => x.word);
+
+  // ניקח את N המילים הכי חלשות, או את כל הרשימה אם היא קצרה
+  const slice = sortedWords.slice(0, QUIZ_SIZE);
+  return slice;
+}
+
+function renderQuiz() {
+  const container = document.getElementById('questions');
+  container.innerHTML = '';
+  document.getElementById('score').textContent = '';
+  hasChecked = false;
+
+  currentQuizWords = pickQuizWords();
+
+  currentQuizWords.forEach((w, index) => {
+    const row = document.createElement('div');
+    row.className = 'question-row';
+    row.dataset.english = w.english;
+    row.dataset.hebrew = w.hebrew;
+
+    const numSpan = document.createElement('span');
+    numSpan.textContent = (index + 1) + '. ';
+    row.appendChild(numSpan);
+
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
+    wordSpan.textContent = w.english + ' — ';
+    row.appendChild(wordSpan);
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'answer-input';
+    row.appendChild(input);
+
+    const resultSpan = document.createElement('span');
+    resultSpan.className = 'result';
+    row.appendChild(resultSpan);
+
+    container.appendChild(row);
+  });
+}
+
+function normalizeHebrew(str) {
+  return str
+    .replace(/["'״׳]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function checkAnswers() {
+  if (hasChecked) return;
+  hasChecked = true;
+
+  const rows = document.querySelectorAll('.question-row');
+  let correctCount = 0;
+
+  rows.forEach(row => {
+    const english = row.dataset.english;
+    const hebrew = row.dataset.hebrew;
+    const input = row.querySelector('input');
+    const resultSpan = row.querySelector('.result');
+
+    const userAnswer = normalizeHebrew(input.value);
+    const correctAnswer = normalizeHebrew(hebrew);
+
+    const ws = getWordStats({english});
+
+    ws.total += 1;
+    if (userAnswer === correctAnswer) {
+      ws.correct += 1;
+      correctCount += 1;
+      resultSpan.textContent = ' ✓';
+      resultSpan.className = 'result result-ok';
+    } else {
+      resultSpan.textContent = ' ✗ (' + hebrew + ')';
+      resultSpan.className = 'result result-bad';
+    }
+  });
+
+  saveStats();
+  document.getElementById('score').textContent =
+    'ציון: ' + correctCount + ' מתוך ' + currentQuizWords.length;
+}
+
+document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+document.getElementById('newQuizBtn').addEventListener('click', renderQuiz);
+
+// הפעלה ראשונית
+renderQuiz();
+</script>
+</body>
+</html>
