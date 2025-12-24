@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>אוצר מילים – ערבית → עברית (פתוח)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+
+    .vocab-row { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .arabic-label { min-width: 220px; font-size: 18px; direction: rtl; }
+
+    .text-answer {
+      flex: 1;
+      min-width: 160px;
+      padding: 6px 8px;
+      font-size: 16px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+    }
+
+    .feedback.correct { color: green; margin-right: 8px; }
+    .feedback.wrong { color: red; margin-right: 8px; }
+    #result { margin-top: 15px; font-weight: bold; }
+    .note { margin: 8px 0 14px; color: #444; }
+  </style>
+
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2>אוצר מילים – ערבית → עברית (טקסט חופשי)</h2>
+  <div class="note">מוצגת מילה בערבית (מנוקדת). כתבו את התרגום בעברית בשדה.</div>
+
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button onclick="checkQuiz()">בדוק</button>
+
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+
+  <script>
+    function startQuiz() {
+      QuizCore.init({
+        configUrl: 'quiz_config.json',
+        questionsUrl: 'questions.json'
+      });
+    }
+    startQuiz();
+  </script>
+</body>
+</html>

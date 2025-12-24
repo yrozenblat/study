@@ -1,0 +1,13 @@
+[
+  { "id": "w001a", "english": "يُرِيد", "hebrew": "רוצה", "answers": ["מבקש"] },
+  { "id": "w001b", "english": "يريد", "hebrew": "רוצה", "answers": ["מבקש"] },
+
+  { "id": "w002a", "english": "أَرَادَ", "hebrew": "רצה" },
+  { "id": "w002b", "english": "اراد", "hebrew": "רצה" },
+
+  { "id": "w003a", "english": "يَذْهَب", "hebrew": "הולך" },
+  { "id": "w003b", "english": "ذهب", "hebrew": "הלך" },
+
+  { "id": "w004a", "english": "يَكْتُب", "hebrew": "כותב" },
+  { "id": "w004b", "english": "كتب", "hebrew": "כתב" }
+]
