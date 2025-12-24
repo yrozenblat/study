@@ -45,10 +45,12 @@ const QuestionSelector = (() => {
     const mediumThreshold = (typeof config.mediumThreshold === 'number') ? config.mediumThreshold : 0.85;
     const noveltyK = (typeof config.noveltyK === 'number') ? config.noveltyK : 1.5;
     const minNewRatio = (typeof config.minNewRatio === 'number') ? config.minNewRatio : 0;
+    const preventSameGroup = (typeof config.preventSameGroup === 'boolean') ? config.preventSameGroup : true;
 
     // Build a working pool with per-question computed priority.
-    const pool = questions.map(q => {
-      const s = stats[q.id];
+    let pool = questions.map(q => {
+      const base = Strength.baseId(q.id);
+      const s = stats ? (stats[base] || stats[String(base)]) : null;
       const cls = (typeof Strength !== 'undefined')
         ? Strength.classify(s, { weakThreshold, mediumThreshold })
         : 'medium';

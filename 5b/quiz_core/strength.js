@@ -57,9 +57,26 @@ const Strength = (() => {
     return bw * (1 + K * noveltyBoost(total));
   }
 
+
+  /**
+   * Extract a "base id" for questions that have variants.
+   * Supports:
+   *  - "w001a" / "w001b"   -> "w001"
+   *  - "w001.a" / "w001.b" -> "w001"
+   * If no variant suffix is detected, returns the id unchanged.
+   */
+  function baseId(id) {
+    if (!id) return id;
+    const str = String(id);
+    if (str.includes('.')) return str.split('.')[0];
+    // Strip a/b only when it looks like a variant suffix after a digit (e.g., w001a).
+    return str.replace(/(\d)[abAB]$/, '$1');
+  }
+
   return {
     classify,
     classifyLegacy,
+    baseId,
     noveltyBoost,
     priority
   };

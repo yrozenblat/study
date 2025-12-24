@@ -179,7 +179,7 @@ function renderVocabDrag(questions) {
       const isCorrect = (chosen === q.correct);
       if (isCorrect) correctCount++;
 
-      StudyStorage.updateQuestion(currentConfig.quizId, q.id, isCorrect);
+      StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
 
       const fb = document.getElementById('fb-' + q.id);
       if (!fb) return;
@@ -214,10 +214,10 @@ function renderVocabDrag(questions) {
         chosenId = drop.firstElementChild.dataset.id;
       }
 
-      const isCorrect = (chosenId === q.id);
+      const isCorrect = (Strength.baseId(chosenId) === Strength.baseId(q.id));
       if (isCorrect) correctCount++;
 
-      StudyStorage.updateQuestion(currentConfig.quizId, q.id, isCorrect);
+      StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
 
       const fb = document.getElementById('fb-' + q.id);
       if (!fb) return;
