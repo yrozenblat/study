@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>אוצר מילים – ערבית → עברית (פתוח)</title>
+  <title>אוצר מילים</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
     h2 { margin-top: 0; }
@@ -23,7 +23,47 @@
     .feedback.wrong { color: red; margin-right: 8px; }
     #result { margin-top: 15px; font-weight: bold; }
     .note { margin: 8px 0 14px; color: #444; }
-  </style>
+  
+
+    /* ---- Drag (word bank) styles ---- */
+    #word-bank { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
+    #word-bank > div:first-child { font-weight: 700; margin-bottom: 8px; }
+    .bank-inner {
+      margin-top: 5px;
+      direction: ltr;             /* so Arabic letters don't get weird inside chips */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .draggable-word {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      margin: 0;
+      border: 1px solid #666;
+      border-radius: 999px;
+      cursor: grab;
+      background: #f7f7f7;
+      user-select: none;
+      white-space: nowrap;
+      font-size: 18px;            /* Arabic looks nicer a bit bigger */
+      line-height: 1.2;
+    }
+    .draggable-word:active { cursor: grabbing; }
+
+    .hebrew-label { min-width: 160px; }
+    .dropzone {
+      min-width: 140px;
+      min-height: 32px;
+      border: 1px dashed #999;
+      padding: 4px 8px;
+      background: #fafafa;
+      direction: ltr;
+      border-radius: 8px;
+    }
+
+</style>
 
   <script src="../../quiz_core/storage.js"></script>
   <script src="../../quiz_core/strength.js"></script>
