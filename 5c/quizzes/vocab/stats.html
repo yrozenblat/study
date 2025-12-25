@@ -5,6 +5,7 @@
   <title>סטטיסטיקה – אוצר מילים</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    #controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom: 10px; }
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
     th { background: #f0f0f0; }
@@ -12,24 +13,28 @@
     .strength-weak { background: #ffcccc; }
     .strength-medium { background: #fff3cd; }
     .strength-strong { background: #d4edda; }
-    #controls { margin-bottom: 10px; }
+    #summary { margin: 6px 0; color:#444; }
+    .hidden { display:none; }
   </style>
   <script src="../../quiz_core/storage.js"></script>
   <script src="../../quiz_core/strength.js"></script>
 </head>
 <body>
   <h2>סטטיסטיקה – אוצר מילים</h2>
+
   <div id="controls">
-    <button onclick="loadStats()">רענן</button>
-    <button onclick="resetStats()">איפוס סטטיסטיקה</button>
-    <span style="margin-right:12px;"></span>
-    <span id="tag-controls" style="margin-right:12px;">
+    <button id="btnRefresh" type="button">רענן</button>
+    <button id="btnReset" type="button">איפוס סטטיסטיקה</button>
+
+    <span id="tagControls" class="hidden">
       <label for="tagSelect">סינון לפי תגית:</label>
-      <select id="tagSelect" onchange="loadStats()"></select>
+      <select id="tagSelect"></select>
     </span>
   </div>
-  <div id="summary" style="margin: 6px 0; color: #444;"></div>
-  <table id="statsTable">
+
+  <div id="summary"></div>
+
+  <table>
     <thead>
       <tr>
         <th>#</th>
@@ -46,90 +51,87 @@
 
   <script>
     const QUIZ_ID = "vocab";
+    const WEAK_THRESHOLD = 0.60;
+    const MEDIUM_THRESHOLD = 0.85;
 
-    
-            async function loadStats() {
-      const questions = await fetch('questions.json').then(r => r.json());
-      const stats = StudyStorage.getQuizStats(QUIZ_ID) || {};
-      const table = document.getElementById('statsTableBody');
+    async function fetchQuestions() {
+      const res = await fetch("questions.json", { cache: "no-store" });
+      return await res.json();
+    }
 
-      // Build tag list
-      const tagSet = new Set();
-      questions.forEach(q => (q.tags || []).forEach(t => tagSet.add(t)));
-      const tags = Array.from(tagSet).sort((a,b) => a.localeCompare(b, 'he'));
+    function buildTags(questions) {
+      const s = new Set();
+      questions.forEach(q => (q.tags || []).forEach(t => s.add(String(t))));
+      return Array.from(s).sort((a,b)=>a.localeCompare(b,'he'));
+    }
 
-      const tagControls = document.getElementById('tag-controls');
-      const tagSelect = document.getElementById('tagSelect');
-
-      // Setup tag UI
+    function populateTagSelect(tags) {
+      const tagControls = document.getElementById("tagControls");
+      const sel = document.getElementById("tagSelect");
       if (!tags.length) {
-        if (tagControls) tagControls.style.display = 'none';
-      } else {
-        if (tagControls) tagControls.style.display = '';
-        if (tagSelect) {
-          const prev = tagSelect.value || '';
-          tagSelect.innerHTML = '';
-
-          const optAll = document.createElement('option');
-          optAll.value = '';
-          optAll.textContent = 'הכל';
-          tagSelect.appendChild(optAll);
-
-          tags.forEach(t => {
-            const opt = document.createElement('option');
-            opt.value = t;
-            opt.textContent = t;
-            tagSelect.appendChild(opt);
-          });
-
-          tagSelect.value = tags.includes(prev) ? prev : '';
-        }
+        tagControls.classList.add("hidden");
+        sel.innerHTML = "";
+        return;
       }
+      tagControls.classList.remove("hidden");
 
-      const selectedTag = tagSelect ? (tagSelect.value || '') : '';
+      const prev = sel.value || "";
+      sel.innerHTML = "";
 
-      function matchesTag(q) {
-        if (!selectedTag) return true;
-        return (q.tags || []).includes(selectedTag);
-      }
+      const optAll = document.createElement("option");
+      optAll.value = "";
+      optAll.textContent = "הכל";
+      sel.appendChild(optAll);
 
-      // Render
-      if (table) table.innerHTML = '';
+      tags.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        sel.appendChild(opt);
+      });
+
+      sel.value = tags.includes(prev) ? prev : "";
+    }
+
+    function matchesSelectedTag(q, selectedTag) {
+      if (!selectedTag) return true;
+      return (q.tags || []).includes(selectedTag);
+    }
+
+    function renderTable(questions, stats, selectedTag) {
+      const tbody = document.getElementById("statsTableBody");
+      tbody.innerHTML = "";
+
       let shown = 0;
-
-      questions.forEach((q, idx) => {
-        if (!matchesTag(q)) return;
+      questions.forEach(q => {
+        if (!matchesSelectedTag(q, selectedTag)) return;
 
         const st = stats[q.id] || { correct: 0, total: 0 };
         const acc = st.total ? (st.correct / st.total) : null;
+        const strength = Strength.classifyLegacy(st, { weakThreshold: WEAK_THRESHOLD, mediumThreshold: MEDIUM_THRESHOLD });
 
-        const strength = Strength.classifyLegacy(st, {
-          weakThreshold: 0.60,
-          mediumThreshold: 0.85
-        });
+        const tr = document.createElement("tr");
+        tr.classList.add("strength-" + strength);
 
-        const tr = document.createElement('tr');
-        tr.classList.add('strength-' + strength);
+        const tdIndex = document.createElement("td");
+        tdIndex.textContent = String(shown + 1);
 
-        const tdIndex = document.createElement('td');
-        tdIndex.textContent = shown + 1;
-
-        const tdE = document.createElement('td');
+        const tdE = document.createElement("td");
         tdE.textContent = q.english;
 
-        const tdH = document.createElement('td');
+        const tdH = document.createElement("td");
         tdH.textContent = q.hebrew;
 
-        const tdCorrect = document.createElement('td');
-        tdCorrect.textContent = st.correct;
+        const tdCorrect = document.createElement("td");
+        tdCorrect.textContent = String(st.correct || 0);
 
-        const tdTotal = document.createElement('td');
-        tdTotal.textContent = st.total;
+        const tdTotal = document.createElement("td");
+        tdTotal.textContent = String(st.total || 0);
 
-        const tdPct = document.createElement('td');
-        tdPct.textContent = (acc === null) ? '—' : (Math.round(acc * 100) + '%');
+        const tdPct = document.createElement("td");
+        tdPct.textContent = (acc === null) ? "—" : (Math.round(acc * 100) + "%");
 
-        const tdStrength = document.createElement('td');
+        const tdStrength = document.createElement("td");
         tdStrength.textContent = strength;
 
         tr.appendChild(tdIndex);
@@ -140,156 +142,38 @@
         tr.appendChild(tdPct);
         tr.appendChild(tdStrength);
 
-        if (table) table.appendChild(tr);
+        tbody.appendChild(tr);
         shown++;
       });
 
-      const summary = document.getElementById('summary');
-      if (summary) {
-        summary.textContent = selectedTag
-          ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
-          : `מציג ${shown} פריטים (הכל)`;
-      }
-    }
-      }
-
-      function matchesTag(q, selectedTag) {
-        if (!selectedTag) return true;
-        return (q.tags || []).includes(selectedTag);
-      }
-
-      function render(selectedTag) {
-        table.innerHTML = '';
-
-        let shown = 0;
-        questions.forEach((q, idx) => {
-          if (!matchesTag(q, selectedTag)) return;
-
-          const st = stats[q.id] || { correct: 0, total: 0 };
-          const acc = st.total ? (st.correct / st.total) : null;
-
-          const tr = document.createElement('tr');
-
-          const tdIndex = document.createElement('td');
-          tdIndex.textContent = idx + 1;
-
-          const tdE = document.createElement('td');
-          tdE.textContent = q.english;
-
-          const tdH = document.createElement('td');
-          tdH.textContent = q.hebrew;
-
-          const tdAcc = document.createElement('td');
-          tdAcc.textContent = (acc === null) ? '—' : Math.round(acc * 100) + '%';
-
-          const tdTotal = document.createElement('td');
-          tdTotal.textContent = st.total;
-
-          const tdPct = document.createElement('td');
-          tdPct.textContent = (acc === null) ? '—' : (Math.round(acc * 100) + '%');
-
-          const tdStrength = document.createElement('td');
-          const strength = strengthClassForAccuracy(acc, WEAK_THRESHOLD, MEDIUM_THRESHOLD);
-          tdStrength.textContent = strength;
-          tr.classList.add('strength-' + strength);
-
-          tr.appendChild(tdIndex);
-          tr.appendChild(tdE);
-          tr.appendChild(tdH);
-          tr.appendChild(tdAcc);
-          tr.appendChild(tdTotal);
-          tr.appendChild(tdPct);
-          tr.appendChild(tdStrength);
-
-          table.appendChild(tr);
-          shown++;
-        });
-
-        const summary = document.getElementById('summary');
-        if (summary) {
-          summary.textContent = selectedTag
-            ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
-            : `מציג ${shown} פריטים (הכל)`;
-        }
-      }
-
-      const selectedTag = tagSelect ? (tagSelect.value || '') : '';
-      render(selectedTag);
+      const summary = document.getElementById("summary");
+      summary.textContent = selectedTag
+        ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
+        : `מציג ${shown} פריטים (הכל)`;
     }
 
-      function matchesTag(q, selectedTag) {
-        if (!selectedTag) return true;
-        return (q.tags || []).includes(selectedTag);
-      }
+    async function loadStats() {
+      const questions = await fetchQuestions();
+      const stats = StudyStorage.getQuizStats(QUIZ_ID) || {};
 
-      function render(selectedTag) {
-        table.innerHTML = '';
+      const tags = buildTags(questions);
+      populateTagSelect(tags);
 
-        let shown = 0;
-        questions.forEach((q, idx) => {
-          if (!matchesTag(q, selectedTag)) return;
-
-          const st = stats[q.id] || { correct: 0, total: 0 };
-          const acc = st.total ? (st.correct / st.total) : null;
-
-          const tr = document.createElement('tr');
-
-          const tdIndex = document.createElement('td');
-          tdIndex.textContent = idx + 1;
-
-          const tdE = document.createElement('td');
-          tdE.textContent = q.english;
-
-          const tdH = document.createElement('td');
-          tdH.textContent = q.hebrew;
-
-          const tdAcc = document.createElement('td');
-          tdAcc.textContent = (acc === null) ? '—' : Math.round(acc * 100) + '%';
-
-          const tdTotal = document.createElement('td');
-          tdTotal.textContent = st.total;
-
-          // strength coloring
-          if (acc === null) tr.classList.add('strength-new');
-          else if (acc < 0.60) tr.classList.add('strength-weak');
-          else if (acc < 0.85) tr.classList.add('strength-medium');
-          else tr.classList.add('strength-strong');
-
-          tr.appendChild(tdIndex);
-          tr.appendChild(tdE);
-          tr.appendChild(tdH);
-          tr.appendChild(tdAcc);
-          tr.appendChild(tdTotal);
-          table.appendChild(tr);
-          shown++;
-        });
-
-        const summary = document.getElementById('summary');
-        if (summary) {
-          summary.textContent = selectedTag
-            ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
-            : `מציג ${shown} פריטים (הכל)`;
-        }
-      }
-
-      if (tagSelect) {
-        tagSelect.addEventListener('change', () => render(tagSelect.value));
-      }
-
-      render(tagSelect ? tagSelect.value : '');
+      const selectedTag = (document.getElementById("tagSelect")?.value) || "";
+      renderTable(questions, stats, selectedTag);
     }
-
 
     function resetStats() {
-      const code = prompt('הכנס קוד איפוס:');
-      if (code === '3333') {
-        StudyStorage.resetQuiz(QUIZ_ID);
-        loadStats();
-      } else if (code !== null) {
-        alert('קוד שגוי');
-      }
+      if (!confirm("לאפס סטטיסטיקה עבור אוצר מילים?")) return;
+      StudyStorage.resetQuiz(QUIZ_ID);
+      loadStats();
     }
 
+    document.getElementById("btnRefresh").addEventListener("click", loadStats);
+    document.getElementById("btnReset").addEventListener("click", resetStats);
+    document.getElementById("tagSelect").addEventListener("change", loadStats);
+
+    // Initial
     loadStats();
   </script>
 </body>
