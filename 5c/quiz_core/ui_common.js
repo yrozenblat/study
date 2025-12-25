@@ -1,6 +1,13 @@
 let QuizCore = (() => {
   let currentQuestions = [];
   let currentConfig = null;
+  let hasChecked = false;
+
+  function setCheckButtonEnabled(enabled) {
+    // Prefer an explicit ID if present, fallback to the inline-onclick button.
+    const btn = document.getElementById('btn-check') || document.querySelector('button[onclick="checkQuiz()"]');
+    if (btn) btn.disabled = !enabled;
+  }
 
   async function init(options) {
     const { configUrl, questionsUrl } = options;
@@ -22,6 +29,10 @@ let QuizCore = (() => {
 
     const result = document.getElementById('result');
     if (result) result.textContent = '';
+
+    // Allow checking again only after starting a new quiz.
+    hasChecked = false;
+    setCheckButtonEnabled(true);
   }
 
   function renderMcq(questions) {
@@ -204,6 +215,11 @@ function renderVocabDrag(questions) {
 
   function checkQuiz() {
     if (!currentQuestions.length || !currentConfig) return;
+
+    // Prevent multiple submissions. After checking once, user must start a new quiz.
+    if (hasChecked) return;
+    hasChecked = true;
+    setCheckButtonEnabled(false);
 
     if (currentConfig.renderer === 'drag') {
       return checkDrag();
