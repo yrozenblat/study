@@ -49,6 +49,8 @@ const QuestionSelector = (() => {
   }
 
 function select(questions, stats, config) {
+    // Optional tag filtering (include/exclude). If no tags in config, this is a no-op.
+    questions = filterByTags(questions, config);
     const numQuestions = config.numQuestions || questions.length;
 
     // Default weights are *scores*, not percentages.
