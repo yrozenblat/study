@@ -75,7 +75,8 @@
   <div id="quiz-note" class="note"></div>
 
   <button onclick="startQuiz()">מבחן חדש</button>
-  <button onclick="checkQuiz()">בדוק</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a id="stats-link" href="stats.html" target="_blank">סטטיסטיקה</a>
 
   <div id="quiz-container"></div>
   <div id="result"></div>
@@ -121,6 +122,19 @@
         questionsUrl: 'questions.json'
       });
     }
+
+    // Password-protect opening stats from the quiz page.
+    (function () {
+      const link = document.getElementById('stats-link');
+      if (!link) return;
+      link.addEventListener('click', (e) => {
+        const pass = prompt('סיסמה לצפייה בסטטיסטיקה:');
+        if (pass !== '333') {
+          e.preventDefault();
+          alert('סיסמה שגויה');
+        }
+      });
+    })();
     startQuiz();
 </script>
 </body>
