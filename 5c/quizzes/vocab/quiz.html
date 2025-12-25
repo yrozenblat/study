@@ -71,8 +71,8 @@
   <script src="../../quiz_core/ui_common.js"></script>
 </head>
 <body>
-  <h2>אוצר מילים – ערבית → עברית (טקסט חופשי)</h2>
-  <div class="note">מוצגת מילה בערבית (מנוקדת). כתבו את התרגום בעברית בשדה.</div>
+  <h2 id="quiz-title">אוצר מילים</h2>
+  <div id="quiz-note" class="note"></div>
 
   <button onclick="startQuiz()">מבחן חדש</button>
   <button onclick="checkQuiz()">בדוק</button>
@@ -105,6 +105,15 @@
       const titleEl = document.getElementById('quiz-title');
       if (titleEl) {
         titleEl.textContent = 'אוצר מילים — ' + (baseConfig.renderer === 'drag' ? 'מחסן (גרירה)' : 'פתוח');
+      }
+
+      
+
+      const noteEl = document.getElementById('quiz-note');
+      if (noteEl) {
+        noteEl.textContent = (baseConfig.renderer === 'drag')
+          ? 'גררו את המילים מהמחסן למקום הנכון.'
+          : 'מוצגת מילה באנגלית. כתבו את התרגום בעברית בשדה.';
       }
 
       QuizCore.init({
