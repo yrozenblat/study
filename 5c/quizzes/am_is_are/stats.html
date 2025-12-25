@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>סטטיסטיקה – מבחן am / is / are</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    .strength-rare { background: #ffe4b5; }
+    .strength-weak { background: #ffcccc; }
+    .strength-medium { background: #fff3cd; }
+    .strength-strong { background: #d4edda; }
+    #controls { margin-bottom: 10px; }
+  </style>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+</head>
+<body>
+  <h2>סטטיסטיקה – מבחן am / is / are</h2>
+  <div id="controls">
+    <button onclick="loadStats()">רענן</button>
+    <button onclick="resetStats()">איפוס סטטיסטיקה</button>
+  </div>
+  <table id="statsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>שאלה</th>
+        <th>נכונות</th>
+        <th>סך הכל</th>
+        <th>% הצלחה</th>
+        <th>חוזק</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const QUIZ_ID = "grammar_am_is_are";
+
+    // Classification is shared with selection.js via quiz_core/strength.js
+
+    async function loadStats() {
+      const stats = StudyStorage.getQuizStats(QUIZ_ID);
+      const resp = await fetch('questions.json');
+      const questions = await resp.json();
+      const tbody = document.querySelector('#statsTable tbody');
+      tbody.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const s = stats[q.id] || {correct: 0, total: 0};
+        const ratio = s.total ? (s.correct / s.total) : 0;
+        const strength = (typeof Strength !== 'undefined')
+          ? Strength.classifyLegacy(s)
+          : 'medium';
+
+        const tr = document.createElement('tr');
+        tr.classList.add('strength-' + strength);
+
+        const tdIndex = document.createElement('td');
+        tdIndex.textContent = idx + 1;
+        const tdQ = document.createElement('td');
+        tdQ.textContent = q.text;
+        const tdC = document.createElement('td');
+        tdC.textContent = s.correct;
+        const tdT = document.createElement('td');
+        tdT.textContent = s.total;
+        const tdP = document.createElement('td');
+        tdP.textContent = (ratio * 100).toFixed(0) + '%';
+        const tdS = document.createElement('td');
+        tdS.textContent = strength;
+
+        tr.appendChild(tdIndex);
+        tr.appendChild(tdQ);
+        tr.appendChild(tdC);
+        tr.appendChild(tdT);
+        tr.appendChild(tdP);
+        tr.appendChild(tdS);
+        tbody.appendChild(tr);
+      });
+    }
+
+    function resetStats() {
+      const code = prompt('הכנס קוד איפוס:');
+      if (code === '3333') {
+        StudyStorage.resetQuiz(QUIZ_ID);
+        loadStats();
+      } else if (code !== null) {
+        alert('קוד שגוי');
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>

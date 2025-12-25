@@ -1,0 +1,11 @@
+{
+  "quizId": "vocab_drag",
+  "numQuestions": 10,
+  "renderer": "drag",
+  "selectionWeights": {
+    "rare": 0.4,
+    "weak": 0.4,
+    "medium": 0.2,
+    "strong": 0.0
+  }
+}

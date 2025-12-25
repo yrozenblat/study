@@ -1,0 +1,43 @@
+{
+  "_comment_1": "Quiz catalog for the unified vocab quiz. Other quizzes unchanged.",
+  "quizzes": [
+    {
+      "id": "vocab",
+      "title": "אוצר מילים",
+      "page": "quizzes/vocab/quiz.html",
+      "stats": "quizzes/vocab/stats.html",
+      "modes": [
+        {
+          "id": "drag",
+          "label": "מחסן (גרירה)"
+        },
+        {
+          "id": "open",
+          "label": "פתוח"
+        }
+      ],
+      "defaultMode": "drag",
+      "tagFilter": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "a_an",
+      "title": "a / an",
+      "page": "quizzes/a_an/quiz.html",
+      "stats": "quizzes/a_an/stats.html"
+    },
+    {
+      "id": "am_is_are",
+      "title": "am / is / are",
+      "page": "quizzes/am_is_are/quiz.html",
+      "stats": "quizzes/am_is_are/stats.html"
+    },
+    {
+      "id": "there_is_are",
+      "title": "There is / There are",
+      "page": "quizzes/there_is_are/quiz.html",
+      "stats": "quizzes/there_is_are/stats.html"
+    }
+  ]
+}

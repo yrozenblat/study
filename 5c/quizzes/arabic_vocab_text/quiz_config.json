@@ -1,0 +1,35 @@
+{
+  "_comment_1": "Quiz configuration (JSON valid). Lines starting with _comment are ignored by the app and exist only as documentation.",
+  "_comment_2": "quizId: unique ID for statistics in localStorage. Keep it stable once students start practicing.",
+  "quizId": "arabic_vocab_text",
+
+  "_comment_3": "renderer: quiz type. 'text' = free text input per question (Arabic shown, student types Hebrew).",
+  "renderer": "text",
+
+  "_comment_4": "numQuestions: how many questions to draw each run (without duplicates).",
+  "numQuestions": 12,
+
+  "_comment_5": "selectionWeights: base priority by strength class. Higher = appears more often.",
+  "_comment_6": "new = never asked (total==0), weak/medium/strong are decided by accuracy thresholds below.",
+  "selectionWeights": {
+    "new": 5,
+    "weak": 4,
+    "medium": 2,
+    "strong": 1
+  },
+
+  "_comment_7": "weakThreshold / mediumThreshold: accuracy cutoffs (0..1).",
+  "_comment_8": "accuracy < weakThreshold => weak; accuracy < mediumThreshold => medium; else => strong.",
+  "weakThreshold": 0.60,
+  "mediumThreshold": 0.85,
+
+  "_comment_9": "noveltyK: boosts questions asked fewer times (noveltyBoost = 1/(1+total)).",
+  "_comment_10": "priority = baseWeight * (1 + noveltyK * noveltyBoost). Typical range 0..3.",
+  "noveltyK": 1.5,
+
+  "_comment_11": "minNewRatio: optional (0..1). Ensures at least this fraction of questions are NEW if available.",
+  "minNewRatio": 0.20,
+
+  "_comment_12": "preventSameGroup: avoid choosing two variants of the same word (e.g., w001a/w001b or w001.a/w001.b) in the same quiz run.",
+  "preventSameGroup": true
+}

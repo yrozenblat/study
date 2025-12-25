@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>סטטיסטיקה – אוצר מילים</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    .strength-rare { background: #ffe4b5; }
+    .strength-weak { background: #ffcccc; }
+    .strength-medium { background: #fff3cd; }
+    .strength-strong { background: #d4edda; }
+    #controls { margin-bottom: 10px; }
+  </style>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+</head>
+<body>
+  <h2>סטטיסטיקה – אוצר מילים (גרירה)</h2>
+  <div id="controls">
+    <button onclick="loadStats()">רענן</button>
+    <button onclick="resetStats()">איפוס סטטיסטיקה</button>
+  </div>
+  <div id="summary" style="margin: 6px 0; color: #444;"></div>
+  <table id="statsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>אנגלית</th>
+        <th>עברית</th>
+        <th>נכונות</th>
+        <th>סך הכל</th>
+        <th>% הצלחה</th>
+        <th>חוזק</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const QUIZ_ID = "vocab";
+
+    
+    async function loadStats() {
+      const questions = await fetch('questions.json').then(r => r.json());
+      const stats = StudyStorage.getQuizStats(QUIZ_ID) || {};
+      const table = document.getElementById('statsTableBody');
+
+      // Build tag list
+      const tagSet = new Set();
+      questions.forEach(q => (q.tags || []).forEach(t => tagSet.add(t)));
+      const tags = Array.from(tagSet).sort((a,b) => a.localeCompare(b, 'he'));
+
+      const tagControls = document.getElementById('tag-controls');
+      const tagSelect = document.getElementById('tagSelect');
+
+      if (!tags.length) {
+        if (tagControls) tagControls.style.display = 'none';
+      } else {
+        // fill select
+        tags.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t;
+          opt.textContent = t;
+          tagSelect.appendChild(opt);
+        });
+      }
+
+      function matchesTag(q, selectedTag) {
+        if (!selectedTag) return true;
+        return (q.tags || []).includes(selectedTag);
+      }
+
+      function render(selectedTag) {
+        table.innerHTML = '';
+
+        let shown = 0;
+        questions.forEach((q, idx) => {
+          if (!matchesTag(q, selectedTag)) return;
+
+          const st = stats[q.id] || { correct: 0, total: 0 };
+          const acc = st.total ? (st.correct / st.total) : null;
+
+          const tr = document.createElement('tr');
+
+          const tdIndex = document.createElement('td');
+          tdIndex.textContent = idx + 1;
+
+          const tdE = document.createElement('td');
+          tdE.textContent = q.english;
+
+          const tdH = document.createElement('td');
+          tdH.textContent = q.hebrew;
+
+          const tdAcc = document.createElement('td');
+          tdAcc.textContent = (acc === null) ? '—' : Math.round(acc * 100) + '%';
+
+          const tdTotal = document.createElement('td');
+          tdTotal.textContent = st.total;
+
+          // strength coloring
+          if (acc === null) tr.classList.add('strength-new');
+          else if (acc < 0.60) tr.classList.add('strength-weak');
+          else if (acc < 0.85) tr.classList.add('strength-medium');
+          else tr.classList.add('strength-strong');
+
+          tr.appendChild(tdIndex);
+          tr.appendChild(tdE);
+          tr.appendChild(tdH);
+          tr.appendChild(tdAcc);
+          tr.appendChild(tdTotal);
+          table.appendChild(tr);
+          shown++;
+        });
+
+        const summary = document.getElementById('summary');
+        if (summary) {
+          summary.textContent = selectedTag
+            ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
+            : `מציג ${shown} פריטים (הכל)`;
+        }
+      }
+
+      if (tagSelect) {
+        tagSelect.addEventListener('change', () => render(tagSelect.value));
+      }
+
+      render(tagSelect ? tagSelect.value : '');
+    }
+
+
+    function resetStats() {
+      const code = prompt('הכנס קוד איפוס:');
+      if (code === '3333') {
+        StudyStorage.resetQuiz(QUIZ_ID);
+        loadStats();
+      } else if (code !== null) {
+        alert('קוד שגוי');
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>

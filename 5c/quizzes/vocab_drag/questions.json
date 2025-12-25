@@ -1,0 +1,88 @@
+[
+  { "id": "w001a", "english": "يُرِيد", "hebrew": "רוצה" },
+  { "id": "w001b", "english": "יוֹרִיד", "hebrew": "רוצה" },
+
+  { "id": "w002a", "english": "أَرَادَ", "hebrew": "רצה" },
+  { "id": "w002b", "english": "אֲרָאד", "hebrew": "רצה" },
+
+  { "id": "w003a", "english": "زَارَ", "hebrew": "ביקר" },
+  { "id": "w003b", "english": "זָאר", "hebrew": "ביקר" },
+
+  { "id": "w004a", "english": "دَار", "hebrew": "דירה" },
+  { "id": "w004b", "english": "דָאר", "hebrew": "דירה" },
+
+  { "id": "w005a", "english": "وَرْد", "hebrew": "ורד" },
+  { "id": "w005b", "english": "וַרְד", "hebrew": "ורד" },
+
+  { "id": "w006a", "english": "وُرُود", "hebrew": "ורדים" },
+  { "id": "w006b", "english": "ווּרוּד", "hebrew": "ורדים" },
+
+  { "id": "w007a", "english": "دُرُوز", "hebrew": "דרוזים" },
+  { "id": "w007b", "english": "דְרוּז", "hebrew": "דרוזים" },
+
+  { "id": "w008a", "english": "دُرْزِيّ", "hebrew": "דרוזי" },
+  { "id": "w008b", "english": "דֻרְזִי", "hebrew": "דרוזי" },
+
+  { "id": "w009a", "english": "بَدَوِيّ", "hebrew": "בדואי" },
+  { "id": "w009b", "english": "בַּדַוִי", "hebrew": "בדואי" },
+
+  { "id": "w010a", "english": "وَزِير", "hebrew": "שר (בממשלה)" },
+  { "id": "w010b", "english": "וַזִיר", "hebrew": "שר (בממשלה)" },
+
+  { "id": "w011a", "english": "أَدِيب", "hebrew": "אדיב/מנומס" },
+  { "id": "w011b", "english": "אַדִיב", "hebrew": "אדיב/מנומס" },
+
+  { "id": "w012a", "english": "وَرْدِيّ", "hebrew": "ורוד" },
+  { "id": "w012b", "english": "וַרְדִי", "hebrew": "ורוד" },
+
+  { "id": "w013a", "english": "بَاب", "hebrew": "דלת/שער" },
+  { "id": "w013b", "english": "בַּאב", "hebrew": "דלת/שער" },
+
+  { "id": "w014a", "english": "أَب", "hebrew": "אבא" },
+  { "id": "w014b", "english": "אַב", "hebrew": "אבא" },
+
+  { "id": "w015a", "english": "اِبْن", "hebrew": "בן" },
+  { "id": "w015b", "english": "אִבְּן", "hebrew": "בן" },
+
+  { "id": "w016a", "english": "بِنْت", "hebrew": "בת" },
+  { "id": "w016b", "english": "בִּנְת", "hebrew": "בת" },
+
+  { "id": "w017a", "english": "بَنَات", "hebrew": "בנות" },
+  { "id": "w017b", "english": "בַּנָאת", "hebrew": "בנות" },
+
+  { "id": "w018a", "english": "أَيْنَ", "hebrew": "איפה" },
+  { "id": "w018b", "english": "אַיְנַה", "hebrew": "איפה" },
+
+  { "id": "w019a", "english": "أَنَا", "hebrew": "אני" },
+  { "id": "w019b", "english": "אַנַא", "hebrew": "אני" },
+
+  { "id": "w020a", "english": "أَنْتَ", "hebrew": "אתה" },
+  { "id": "w020b", "english": "אַנְתַ", "hebrew": "אתה" },
+
+  { "id": "w021a", "english": "أَنْتِ", "hebrew": "את (נקבה)" },
+  { "id": "w021b", "english": "אַנְתִי", "hebrew": "את (נקבה)" },
+
+  { "id": "w022a", "english": "أَوْ", "hebrew": "או" },
+  { "id": "w022b", "english": "אַוְ", "hebrew": "או" },
+
+  { "id": "w023a", "english": "وَ", "hebrew": "ו׳ החיבור (וגם)" },
+  { "id": "w023b", "english": "וַ", "hebrew": "ו׳ החיבור (וגם)" },
+
+  { "id": "w024a", "english": "دَاوُد", "hebrew": "דאוד (שם פרטי)" },
+  { "id": "w024b", "english": "דָאֻוד", "hebrew": "דאוד (שם פרטי)" },
+
+  { "id": "w025a", "english": "وِدَاد", "hebrew": "ודאד (שם פרטי)" },
+  { "id": "w025b", "english": "וִדָאד", "hebrew": "ודאד (שם פרטי)" },
+
+  { "id": "w026a", "english": "زَيْد", "hebrew": "זיד (שם פרטי)" },
+  { "id": "w026b", "english": "זֵיד", "hebrew": "זיד (שם פרטי)" },
+
+  { "id": "w027a", "english": "زِيَاد", "hebrew": "זיאד (שם פרטי)" },
+  { "id": "w027b", "english": "זִיאָד", "hebrew": "זיאד (שם פרטי)" },
+
+  { "id": "w028a", "english": "رَبَاب", "hebrew": "רבאב (שם פרטי)" },
+  { "id": "w028b", "english": "רַבָּאב", "hebrew": "רבאב (שם פרטי)" },
+
+  { "id": "w029a", "english": "تِين", "hebrew": "תאנה" },
+  { "id": "w029b", "english": "תִין", "hebrew": "תאנה" }
+]

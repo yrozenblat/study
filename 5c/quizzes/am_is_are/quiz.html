@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>מבחן am / is / are</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+    .question { margin-bottom: 12px; }
+    .question-text { direction: ltr; }
+    .options { direction: ltr; margin-right: 20px; }
+    .feedback.correct { color: green; }
+    .feedback.wrong { color: red; }
+    #result { margin-top: 15px; font-weight: bold; }
+  </style>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2>מבחן am / is / are</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button onclick="checkQuiz()">בדוק</button>
+  <a href="stats.html" target="_blank">סטטיסטיקה</a>
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+  <script>
+    function startQuiz() {
+      QuizCore.init({
+        configUrl: 'quiz_config.json',
+        questionsUrl: 'questions.json'
+      });
+    }
+    startQuiz();
+  </script>
+</body>
+</html>
