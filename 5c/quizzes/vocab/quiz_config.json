@@ -5,7 +5,7 @@
   "_comment_3": "renderer: quiz type. 'text' = free text input per question (Arabic shown, student types Hebrew).",
   "renderer": "drag",
   "_comment_4": "numQuestions: how many questions to draw each run (without duplicates).",
-  "numQuestions": 12,
+  "numQuestions": 10,
   "_comment_5": "selectionWeights: base priority by strength class. Higher = appears more often.",
   "_comment_6": "new = never asked (total==0), weak/medium/strong are decided by accuracy thresholds below.",
   "selectionWeights": {
