@@ -3,6 +3,27 @@ let QuizCore = (() => {
   let currentConfig = null;
   let hasChecked = false;
 
+  // Browser Text-to-Speech for English words/phrases.
+  // Requires a user gesture (we call it on click), so it won't auto-play.
+  function speakEnglish(text) {
+    try {
+      if (!('speechSynthesis' in window)) return;
+      const t = String(text ?? '').trim();
+      if (!t) return;
+
+      // Stop any ongoing speech to avoid overlap.
+      window.speechSynthesis.cancel();
+
+      const u = new SpeechSynthesisUtterance(t);
+      u.lang = 'en-US';
+      u.rate = 0.9;  // slightly slower for learners
+      u.pitch = 1.0;
+      window.speechSynthesis.speak(u);
+    } catch (_) {
+      // No-op: TTS is best-effort.
+    }
+  }
+
   function setCheckButtonEnabled(enabled) {
     // Prefer an explicit ID if present, fallback to the inline-onclick button.
     const btn = document.getElementById('btn-check') || document.querySelector('button[onclick="checkQuiz()"]');
@@ -193,6 +214,13 @@ function renderVocabDrag(questions) {
       const label = document.createElement('span');
       label.className = 'arabic-label';
       label.textContent = (idx + 1) + '. ' + q.english;
+
+      // Click-to-speak for English in VOCAB open/text mode.
+      // We keep it lightweight: if the browser supports TTS, a click will speak.
+      label.style.cursor = 'pointer';
+      label.title = 'לחץ/י להשמעה';
+      label.addEventListener('click', () => speakEnglish(q.english));
+
       row.appendChild(label);
 
       const input = document.createElement('input');
