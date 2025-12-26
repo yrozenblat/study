@@ -77,13 +77,6 @@
     "rule": "bike מתחיל בעיצור b."
   },
   {
-    "id": "aa20",
-    "text": "_____ hour",
-    "options": ["a", "an"],
-    "correct": "an",
-    "rule": "hour מתחיל בצליל ניקוד, h לא נשמעת."
-  },
-  {
     "id": "aa22",
     "text": "_____ apple pie",
     "options": ["a", "an"],
