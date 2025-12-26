@@ -1,7 +1,7 @@
 [
   { "id": "w001", "english": "animal", "hebrew": "חיה", "tags": ["חיות", "שמות עצם"] },
   { "id": "w002", "english": "bird", "hebrew": "ציפור", "tags": ["חיות", "שמות עצם"] },
-  { "id": "w003", "english": "bear", "hebrew": "דב", "tags": ["חיות", "שמות עצם"] },
+  { "id": "w003", "english": "bear", "hebrew": "דב", "answers": ["דוב"], "tags": ["חיות", "שמות עצם"] },
   { "id": "w004", "english": "cat", "hebrew": "חתול", "tags": ["חיות", "שמות עצם"] },
   { "id": "w005", "english": "dog", "hebrew": "כלב", "tags": ["חיות", "שמות עצם"] },
   { "id": "w006", "english": "lion", "hebrew": "אריה", "tags": ["חיות", "שמות עצם"] },
