@@ -84,13 +84,6 @@
     "rule": "hour מתחיל בצליל ניקוד, h לא נשמעת."
   },
   {
-    "id": "aa21",
-    "text": "_____ uniform",
-    "options": ["a", "an"],
-    "correct": "a",
-    "rule": "uniform מתחיל בצליל /ju/ ולכן a."
-  },
-  {
     "id": "aa22",
     "text": "_____ apple pie",
     "options": ["a", "an"],
