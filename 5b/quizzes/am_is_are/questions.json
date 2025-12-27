@@ -2,268 +2,407 @@
   {
     "id": "be01",
     "text": "I _____ ten years old.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "am",
     "rule": "עם I משתמשים ב-am."
   },
   {
     "id": "be02",
     "text": "She _____ my sister.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "עם he / she / it משתמשים ב-is."
   },
   {
     "id": "be03",
     "text": "They _____ at school now.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "עם we / you / they משתמשים ב-are."
   },
   {
     "id": "be04",
     "text": "We _____ in the park.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "We ברבים → are."
   },
   {
     "id": "be05",
     "text": "It _____ a nice day.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "It יחיד → is."
   },
   {
     "id": "be06",
     "text": "You _____ a good friend.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "עם You משתמשים ב-are."
   },
   {
     "id": "be07",
     "text": "My mother _____ at work.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "My mother = she → is."
   },
   {
     "id": "be08",
     "text": "The boys _____ happy.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "The boys ברבים → are."
   },
-
   {
     "id": "be09",
     "text": "He _____ a student.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "He יחיד → is."
   },
   {
     "id": "be10",
     "text": "We _____ best friends.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "We ברבים → are."
   },
   {
     "id": "be11",
     "text": "My parents _____ at home.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "My parents ברבים → are."
   },
   {
     "id": "be12",
     "text": "The cat _____ under the table.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "The cat = it יחיד → is."
   },
   {
     "id": "be13",
     "text": "You _____ in my class.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "עם You משתמשים ב-are."
   },
   {
     "id": "be14",
     "text": "It _____ very cold today.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "It יחיד → is."
   },
   {
     "id": "be15",
     "text": "The girls _____ in the garden.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "The girls ברבים → are."
   },
   {
     "id": "be16",
     "text": "I _____ very hungry.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "am",
     "rule": "עם I משתמשים ב-am."
   },
   {
     "id": "be17",
     "text": "Sarah _____ my cousin.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "Sarah = she יחיד → is."
   },
   {
     "id": "be18",
     "text": "They _____ from Spain.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "They ברבים → are."
   },
   {
     "id": "be19",
     "text": "The books _____ on the desk.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "The books ברבים → are."
   },
   {
     "id": "be20",
     "text": "My brother _____ tall.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "My brother = he יחיד → is."
   },
   {
     "id": "be21",
     "text": "We _____ ready for the test.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "We ברבים → are."
   },
   {
     "id": "be22",
     "text": "The children _____ tired.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "children ברבים → are."
   },
   {
     "id": "be23",
     "text": "The teacher _____ in the classroom.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
-    "rule": "The teacher = he/she יחיד → is."
+    "rule": "The teacher יחיד → is."
   },
   {
     "id": "be24",
     "text": "You _____ late again.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "עם You משתמשים ב-are."
   },
   {
     "id": "be25",
     "text": "It _____ my birthday today.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "It יחיד → is."
   },
   {
     "id": "be26",
     "text": "I _____ in the living room.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "am",
     "rule": "עם I משתמשים ב-am."
   },
   {
     "id": "be27",
     "text": "The dogs _____ in the yard.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "The dogs ברבים → are."
   },
   {
     "id": "be28",
     "text": "My dad and I _____ at the supermarket.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "My dad and I = we → are."
   },
   {
     "id": "be29",
     "text": "She _____ eleven years old.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "She יחיד → is."
   },
   {
     "id": "be30",
     "text": "The sky _____ blue.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
-    "rule": "The sky = it יחיד → is."
+    "rule": "The sky יחיד → is."
   },
   {
     "id": "be31",
     "text": "They _____ in the swimming pool.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "They ברבים → are."
   },
   {
     "id": "be32",
     "text": "My friends _____ good at football.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "My friends ברבים → are."
   },
   {
     "id": "be33",
     "text": "He _____ my best friend.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "He יחיד → is."
   },
   {
     "id": "be34",
     "text": "We _____ on the bus.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "We ברבים → are."
   },
   {
     "id": "be35",
     "text": "The milk _____ in the fridge.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
     "rule": "The milk נחשב יחיד → is."
   },
   {
     "id": "be36",
     "text": "You _____ very kind.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "עם You משתמשים ב-are."
   },
   {
     "id": "be37",
     "text": "The windows _____ open.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "are",
     "rule": "The windows ברבים → are."
   },
   {
     "id": "be38",
     "text": "The baby _____ asleep.",
-    "options": ["am", "is", "are"],
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
     "correct": "is",
-    "rule": "The baby = he/she יחיד → is."
+    "rule": "The baby יחיד → is."
+  },
+  {
+    "id": "be39",
+    "text": "I _____ (not) ready.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "am not",
+    "rule": "I → am not."
+  },
+  {
+    "id": "be40",
+    "text": "She _____ (not) happy today.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "She → is not."
+  },
+  {
+    "id": "be41",
+    "text": "They _____ (not) at home.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "They → are not."
+  },
+  {
+    "id": "be42",
+    "text": "We _____ (not) late.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "We → are not."
+  },
+  {
+    "id": "be43",
+    "text": "He _____ (not) hungry.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "He → is not."
+  },
+  {
+    "id": "be44",
+    "text": "I _____ (not) a teacher.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "am not",
+    "rule": "I → am not."
+  },
+  {
+    "id": "be45",
+    "text": "The dog _____ (not) outside.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "The dog יחיד → is not."
+  },
+  {
+    "id": "be46",
+    "text": "The kids _____ (not) tired.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "The kids ברבים → are not."
+  },
+  {
+    "id": "be47",
+    "text": "You _____ (not) wrong.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "You → are not."
+  },
+  {
+    "id": "be48",
+    "text": "It _____ (not) cold today.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "It → is not."
+  },
+  {
+    "id": "be49",
+    "text": "We _____ (not) friends.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "We → are not."
+  },
+  {
+    "id": "be50",
+    "text": "She _____ (not) at school.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "She → is not."
+  },
+  {
+    "id": "be51",
+    "text": "I _____ (not) sure.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "am not",
+    "rule": "I → am not."
+  },
+  {
+    "id": "be52",
+    "text": "The books _____ (not) new.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "The books ברבים → are not."
+  },
+  {
+    "id": "be53",
+    "text": "He _____ (not) my brother.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "He → is not."
+  },
+  {
+    "id": "be54",
+    "text": "They _____ (not) ready yet.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "They → are not."
+  },
+  {
+    "id": "be55",
+    "text": "It _____ (not) easy.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "It → is not."
+  },
+  {
+    "id": "be56",
+    "text": "I _____ (not) late.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "am not",
+    "rule": "I → am not."
+  },
+  {
+    "id": "be57",
+    "text": "You _____ (not) alone.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "are not",
+    "rule": "You → are not."
+  },
+  {
+    "id": "be58",
+    "text": "The room _____ (not) clean.",
+    "options": ["am", "am not", "is", "is not", "are", "are not"],
+    "correct": "is not",
+    "rule": "The room יחיד → is not."
   }
 ]
