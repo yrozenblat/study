@@ -148,7 +148,7 @@
   { "id": "w130", "english": "they", "hebrew": "הם", "answers": ["הן"], "tags": ["כינויי גוף"] },
   { "id": "w131", "english": "he", "hebrew": "הוא", "tags": ["כינויי גוף"] },
   { "id": "w132", "english": "she", "hebrew": "היא", "tags": ["כינויי גוף"] },
-  { "id": "w133", "english": "it", "hebrew": "זה", "answers": ["זאת"], "tags": ["כינויי גוף"] }
+  { "id": "w133", "english": "it", "hebrew": "זה", "answers": ["זאת"], "tags": ["כינויי גוף"] },
 
   { "id": "num_000", "english": "Zero", "hebrew": "0", "tags": ["מספרים"] },
   { "id": "num_001", "english": "One", "hebrew": "1", "tags": ["מספרים"] },
