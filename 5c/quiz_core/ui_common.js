@@ -44,6 +44,8 @@ let QuizCore = (() => {
       renderVocabDrag(currentQuestions);
     } else if (config.renderer === 'text') {
       renderVocabText(currentQuestions, config);
+    } else if (config.renderer === 'open') {
+      renderOpenChoice(currentQuestions);
     } else {
       renderMcq(currentQuestions);
     }
@@ -93,6 +95,45 @@ let QuizCore = (() => {
 
       wrap.appendChild(optsDiv);
       wrap.appendChild(fb);
+      container.appendChild(wrap);
+    });
+  }
+
+  // Open (free text) answer for simple short choices (e.g. am/is/are).
+  // Expects each question to have: { id, text, correct, rule? }
+  function renderOpenChoice(questions) {
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'question';
+
+      const textDiv = document.createElement('div');
+      textDiv.className = 'question-text';
+      textDiv.textContent = (idx + 1) + '. ' + q.text;
+      wrap.appendChild(textDiv);
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'open-choice';
+      input.dataset.qid = q.id;
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      input.placeholder = 'הקלד/י תשובה (למשל: am)';
+      // Make the input feel like the blank in the sentence.
+      input.style.direction = 'ltr';
+      input.style.marginTop = '6px';
+      input.style.padding = '6px 8px';
+      input.style.minWidth = '120px';
+      wrap.appendChild(input);
+
+      const fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.id = 'fb-' + q.id;
+      wrap.appendChild(fb);
+
       container.appendChild(wrap);
     });
   }
@@ -253,8 +294,50 @@ function renderVocabDrag(questions) {
       return checkDrag();
     } else if (currentConfig.renderer === 'text') {
       return checkText();
+    } else if (currentConfig.renderer === 'open') {
+      return checkOpenChoice();
     } else {
       return checkMcq();
+    }
+  }
+
+  function checkOpenChoice() {
+    let correctCount = 0;
+    let total = currentQuestions.length;
+
+    const norm = (s) => String(s ?? '').trim().toLowerCase();
+
+    currentQuestions.forEach(q => {
+      const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
+      const raw = input ? input.value : '';
+      if (input) input.disabled = true;
+
+      const userAns = norm(raw);
+      const expected = norm(q.correct);
+      const isCorrect = userAns.length > 0 && userAns === expected;
+      if (isCorrect) correctCount++;
+
+      StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
+
+      const fb = document.getElementById('fb-' + q.id);
+      if (!fb) return;
+      fb.classList.remove('correct', 'wrong');
+
+      if (!userAns) {
+        fb.classList.add('wrong');
+        fb.textContent = '✗ לא נכתבה תשובה. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+      } else if (isCorrect) {
+        fb.classList.add('correct');
+        fb.textContent = '✓ נכון';
+      } else {
+        fb.classList.add('wrong');
+        fb.textContent = '✗ שגוי. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+      }
+    });
+
+    const result = document.getElementById('result');
+    if (result) {
+      result.textContent = `ציון: ${correctCount} מתוך ${total}`;
     }
   }
 
