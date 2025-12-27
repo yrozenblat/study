@@ -265,5 +265,146 @@
     "options": ["am", "is", "are"],
     "correct": "is",
     "rule": "The baby = he/she יחיד → is."
-  }
+  },
+  {
+  "id": "be39",
+  "text": "I _____ (not) ready.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "am not",
+  "rule": "עם I משתמשים ב-am → am not."
+},
+{
+  "id": "be40",
+  "text": "She _____ (not) happy today.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "She יחיד → is not."
+},
+{
+  "id": "be41",
+  "text": "They _____ (not) at home.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "They ברבים → are not."
+},
+{
+  "id": "be42",
+  "text": "We _____ (not) late.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "We → are not."
+},
+{
+  "id": "be43",
+  "text": "He _____ (not) hungry.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "He יחיד → is not."
+},
+{
+  "id": "be44",
+  "text": "I _____ (not) a teacher.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "am not",
+  "rule": "I → am not."
+},
+{
+  "id": "be45",
+  "text": "The dog _____ (not) outside.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "The dog יחיד → is not."
+},
+{
+  "id": "be46",
+  "text": "The kids _____ (not) tired.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "The kids ברבים → are not."
+},
+{
+  "id": "be47",
+  "text": "You _____ (not) wrong.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "You תמיד → are not."
+},
+{
+  "id": "be48",
+  "text": "It _____ (not) cold today.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "It → is not."
+},
+{
+  "id": "be49",
+  "text": "We _____ (not) friends.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "We → are not."
+},
+{
+  "id": "be50",
+  "text": "She _____ (not) at school.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "She יחיד → is not."
+},
+{
+  "id": "be51",
+  "text": "I _____ (not) sure.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "am not",
+  "rule": "I → am not."
+},
+{
+  "id": "be52",
+  "text": "The books _____ (not) new.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "The books ברבים → are not."
+},
+{
+  "id": "be53",
+  "text": "He _____ (not) my brother.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "He יחיד → is not."
+},
+{
+  "id": "be54",
+  "text": "They _____ (not) ready yet.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "They → are not."
+},
+{
+  "id": "be55",
+  "text": "It _____ (not) easy.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "It → is not."
+},
+{
+  "id": "be56",
+  "text": "I _____ (not) late.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "am not",
+  "rule": "I → am not."
+},
+{
+  "id": "be57",
+  "text": "You _____ (not) alone.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "are not",
+  "rule": "You → are not."
+},
+{
+  "id": "be58",
+  "text": "The room _____ (not) clean.",
+  "options": ["am not", "is not", "are not"],
+  "correct": "is not",
+  "rule": "The room יחיד → is not."
+}
+
 ]
