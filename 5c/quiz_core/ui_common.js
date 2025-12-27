@@ -63,37 +63,77 @@ let QuizCore = (() => {
     if (!container) return;
     container.innerHTML = '';
 
+    // Some grammar quizzes prefer an inline dropdown inserted into the blank (_____) instead
+    // of separate radio options below. Enabled via config.mcqInline.
+    const useInlineDropdown = !!(currentConfig && currentConfig.mcqInline);
+
     questions.forEach((q, idx) => {
       const wrap = document.createElement('div');
       wrap.className = 'question';
 
-      const textDiv = document.createElement('div');
-      textDiv.className = 'question-text';
-      textDiv.textContent = (idx + 1) + '. ' + q.text;
-      wrap.appendChild(textDiv);
+      // Inline dropdown in the blank (e.g., "I _____ ten years old.")
+      if (useInlineDropdown && typeof q.text === 'string' && q.text.includes('_____') && Array.isArray(q.options)) {
+        const line = document.createElement('div');
+        line.className = 'question-text';
+        line.style.direction = 'ltr';
 
-      const optsDiv = document.createElement('div');
-      optsDiv.className = 'options';
+        const parts = q.text.split('_____');
+        // Prefix with number
+        const num = document.createElement('span');
+        num.textContent = (idx + 1) + '. ';
+        line.appendChild(num);
+        line.appendChild(document.createTextNode(parts[0] || ''));
 
-      q.options.forEach(opt => {
-        const label = document.createElement('label');
-        label.className = 'option-label';
+        const sel = document.createElement('select');
+        sel.className = 'mcq-inline-select';
+        sel.dataset.qid = q.id;
+        sel.style.margin = '0 6px';
+        sel.style.padding = '2px 6px';
 
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = q.id;
-        radio.value = opt;
+        const ph = document.createElement('option');
+        ph.value = '';
+        ph.textContent = '—';
+        sel.appendChild(ph);
 
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(' ' + opt));
-        optsDiv.appendChild(label);
-      });
+        q.options.forEach(opt => {
+          const o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          sel.appendChild(o);
+        });
+
+        line.appendChild(sel);
+        line.appendChild(document.createTextNode(parts.slice(1).join('_____') || ''));
+        wrap.appendChild(line);
+      } else {
+        const textDiv = document.createElement('div');
+        textDiv.className = 'question-text';
+        textDiv.textContent = (idx + 1) + '. ' + q.text;
+        wrap.appendChild(textDiv);
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'options';
+
+        q.options.forEach(opt => {
+          const label = document.createElement('label');
+          label.className = 'option-label';
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = q.id;
+          radio.value = opt;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(' ' + opt));
+          optsDiv.appendChild(label);
+        });
+
+        wrap.appendChild(optsDiv);
+      }
 
       const fb = document.createElement('div');
       fb.className = 'feedback';
       fb.id = 'fb-' + q.id;
-
-      wrap.appendChild(optsDiv);
       wrap.appendChild(fb);
       container.appendChild(wrap);
     });
@@ -110,24 +150,53 @@ let QuizCore = (() => {
       const wrap = document.createElement('div');
       wrap.className = 'question';
 
-      const textDiv = document.createElement('div');
-      textDiv.className = 'question-text';
-      textDiv.textContent = (idx + 1) + '. ' + q.text;
-      wrap.appendChild(textDiv);
+      // Prefer placing the input inside the sentence blank if the question uses "_____".
+      if (typeof q.text === 'string' && q.text.includes('_____')) {
+        const line = document.createElement('div');
+        line.className = 'question-text';
+        line.style.direction = 'ltr';
 
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'open-choice';
-      input.dataset.qid = q.id;
-      input.autocomplete = 'off';
-      input.spellcheck = false;
-      input.placeholder = 'הקלד/י תשובה (למשל: am)';
-      // Make the input feel like the blank in the sentence.
-      input.style.direction = 'ltr';
-      input.style.marginTop = '6px';
-      input.style.padding = '6px 8px';
-      input.style.minWidth = '120px';
-      wrap.appendChild(input);
+        const parts = q.text.split('_____');
+        const num = document.createElement('span');
+        num.textContent = (idx + 1) + '. ';
+        line.appendChild(num);
+        line.appendChild(document.createTextNode(parts[0] || ''));
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'open-choice';
+        input.dataset.qid = q.id;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.placeholder = '';
+        input.style.direction = 'ltr';
+        input.style.textAlign = 'center';
+        input.style.margin = '0 6px';
+        input.style.padding = '2px 6px';
+        input.style.width = '70px';
+
+        line.appendChild(input);
+        line.appendChild(document.createTextNode(parts.slice(1).join('_____') || ''));
+        wrap.appendChild(line);
+      } else {
+        const textDiv = document.createElement('div');
+        textDiv.className = 'question-text';
+        textDiv.textContent = (idx + 1) + '. ' + q.text;
+        wrap.appendChild(textDiv);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'open-choice';
+        input.dataset.qid = q.id;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.placeholder = 'הקלד/י תשובה (למשל: am)';
+        input.style.direction = 'ltr';
+        input.style.marginTop = '6px';
+        input.style.padding = '6px 8px';
+        input.style.minWidth = '120px';
+        wrap.appendChild(input);
+      }
 
       const fb = document.createElement('div');
       fb.className = 'feedback';
@@ -346,12 +415,20 @@ function renderVocabDrag(questions) {
     let total = currentQuestions.length;
 
     currentQuestions.forEach(q => {
-      const radios = document.querySelectorAll(`input[name="${q.id}"]`);
       let chosen = null;
-      radios.forEach(r => {
-        if (r.checked) chosen = r.value;
-        r.disabled = true;
-      });
+
+      // Inline dropdown variant
+      const sel = document.querySelector(`select.mcq-inline-select[data-qid="${q.id}"]`);
+      if (sel) {
+        chosen = sel.value || null;
+        sel.disabled = true;
+      } else {
+        const radios = document.querySelectorAll(`input[name="${q.id}"]`);
+        radios.forEach(r => {
+          if (r.checked) chosen = r.value;
+          r.disabled = true;
+        });
+      }
 
       const isCorrect = (chosen === q.correct);
       if (isCorrect) correctCount++;
