@@ -2,6 +2,7 @@
   "quizId": "grammar_am_is_are",
   "numQuestions": 10,
   "renderer": "mcq",
+  "mcqInline": true,
   "selectionWeights": {
     "rare": 0.3,
     "weak": 0.5,
