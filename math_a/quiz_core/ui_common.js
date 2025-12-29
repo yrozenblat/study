@@ -24,7 +24,31 @@ let QuizCore = (() => {
     }
   }
 
-  function setCheckButtonEnabled(enabled) {
+  
+  function renderMathIfNeeded(rootEl) {
+    try {
+      if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        const target = rootEl || document;
+        window.MathJax.typesetPromise([target]);
+      } else if (window.MathJax && typeof window.MathJax.typeset === 'function') {
+        window.MathJax.typeset();
+      }
+    } catch (_) {
+      // No-op
+    }
+  }
+
+  function buildQuestionHTML(idx, q) {
+    const n = (idx + 1) + '. ';
+    if (q && typeof q.tex === 'string' && q.tex.trim()) {
+      // Force LTR to avoid RTL reordering in Hebrew UI.
+      const tex = q.tex.trim();
+      return n + '<span class="math" dir="ltr" style="direction:ltr; unicode-bidi:isolate;">\\(' + tex + '\\)</span>';
+    }
+    return n + String(q && (q.text ?? q.question ?? '') ?? '');
+  }
+
+function setCheckButtonEnabled(enabled) {
     // Prefer an explicit ID if present, fallback to the inline-onclick button.
     const btn = document.getElementById('btn-check') || document.querySelector('button[onclick="checkQuiz()"]');
     if (btn) btn.disabled = !enabled;
@@ -108,7 +132,8 @@ let QuizCore = (() => {
       } else {
         const textDiv = document.createElement('div');
         textDiv.className = 'question-text';
-        textDiv.textContent = (idx + 1) + '. ' + q.text;
+        textDiv.innerHTML = buildQuestionHTML(idx, q);
+        renderMathIfNeeded(textDiv);
         wrap.appendChild(textDiv);
 
         const optsDiv = document.createElement('div');
@@ -181,7 +206,8 @@ let QuizCore = (() => {
       } else {
         const textDiv = document.createElement('div');
         textDiv.className = 'question-text';
-        textDiv.textContent = (idx + 1) + '. ' + q.text;
+        textDiv.innerHTML = buildQuestionHTML(idx, q);
+        renderMathIfNeeded(textDiv);
         wrap.appendChild(textDiv);
 
         const input = document.createElement('input');
