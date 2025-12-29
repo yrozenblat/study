@@ -1,0 +1,269 @@
+[
+  {
+    "id": "th01",
+    "text": "_____ a computer on the desk.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "עם שם עצם יחיד משתמשים ב-There is."
+  },
+  {
+    "id": "th02",
+    "text": "_____ two pencils in the box.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "עם שם עצם ברבים משתמשים ב-There are."
+  },
+  {
+    "id": "th03",
+    "text": "_____ some books on the table.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "some books → רבים, לכן There are."
+  },
+  {
+    "id": "th04",
+    "text": "_____ a bag under the chair.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a bag יחיד → There is."
+  },
+  {
+    "id": "th05",
+    "text": "_____ six cars in the street.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "six cars ברבים → There are."
+  },
+  {
+    "id": "th06",
+    "text": "_____ an egg in the fridge.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "an egg יחיד → There is."
+  },
+  {
+    "id": "th07",
+    "text": "_____ some children in the park.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "children ברבים → There are."
+  },
+  {
+    "id": "th08",
+    "text": "_____ nine red markers in the box.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "nine red markers ברבים → There are."
+  },
+
+  {
+    "id": "th09",
+    "text": "_____ a cat on the sofa.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a cat יחיד → There is."
+  },
+  {
+    "id": "th10",
+    "text": "_____ three apples in the bag.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "three apples ברבים → There are."
+  },
+  {
+    "id": "th11",
+    "text": "_____ some milk in the glass.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "milk שם לא ספיר → There is."
+  },
+  {
+    "id": "th12",
+    "text": "_____ a teacher in the room.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a teacher יחיד → There is."
+  },
+  {
+    "id": "th13",
+    "text": "_____ many students outside.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "many students ברבים → There are."
+  },
+  {
+    "id": "th14",
+    "text": "_____ an orange on the plate.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "an orange יחיד → There is."
+  },
+  {
+    "id": "th15",
+    "text": "_____ two dogs in the yard.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "two dogs ברבים → There are."
+  },
+  {
+    "id": "th16",
+    "text": "_____ some water on the floor.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "water לא ספיר → There is."
+  },
+  {
+    "id": "th17",
+    "text": "_____ a book in my bag.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a book יחיד → There is."
+  },
+  {
+    "id": "th18",
+    "text": "_____ five chairs in the room.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "five chairs ברבים → There are."
+  },
+  {
+    "id": "th19",
+    "text": "_____ some juice in the bottle.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "juice לא ספיר → There is."
+  },
+  {
+    "id": "th20",
+    "text": "_____ a window near the door.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a window יחיד → There is."
+  },
+  {
+    "id": "th21",
+    "text": "_____ many birds in the sky.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "many birds ברבים → There are."
+  },
+  {
+    "id": "th22",
+    "text": "_____ a sandwich on the table.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a sandwich יחיד → There is."
+  },
+  {
+    "id": "th23",
+    "text": "_____ some toys on the floor.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "toys ברבים → There are."
+  },
+  {
+    "id": "th24",
+    "text": "_____ an umbrella in the car.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "an umbrella יחיד → There is."
+  },
+  {
+    "id": "th25",
+    "text": "_____ four windows in the classroom.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "four windows ברבים → There are."
+  },
+  {
+    "id": "th26",
+    "text": "_____ some bread on the plate.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "bread לא ספיר → There is."
+  },
+  {
+    "id": "th27",
+    "text": "_____ a clock on the wall.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a clock יחיד → There is."
+  },
+  {
+    "id": "th28",
+    "text": "_____ seven pictures on the wall.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "seven pictures ברבים → There are."
+  },
+  {
+    "id": "th29",
+    "text": "_____ some cheese in the fridge.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "cheese לא ספיר → There is."
+  },
+  {
+    "id": "th30",
+    "text": "_____ a playground near the school.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a playground יחיד → There is."
+  },
+  {
+    "id": "th31",
+    "text": "_____ many trees in the park.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "many trees ברבים → There are."
+  },
+  {
+    "id": "th32",
+    "text": "_____ some sand in my shoes.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "sand לא ספיר → There is."
+  },
+  {
+    "id": "th33",
+    "text": "_____ a bus stop near here.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a bus stop יחיד → There is."
+  },
+  {
+    "id": "th34",
+    "text": "_____ ten students in the class.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "ten students ברבים → There are."
+  },
+  {
+    "id": "th35",
+    "text": "_____ some homework on the desk.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "homework לא ספיר → There is."
+  },
+  {
+    "id": "th36",
+    "text": "_____ a picture above the bed.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "a picture יחיד → There is."
+  },
+  {
+    "id": "th37",
+    "text": "_____ four cups on the table.",
+    "options": ["There is", "There are"],
+    "correct": "There are",
+    "rule": "four cups ברבים → There are."
+  },
+  {
+    "id": "th38",
+    "text": "_____ some sugar in my tea.",
+    "options": ["There is", "There are"],
+    "correct": "There is",
+    "rule": "sugar לא ספיר → There is."
+  }
+]

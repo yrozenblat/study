@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>מבחן am / is / are</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+    .question { margin-bottom: 12px; }
+    .question-text { direction: ltr; }
+    .options { direction: ltr; margin-right: 20px; }
+    .feedback.correct { color: green; }
+    .feedback.wrong { color: red; }
+    #result { margin-top: 15px; font-weight: bold; }
+  </style>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2 id="quiz-title">מבחן am / is / are</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a id="stats-link" href="stats.html" target="_blank">סטטיסטיקה</a>
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+  <script>
+    function getParam(name) {
+      const p = new URLSearchParams(location.search);
+      return p.get(name);
+    }
+
+    function startQuiz() {
+      const mode = (getParam('mode') || 'mcq').toLowerCase();
+      const configUrl = (mode === 'open') ? 'quiz_config_open.json' : 'quiz_config.json';
+
+      const title = document.getElementById('quiz-title');
+      if (title) {
+        title.textContent = (mode === 'open') ? 'מבחן am / is / are — פתוח' : 'מבחן am / is / are — בחירה';
+      }
+
+      QuizCore.init({
+        configUrl,
+        questionsUrl: 'questions.json'
+      });
+    }
+
+    // Password-protect opening stats from the quiz page.
+    (function () {
+      const link = document.getElementById('stats-link');
+      if (!link) return;
+      link.addEventListener('click', (e) => {
+        const pass = prompt('סיסמה לצפייה בסטטיסטיקה:');
+        if (pass !== '333') {
+          e.preventDefault();
+          alert('סיסמה שגויה');
+        }
+      });
+    })();
+    startQuiz();
+  </script>
+</body>
+</html>
