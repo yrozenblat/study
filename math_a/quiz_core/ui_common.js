@@ -55,7 +55,9 @@ let QuizCore = (() => {
     if (q && typeof q.tex === 'string' && q.tex.trim()) {
       // Force LTR to avoid RTL reordering in Hebrew UI.
       const tex = q.tex.trim();
-      return n + '<span class="math" dir="ltr" style="direction:ltr; unicode-bidi:isolate;">\\(' + tex + '\\)</span>';
+      // Use \displaystyle so fractions and exponents are rendered in a more "book-like" way
+      // (larger, with proper fraction bars), even inside an RTL (Hebrew) page.
+      return n + '<span class="math" dir="ltr" style="direction:ltr; unicode-bidi:isolate;">\\(\\displaystyle ' + tex + '\\)</span>';
     }
     const plain = (q?.text ?? q?.question ?? '');
     return n + String(plain);
