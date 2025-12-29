@@ -15,10 +15,7 @@
   <div id="selector">
     <label for="quizSelect">בחר מבחן:</label>
     <select id="quizSelect">
-      <option value="vocab">אוצר מילים</option>
-      <option value="quizzes/a_an/quiz.html">a / an</option>
-      <option value="am_is_are">am / is / are</option>
-      <option value="quizzes/there_is_are/quiz.html">There is / There are</option>
+      <!-- options populated from quiz_catalog.json -->
     </select>
 
     <div id="vocabOptions" style="display:none; margin-top:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
@@ -45,6 +42,7 @@
   <iframe id="quizFrame" src="quizzes/vocab/quiz.html?mode=drag"></iframe>
 
   <script>
+
     const sel = document.getElementById('quizSelect');
     const frame = document.getElementById('quizFrame');
     const vocabOptions = document.getElementById('vocabOptions');
@@ -52,6 +50,29 @@
     const amOptions = document.getElementById('amOptions');
 
     let vocabTags = [];
+    let catalog = null;
+    let quizById = {};
+
+    async function loadCatalog() {
+      if (catalog) return catalog;
+      catalog = await fetch('quiz_catalog.json').then(r => r.json());
+      quizById = {};
+      (catalog.quizzes || []).forEach(q => { if (q && q.id) quizById[q.id] = q; });
+      return catalog;
+    }
+
+    async function populateSelect() {
+      const cat = await loadCatalog();
+      sel.innerHTML = '';
+      (cat.quizzes || []).forEach(q => {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = q.title || q.id;
+        sel.appendChild(opt);
+      });
+      // default to vocab if exists
+      if (quizById['vocab']) sel.value = 'vocab';
+    }
 
     async function loadVocabTagsOnce() {
       if (vocabTags.length) return vocabTags;
@@ -72,75 +93,100 @@
     }
 
     function getSelectedTags() {
-      const checked = Array.from(document.querySelectorAll('#tagList input[type="checkbox"]:checked'));
-      return checked.map(c => c.value);
+      const checked = Array.from(document.querySelectorAll('input[name="vocabTag"]:checked'));
+      return checked.map(x => x.value);
     }
 
-    function updateFrame() {
-      if (sel.value === 'vocab') {
-        const mode = getSelectedVocabMode();
-        const tags = getSelectedTags();
-        const tagParam = tags.length ? ('&tags=' + encodeURIComponent(tags.join(','))) : '';
-        frame.src = 'quizzes/vocab/quiz.html?mode=' + encodeURIComponent(mode) + tagParam;
-      } else if (sel.value === 'am_is_are') {
-        const r = document.querySelector('input[name="amMode"]:checked');
-        const mode = r ? r.value : 'mcq';
-        frame.src = 'quizzes/am_is_are/quiz.html?mode=' + encodeURIComponent(mode);
+    function getSelectedAmMode() {
+      const r = document.querySelector('input[name="amMode"]:checked');
+      return r ? r.value : 'mcq';
+    }
+
+    async function refreshVocabTagsUI() {
+      const tags = await loadVocabTagsOnce();
+      tagList.innerHTML = '';
+      tags.forEach(t => {
+        const label = document.createElement('label');
+        label.style.display = 'inline-block';
+        label.style.margin = '4px 8px';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.name = 'vocabTag';
+        cb.value = t;
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(' ' + t));
+        tagList.appendChild(label);
+      });
+    }
+
+    function setFrameSrc(url) {
+      frame.src = url;
+    }
+
+    function buildVocabUrl() {
+      const q = quizById['vocab'];
+      const base = (q && q.page) ? q.page : 'quizzes/vocab/quiz.html';
+      const mode = getSelectedVocabMode();
+      const tags = getSelectedTags();
+      const params = new URLSearchParams();
+      params.set('mode', mode);
+      if (tags.length) params.set('tags', tags.join(','));
+      return base + '?' + params.toString();
+    }
+
+    function buildAmUrl() {
+      const q = quizById['am_is_are'];
+      const base = (q && q.page) ? q.page : 'quizzes/am_is_are/quiz.html';
+      const mode = getSelectedAmMode(); // mcq/open
+      const params = new URLSearchParams();
+      params.set('mode', mode);
+      return base + '?' + params.toString();
+    }
+
+    function hideAllOptions() {
+      vocabOptions.style.display = 'none';
+      amOptions.style.display = 'none';
+    }
+
+    async function onSelectChanged() {
+      const id = sel.value;
+      hideAllOptions();
+
+      if (id === 'vocab') {
+        vocabOptions.style.display = 'block';
+        await refreshVocabTagsUI();
+        setFrameSrc(buildVocabUrl());
+        return;
+      }
+
+      if (id === 'am_is_are') {
+        amOptions.style.display = 'block';
+        setFrameSrc(buildAmUrl());
+        return;
+      }
+
+      const q = quizById[id];
+      if (q && q.page) {
+        setFrameSrc(q.page);
       } else {
-        frame.src = sel.value;
+        // Fallback: treat as direct URL if catalog is missing/old
+        setFrameSrc(id);
       }
     }
 
-    async function showVocabOptions(show) {
-      vocabOptions.style.display = show ? 'block' : 'none';
-      if (show) {
-        const tags = await loadVocabTagsOnce();
-        tagList.innerHTML = '';
-        if (!tags.length) {
-          document.getElementById('tagBox').style.display = 'none';
-        } else {
-          document.getElementById('tagBox').style.display = 'block';
-          tags.forEach(t => {
-            const label = document.createElement('label');
-            label.style.display = 'inline-flex';
-            label.style.alignItems = 'center';
-            label.style.gap = '6px';
-            const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.value = t;
-            cb.addEventListener('change', updateFrame);
-            label.appendChild(cb);
-            const span = document.createElement('span');
-            span.textContent = t;
-            label.appendChild(span);
-            tagList.appendChild(label);
-          });
-        }
-      }
-    }
-
-    function showAmOptions(show) {
-      amOptions.style.display = show ? 'block' : 'none';
-    }
-
-    sel.addEventListener('change', async () => {
-      const isVocab = sel.value === 'vocab';
-      const isAm = sel.value === 'am_is_are';
-      await showVocabOptions(isVocab);
-      showAmOptions(isAm);
-      updateFrame();
-    });
-
+    // Wire UI events
+    sel.addEventListener('change', onSelectChanged);
+    document.querySelectorAll('input[name="vocabMode"]').forEach(r => r.addEventListener('change', () => setFrameSrc(buildVocabUrl())));
     document.addEventListener('change', (e) => {
-      if (e.target && (e.target.name === 'vocabMode' || e.target.name === 'amMode')) updateFrame();
+      if (e.target && e.target.name === 'vocabTag') setFrameSrc(buildVocabUrl());
+      if (e.target && e.target.name === 'amMode') setFrameSrc(buildAmUrl());
     });
 
-    // initial
     (async () => {
-      await showVocabOptions(true);
-      showAmOptions(false);
-      updateFrame();
+      await populateSelect();
+      await onSelectChanged();
     })();
+
   </script>
 </body>
 </html>
