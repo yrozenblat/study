@@ -57,7 +57,8 @@ let QuizCore = (() => {
       const tex = q.tex.trim();
       return n + '<span class="math" dir="ltr" style="direction:ltr; unicode-bidi:isolate;">\\(' + tex + '\\)</span>';
     }
-    return n + String(q && (q.text ?? q.question ?? '') ?? '');
+    const plain = (q?.text ?? q?.question ?? '');
+    return n + String(plain);
   }
 
 function setCheckButtonEnabled(enabled) {
