@@ -3,6 +3,18 @@ let QuizCore = (() => {
   let currentConfig = null;
   let hasChecked = false;
 
+  function showLoadError(msg) {
+    const container = document.getElementById('quiz-container');
+    if (container) {
+      container.innerHTML = '<div style="padding:12px;border:1px solid #f0c36d;background:#fff8e1;color:#333;">' +
+        (msg || 'לא הצלחתי לטעון את השאלות. ודאו שאתם פותחים דרך שרת (ולא file://).') +
+        '<br><br><div style="direction:ltr;unicode-bidi:isolate;font-family:monospace;">' +
+        'Windows: py -m http.server 8000<br>Mac/Linux: python3 -m http.server 8000' +
+        '</div><br>ואז גלשו ל: <span style="direction:ltr;unicode-bidi:isolate;">http://localhost:8000</span>' +
+        '</div>';
+    }
+  }
+
   // Browser Text-to-Speech for English words/phrases.
   // Requires a user gesture (we call it on click), so it won't auto-play.
   function speakEnglish(text) {
@@ -56,10 +68,23 @@ function setCheckButtonEnabled(enabled) {
 
   async function init(options) {
     const { configUrl, questionsUrl } = options;
-    const [config, questions] = await Promise.all([
-      fetch(configUrl).then(r => r.json()),
-      fetch(questionsUrl).then(r => r.json())
-    ]);
+    let config, questions;
+    try {
+      [config, questions] = await Promise.all([
+        fetch(configUrl).then(r => {
+          if (!r.ok) throw new Error('config fetch failed: ' + r.status);
+          return r.json();
+        }),
+        fetch(questionsUrl).then(r => {
+          if (!r.ok) throw new Error('questions fetch failed: ' + r.status);
+          return r.json();
+        })
+      ]);
+    } catch (e) {
+      console.error(e);
+      showLoadError('לא הצלחתי לטעון את קבצי ה־JSON של המבחן. זה קורה בדרך כלל כשפותחים את הקבצים ישירות (file://).');
+      return;
+    }
     currentConfig = config;
     const stats = StudyStorage.getQuizStats(config.quizId);
     currentQuestions = QuestionSelector.select(questions, stats, config);
