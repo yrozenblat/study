@@ -8,12 +8,14 @@
     h2 { margin-top: 0; }
     .question { margin-bottom: 12px; }
     /* Math is best shown LTR */
-    .question-text { direction: ltr; }
+    .question-text { direction: ltr; unicode-bidi: isolate; }
     .feedback.correct { color: green; }
     .feedback.wrong { color: red; }
     #result { margin-top: 15px; font-weight: bold; }
     input.open-choice { width: 90px !important; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <script src="../../quiz_core/storage.js"></script>
   <script src="../../quiz_core/strength.js"></script>
   <script src="../../quiz_core/selection.js"></script>
