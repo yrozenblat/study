@@ -1,0 +1,16 @@
+{
+  "quizId": "math_algebra_sub_g7",
+  "numQuestions": 2,
+  "renderer": "open",
+  "selectionWeights": {
+    "new": 5,
+    "weak": 4,
+    "medium": 2,
+    "strong": 1
+  },
+  "weakThreshold": 0.6,
+  "mediumThreshold": 0.85,
+  "noveltyK": 1.5,
+  "minNewRatio": 0.2,
+  "answerPlaceholder": "למשל: 12"
+}
