@@ -55,9 +55,35 @@
 
     async function loadCatalog() {
       if (catalog) return catalog;
-      catalog = await fetch('quiz_catalog.json').then(r => r.json());
+
+      const params = new URLSearchParams(location.search);
+      const name = (params.get('name') || '').trim();
+
+      // Prefer per-name catalog: catalogs/<name>.json
+      const perNameUrl = name ? ('catalogs/' + encodeURIComponent(name) + '.json') : null;
+
+      async function tryFetch(url) {
+        try {
+          const r = await fetch(url, { cache: 'no-cache' });
+          if (!r.ok) return null;
+          return await r.json();
+        } catch (e) {
+          return null;
+        }
+      }
+
+      const perNameCatalog = perNameUrl ? await tryFetch(perNameUrl) : null;
+      catalog = perNameCatalog || await tryFetch('quiz_catalog.json') || { quizzes: [] };
+
       quizById = {};
       (catalog.quizzes || []).forEach(q => { if (q && q.id) quizById[q.id] = q; });
+
+      // Optional: show who this catalog is for
+      const whoEl = document.getElementById('catalog-owner');
+      if (whoEl) {
+        whoEl.textContent = name ? ('קטלוג: ' + name) : '';
+      }
+
       return catalog;
     }
 
