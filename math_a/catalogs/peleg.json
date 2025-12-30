@@ -1,0 +1,17 @@
+{
+  "_comment_1": "Auto-generated catalog for peleg (math g7)",
+  "quizzes": [
+    {
+      "id": "math_order_ops_g7",
+      "title": "מתמטיקה כיתה ז – סדר פעולות",
+      "page": "quizzes/math_order_ops_g7/quiz.html",
+      "stats": "quizzes/math_order_ops_g7/stats.html"
+    },
+    {
+      "id": "math_algebra_sub_g7",
+      "title": "מתמטיקה כיתה ז – הצבה בביטויים אלגבריים",
+      "page": "quizzes/math_algebra_sub_g7/quiz.html",
+      "stats": "quizzes/math_algebra_sub_g7/stats.html"
+    }
+  ]
+}
