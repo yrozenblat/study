@@ -15,6 +15,11 @@
     .feedback.wrong { color: red; }
     #result { margin-top: 15px; font-weight: bold; }
     input.open-choice { width: 90px !important; }
+    /* Layout: keep input close to the question (not pushed to the far side) */
+    .vocab-row { display: flex; align-items: center; gap: 14px; margin: 14px 0; direction: ltr; }
+    .vocab-row .arabic-label { direction: ltr; unicode-bidi: isolate; font-size: 20px; }
+    .vocab-row .text-answer { width: 180px; font-size: 16px; padding: 6px 8px; }
+    .vocab-row .feedback { direction: rtl; margin-inline-start: 10px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 

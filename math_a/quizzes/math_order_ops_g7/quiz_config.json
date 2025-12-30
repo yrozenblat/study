@@ -11,5 +11,6 @@
   "weakThreshold": 0.6,
   "mediumThreshold": 0.85,
   "noveltyK": 1.5,
-  "minNewRatio": 0.2
+  "minNewRatio": 0.2,
+  "answerPlaceholder": "למשל: 4 או 5/2"
 }
