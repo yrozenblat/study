@@ -361,6 +361,17 @@ function renderVocabDrag(questions) {
       .replace(/\s+/g, ' ');
   }
 
+  function getExpectedAnswer(q) {
+    // Support multiple quiz formats:
+    // - math/text quizzes: q.correct
+    // - vocab/open-choice quizzes: q.answers[0] or q.answer
+    if (q && q.correct !== undefined && q.correct !== null && String(q.correct).length) return String(q.correct);
+    if (q && Array.isArray(q.answers) && q.answers.length) return String(q.answers[0]);
+    if (q && q.answer !== undefined && q.answer !== null && String(q.answer).length) return String(q.answer);
+    return '';
+  }
+
+
   function renderVocabText(questions, config) {
     const container = document.getElementById('quiz-container');
     if (!container) return;
@@ -391,7 +402,7 @@ function renderVocabDrag(questions) {
       input.type = 'text';
       input.className = 'text-answer';
       input.dataset.qid = q.id;
-      input.placeholder = 'תרגום בעברית';
+      input.placeholder = (currentConfig && currentConfig.answerPlaceholder) ? currentConfig.answerPlaceholder : 'תרגום בעברית';
       input.autocomplete = 'off';
       input.spellcheck = false;
       row.appendChild(input);
@@ -436,7 +447,7 @@ function renderVocabDrag(questions) {
       if (input) input.disabled = true;
 
       const userAns = norm(raw);
-      const expected = norm(q.correct);
+      const expected = norm(getExpectedAnswer(q));
       const isCorrect = userAns.length > 0 && userAns === expected;
       if (isCorrect) correctCount++;
 
@@ -448,13 +459,13 @@ function renderVocabDrag(questions) {
 
       if (!userAns) {
         fb.classList.add('wrong');
-        fb.textContent = '✗ לא נכתבה תשובה. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+        fb.textContent = '✗ לא נכתבה תשובה. תשובה נכונה: ' + getExpectedAnswer(q) + (q.rule ? ' – ' + q.rule : '');
       } else if (isCorrect) {
         fb.classList.add('correct');
         fb.textContent = '✓ נכון';
       } else {
         fb.classList.add('wrong');
-        fb.textContent = '✗ שגוי. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+        fb.textContent = '✗ שגוי. תשובה נכונה: ' + getExpectedAnswer(q) + (q.rule ? ' – ' + q.rule : '');
       }
     });
 
@@ -484,7 +495,7 @@ function renderVocabDrag(questions) {
         });
       }
 
-      const isCorrect = (chosen === q.correct);
+      const isCorrect = (chosen === getExpectedAnswer(q));
       if (isCorrect) correctCount++;
 
       StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
@@ -495,13 +506,13 @@ function renderVocabDrag(questions) {
 
       if (!chosen) {
         fb.classList.add('wrong');
-        fb.textContent = '✗ לא נבחרה תשובה. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+        fb.textContent = '✗ לא נבחרה תשובה. תשובה נכונה: ' + getExpectedAnswer(q) + (q.rule ? ' – ' + q.rule : '');
       } else if (isCorrect) {
         fb.classList.add('correct');
         fb.textContent = '✓ נכון';
       } else {
         fb.classList.add('wrong');
-        fb.textContent = '✗ שגוי. תשובה נכונה: ' + q.correct + (q.rule ? ' – ' + q.rule : '');
+        fb.textContent = '✗ שגוי. תשובה נכונה: ' + getExpectedAnswer(q) + (q.rule ? ' – ' + q.rule : '');
       }
     });
 
