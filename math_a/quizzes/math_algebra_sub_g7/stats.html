@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>סטטיסטיקה – חיבור וחיסור</title>
+  <title>סטטיסטיקה</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
     table { border-collapse: collapse; width: 100%; }
@@ -19,7 +19,7 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-  <h2>סטטיסטיקה – חיבור וחיסור</h2>
+  <h2>סטטיסטיקה</h2>
   <div id="controls">
     <button onclick="loadStats()">רענן</button>
     <button onclick="resetStats()">איפוס סטטיסטיקה</button>
@@ -39,7 +39,28 @@
   </table>
 
   <script>
-    const QUIZ_ID = "math_algebra_sub_g7";
+    let QUIZ_ID = null;
+    let QUESTIONS = [];
+    let CONFIG = null;
+
+    async function initPage() {
+      try {
+        const cfgResp = await fetch('quiz_config.json', { cache: 'no-store' });
+        CONFIG = await cfgResp.json();
+        QUIZ_ID = CONFIG.quizId || QUIZ_ID || 'unknown_quiz';
+        const title = 'סטטיסטיקה – ' + (CONFIG.title || QUIZ_ID);
+        document.title = title;
+        const h2 = document.querySelector('h2');
+        if (h2) h2.textContent = title;
+
+        const qResp = await fetch('questions.json', { cache: 'no-store' });
+        QUESTIONS = await qResp.json();
+      } catch (e) {
+        console.error('Failed to init stats page', e);
+      }
+    initPage();
+    }
+
 
     async function loadStats() {
       const stats = StudyStorage.getQuizStats(QUIZ_ID);
@@ -85,13 +106,12 @@
       const code = prompt('סיסמה לאיפוס סטטיסטיקה:');
       if (code === '333') {
         StudyStorage.resetQuiz(QUIZ_ID);
-        loadStats();
+    initPage();
       } else if (code !== null) {
         alert('קוד שגוי');
       }
     }
-
-    loadStats();
+    initPage();
   </script>
 </body>
 </html>
