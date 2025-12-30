@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>מבחן מתמטיקה כיתה ז – סדרה חשבונית (איבר ראשון והפרש)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+    .question { margin-bottom: 12px; }
+    /* Math is best shown LTR */
+    .question-text { direction: ltr; unicode-bidi: isolate; }
+    /* Make MathJax a bit larger for readability (especially fractions) */
+    .math mjx-container { font-size: 135%; }
+    .feedback.correct { color: green; }
+    .feedback.wrong { color: red; }
+    #result { margin-top: 15px; font-weight: bold; }
+    input.open-choice { width: 90px !important; }
+    /* Layout: keep input close to the question (not pushed to the far side) */
+    .vocab-row { display: flex; align-items: center; gap: 14px; margin: 14px 0; direction: ltr; }
+    .vocab-row .arabic-label { direction: ltr; unicode-bidi: isolate; font-size: 20px; }
+    .vocab-row .text-answer { width: 180px; font-size: 16px; padding: 6px 8px; }
+    .vocab-row .feedback { direction: rtl; margin-inline-start: 10px; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2>מבחן מתמטיקה כיתה ז – סדרה חשבונית (איבר ראשון והפרש)</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a href="stats.html" target="_blank">סטטיסטיקה</a>
+
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+
+  <script>
+    function startQuiz() {
+      QuizCore.init({
+        configUrl: 'quiz_config.json',
+        questionsUrl: 'questions.json'
+      });
+    }
+    startQuiz();
+  </script>
+</body>
+</html>
