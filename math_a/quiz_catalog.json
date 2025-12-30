@@ -60,7 +60,8 @@
     {
       "id": "math_arithmetic_seq_g7",
       "title": "מתמטיקה כיתה ז – סדרה חשבונית (איבר ראשון והפרש)",
-      "path": "quizzes/math_arithmetic_seq_g7/quiz.html"
+      "page": "quizzes/math_arithmetic_seq_g7/quiz.html",
+      "stats": "quizzes/math_arithmetic_seq_g7/stats.html"
     }
   ]
 }
