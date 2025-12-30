@@ -52,12 +52,15 @@ let QuizCore = (() => {
 
   function buildQuestionHTML(idx, q) {
     const n = (idx + 1) + '. ';
-    if (q && typeof q.tex === 'string' && q.tex.trim()) {
-      // Force LTR to avoid RTL reordering in Hebrew UI.
+    const hasTex = q && typeof q.tex === 'string' && q.tex.trim();
+    const heText = (q && typeof q.heText === 'string') ? q.heText.trim() : '';
+    if (hasTex) {
+      // Force LTR for math to avoid RTL reordering in Hebrew UI.
       const tex = q.tex.trim();
-      // Use \displaystyle so fractions and exponents are rendered in a more "book-like" way
-      // (larger, with proper fraction bars), even inside an RTL (Hebrew) page.
-      return n + '<span class="math" dir="ltr" style="direction:ltr; unicode-bidi:isolate;">\\(\\displaystyle ' + tex + '\\)</span>';
+      // Use \displaystyle so fractions and exponents are rendered in a more "book-like" way.
+      const mathSpan = '<span class="math" dir="ltr" style="direction:ltr;unicode-bidi:isolate;">\\(\\displaystyle ' + tex + '\\)</span>';
+      const heSpan = heText ? (' <span class="he-text" dir="rtl" style="direction:rtl;unicode-bidi:isolate;">' + heText + '</span>') : '';
+      return n + mathSpan + heSpan;
     }
     const plain = (q?.text ?? q?.question ?? '');
     return n + String(plain);
