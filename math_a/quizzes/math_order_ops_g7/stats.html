@@ -16,6 +16,7 @@
   </style>
   <script src="../../quiz_core/storage.js"></script>
   <script src="../../quiz_core/strength.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <h2>סטטיסטיקה – חיבור וחיסור</h2>
@@ -60,7 +61,7 @@
         const tdIndex = document.createElement('td');
         tdIndex.textContent = idx + 1;
         const tdQ = document.createElement('td');
-        tdQ.textContent = q.text;
+        tdQ.innerHTML = (q.tex ? `\\(\\displaystyle ${q.tex}\\)` : (q.text || q.question || q.heText || ''));
         const tdC = document.createElement('td');
         tdC.textContent = s.correct;
         const tdT = document.createElement('td');
@@ -81,8 +82,8 @@
     }
 
     function resetStats() {
-      const code = prompt('הכנס קוד איפוס:');
-      if (code === '3333') {
+      const code = prompt('סיסמה לאיפוס סטטיסטיקה:');
+      if (code === '333') {
         StudyStorage.resetQuiz(QUIZ_ID);
         loadStats();
       } else if (code !== null) {
