@@ -697,7 +697,7 @@ function renderVocabDrag(questions) {
 
   function selectUnitParts(units, stats, config) {
     const unitsPerQuiz = Number(config.unitsPerQuiz || 3);
-    // Rank units by their weakest part (max weakness)
+
     const ranked = (units || []).map(u => {
       const unitId = u.unitId || u.id || '';
       const parts = Array.isArray(u.parts) ? u.parts : [];
@@ -711,13 +711,40 @@ function renderVocabDrag(questions) {
       return { u, maxW };
     });
 
-    ranked.sort((a, b) => {
-      if (b.maxW !== a.maxW) return b.maxW - a.maxW;
-      // tie-break: stable but slightly varied
-      return String(a.u.unitId || a.u.id || '').localeCompare(String(b.u.unitId || b.u.id || ''));
-    });
+    // Sort by weakness, but DO NOT make it fully deterministic – we want variety.
+    ranked.sort((a, b) => b.maxW - a.maxW);
 
-    return ranked.slice(0, unitsPerQuiz).map(x => x.u);
+    // Take a pool of top candidates, then sample without replacement weighted by weakness.
+    const topM = Math.min(ranked.length, Math.max(unitsPerQuiz * 4, 8));
+    const pool = ranked.slice(0, topM);
+
+    function pickOne(list) {
+      // weight = (maxW)^2 with small jitter so ties don't repeat forever
+      const weights = list.map(x => Math.max(0.0001, (x.maxW * x.maxW) + (Math.random() * 0.0005)));
+      const sum = weights.reduce((a, b) => a + b, 0);
+      let r = Math.random() * sum;
+      for (let i = 0; i < list.length; i++) {
+        r -= weights[i];
+        if (r <= 0) return i;
+      }
+      return list.length - 1;
+    }
+
+    const chosen = [];
+    const tmp = pool.slice();
+    while (chosen.length < unitsPerQuiz && tmp.length) {
+      const idx = pickOne(tmp);
+      chosen.push(tmp[idx].u);
+      tmp.splice(idx, 1);
+    }
+
+    // Fallback: if not enough, fill deterministically from remaining
+    if (chosen.length < unitsPerQuiz) {
+      const remaining = ranked.map(x => x.u).filter(u => !chosen.includes(u));
+      chosen.push(...remaining.slice(0, unitsPerQuiz - chosen.length));
+    }
+
+    return chosen;
   }
 
   function renderUnitParts(units, config) {
@@ -760,7 +787,12 @@ function renderVocabDrag(questions) {
         return { p, w: weaknessScore(stats[key]) };
       }).sort((a, b) => b.w - a.w);
 
-      const chosen = rankedParts.slice(0, Math.min(partsPerUnit, rankedParts.length)).map(x => x.p);
+      // Always include the "formula" part if present (like a real test).
+      const formulaPart = rankedParts.find(x => (x.p.task === 'formula') || ((x.p.partId || x.p.id || '') === 'formula'))?.p || null;
+
+      const others = rankedParts.filter(x => x.p !== formulaPart);
+      const need = Math.max(0, Math.min(partsPerUnit, rankedParts.length) - (formulaPart ? 1 : 0));
+      const chosen = (formulaPart ? [formulaPart] : []).concat(others.slice(0, need).map(x => x.p));
 
       // display order: easy -> hard (difficulty asc, fallback by task)
       chosen.sort((p1, p2) => {
