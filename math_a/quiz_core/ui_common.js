@@ -727,26 +727,6 @@ function renderVocabDrag(questions) {
     if (!container) return;
     container.innerHTML = '';
 
-    // Header buttons
-    const controls = document.createElement('div');
-    controls.style.display = 'flex';
-    controls.style.gap = '8px';
-    controls.style.margin = '10px 0 16px';
-    controls.style.flexWrap = 'wrap';
-
-    const btnNew = document.createElement('button');
-    btnNew.textContent = 'מבחן חדש';
-    btnNew.onclick = () => startNewQuiz();
-    controls.appendChild(btnNew);
-
-    const btnCheckAll = document.createElement('button');
-    btnCheckAll.id = 'btn-check';
-    btnCheckAll.textContent = 'בדוק הכל';
-    btnCheckAll.onclick = () => checkQuiz();
-    controls.appendChild(btnCheckAll);
-
-    container.appendChild(controls);
-
     const partsPerUnit = Number(config.partsPerUnit || 3);
     const stats = StudyStorage.getQuizStats(config.quizId);
 
@@ -765,9 +745,11 @@ function renderVocabDrag(questions) {
       const title = document.createElement('div');
       title.style.fontWeight = 'bold';
       title.style.marginBottom = '8px';
+            const stemHe = unit.stemHe || 'נתונה סדרה חשבונית:';
+      const stemTex = unit.stemTex || (`a_1=${a1},\\ d=${d}`);
       title.innerHTML =
-        '<span dir="rtl">נתונה סדרה חשבונית:</span> ' +
-        '<span class="math" dir="ltr" style="direction:ltr;unicode-bidi:isolate;">\\(\\displaystyle a_1=' + a1 + ',\\ d=' + d + '\\)</span>';
+        `<span class="he-text" dir="rtl">${stemHe}</span> ` +
+        `<span class="math" dir="ltr">\\(\\displaystyle ${stemTex}\\)</span>`;
       card.appendChild(title);
 
       // pick weakest parts
@@ -846,38 +828,73 @@ function renderVocabDrag(questions) {
     typesetMath(container);
   }
 
-  function normalizeAnswer(s) {
-    const t = String(s ?? '').trim();
-    // normalize Hebrew yes/no
-    const lower = t.toLowerCase();
-    if (t === 'כן' || lower === 'ken' || lower === 'yes' || lower === 'y') return 'כן';
-    if (t === 'לא' || lower === 'lo' || lower === 'no' || lower === 'n') return 'לא';
-    // normalize spaces and unicode minus
-    return t.replace(/\s+/g, '')
-            .replace(/−/g, '-')
-            .replace(/·/g, '*');
+  function normalizeMathAnswer(s) {
+    if (s === null || s === undefined) return '';
+    let t = String(s).trim().toLowerCase();
+
+    // Remove all whitespace
+    t = t.replace(/\s+/g, '');
+
+    // Normalize unicode minus/dash to hyphen
+    t = t.replace(/[−–—]/g, '-');
+
+    // Normalize brackets to parentheses
+    t = t.replace(/[\[\{]/g, '(').replace(/[\]\}]/g, ')');
+
+    // Normalize multiplication symbols: · and × are always multiplication
+    t = t.replace(/[·×]/g, '*');
+
+    // Treat 'x' as multiplication only when it is clearly a multiplication operator:
+    // 2x3, 2x(n-1), )x3, )x(n-1)  => replace the 'x' with '*'
+    t = t.replace(/([0-9\)])x(?=[0-9\(])/g, '$1*');
+
+    // Insert implicit multiplication:
+    // 3(n-1) => 3*(n-1)
+    t = t.replace(/(\d)\(/g, '$1*(');
+    // )( => )*(
+    t = t.replace(/\)\(/g, ')*(');
+    // 2n => 2*n
+    t = t.replace(/(\d)([a-z])/g, '$1*$2');
+    // )n => )*n
+    t = t.replace(/\)([a-z])/g, ')*$1');
+
+    // Normalize yes/no in Hebrew and English
+    if (t === 'כן' || t === 'ken' || t === 'yes' || t === 'y') return 'כן';
+    if (t === 'לא' || t === 'lo' || t === 'no' || t === 'n') return 'לא';
+
+    // Remove redundant leading '+'
+    t = t.replace(/^\+/, '');
+
+    // Collapse multiple '*'
+    t = t.replace(/\*{2,}/g, '*');
+
+    return t;
   }
 
-  function isPartCorrect(part, gotNorm, expectedRaw) {
-    const task = String(part.task || '').toLowerCase();
-    if (task === 'formula') {
-      // Accept a few common equivalent forms for arithmetic sequence formula.
-      const g = gotNorm.replace(/a_n=|an=|a\(n\)=/g, '');
-      const e = normalizeAnswer(expectedRaw).replace(/a_n=|an=|a\(n\)=/g, '');
-      // normalize multiplication symbols and parentheses
-      const normExpr = (s) => s.replace(/[*×]/g,'*')
-                               .replace(/·/g,'*')
-                               .replace(/--/g,'+')
-                               .replace(/\+/g,'+');
-      const gg = normExpr(g);
-      const ee = normExpr(e);
-      // allow either "6+3(n-1)" or "3n+3" equivalents for the specific case a1=6,d=3
-      if (ee.includes('6+(n-1)*3') || ee.includes('6+(n-1)·3') || ee.includes('6+(n-1)3')) {
-        return (gg.includes('6+(n-1)*3') || gg.includes('6+(n-1)3') || gg.includes('3*n+3') || gg.includes('3n+3') || gg.includes('3*(n-1)+6'));
-      }
-      return gg === ee;
+  function answersListForPart(part) {
+    if (part && Array.isArray(part.answers) && part.answers.length) return part.answers;
+    if (part && part.correct !== undefined && part.correct !== null && String(part.correct).length) return [String(part.correct)];
+    if (part && part.answer !== undefined && part.answer !== null && String(part.answer).length) return [String(part.answer)];
+    return [];
+  }
+
+  function isPartCorrect(part, userRaw) {
+    const userNorm = normalizeMathAnswer(userRaw);
+    if (!userNorm) return false;
+
+    const altsRaw = answersListForPart(part);
+    const altsNorm = altsRaw.map(normalizeMathAnswer);
+
+    // Exact normalized match
+    if (altsNorm.includes(userNorm)) return true;
+
+    // Also allow matching while ignoring explicit multiplication symbols
+    const userNoMul = userNorm.replace(/\*/g, '');
+    for (const a of altsNorm) {
+      if (a.replace(/\*/g, '') === userNoMul) return true;
     }
-    return gotNorm === normalizeAnswer(expectedRaw);
+
+    return false;
   }
 
   function checkOneUnit(unitId) {
@@ -910,20 +927,20 @@ function renderVocabDrag(questions) {
     chosen.forEach((part, idx) => {
       const partId = part.partId || part.id || '';
       const qid = partKey(unitId, partId);
-      const expectedRaw = (part.correct ?? part.answer ?? (Array.isArray(part.answers) ? part.answers[0] : ''));
-      const expected = normalizeAnswer(expectedRaw);
+            const expectedRawList = answersListForPart(part);
+      const expectedRaw = expectedRawList.length ? expectedRawList[0] : '';
 
       const input = document.querySelector('.open-choice[data-qid="' + qid + '"]');
       const fb = document.querySelector('.feedback[data-qid="' + qid + '"]');
-      const got = normalizeAnswer(input ? input.value : '');
+            const gotRaw = input ? input.value : '';
 
-      const isCorrect = isPartCorrect(part, got, expectedRaw);
+      const isCorrect = isPartCorrect(part, gotRaw);
       if (isCorrect) correctCount += 1;
 
       StudyStorage.updateQuestion(currentConfig.quizId, qid, isCorrect);
 
       if (fb) {
-        fb.textContent = isCorrect ? '✅ נכון' : ('❌ לא. תשובה: ' + expected);
+                fb.textContent = isCorrect ? '✅ נכון' : ('❌ לא. תשובה: ' + expectedRaw);
         fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
       }
       if (input) input.disabled = true;
