@@ -1,7 +1,7 @@
 {
   "quizId": "math_arithmetic_seq_g7",
-  "numQuestions": 2,
-  "renderer": "open",
+  "numQuestions": 3,
+  "renderer": "unitParts",
   "selectionWeights": {
     "new": 5,
     "weak": 4,
@@ -13,5 +13,7 @@
   "noveltyK": 1.5,
   "minNewRatio": 0.2,
   "answerPlaceholder": "למשל: 4 או 5/2",
-  "title": "מבחן מתמטיקה כיתה ז – סדרה חשבונית (איבר ראשון והפרש)"
+  "title": "מבחן מתמטיקה כיתה ז – סדרה חשבונית (איבר ראשון והפרש)",
+  "unitsPerQuiz": 3,
+  "partsPerUnit": 3
 }

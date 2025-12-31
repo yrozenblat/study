@@ -62,45 +62,82 @@
     }
 
 
+    
     async function loadStats() {
       const stats = StudyStorage.getQuizStats(QUIZ_ID);
-      const resp = await fetch('questions.json');
-      const questions = await resp.json();
+      const resp = await fetch('questions.json', { cache: 'no-store' });
+      const data = await resp.json();
+
       const tbody = document.querySelector('#statsTable tbody');
       tbody.innerHTML = '';
 
-      questions.forEach((q, idx) => {
-        const s = stats[q.id] || {correct: 0, total: 0};
+      // Support both flat questions[] and units[] with parts[].
+      const rows = [];
+      if (Array.isArray(data) && data.length && (data[0].parts && Array.isArray(data[0].parts))) {
+        data.forEach((u) => {
+          const unitId = u.unitId || u.id || '';
+          const a1 = u?.data?.a1;
+          const d = u?.data?.d;
+          (u.parts || []).forEach((p) => {
+            const partId = p.partId || p.id || '';
+            const qid = unitId + '::' + partId;
+            rows.push({
+              qid,
+              unitId,
+              display: `a1=${a1}, d=${d}`,
+              prompt: p.prompt || p.heText || ''
+            });
+          });
+        });
+      } else {
+        (data || []).forEach((q) => {
+          rows.push({ qid: q.id, unitId: '', display: '', prompt: q.heText || q.text || q.question || q.tex || '' });
+        });
+      }
+
+      rows.forEach((row, idx) => {
+        const s = stats[row.qid] || {correct: 0, total: 0};
         const ratio = s.total ? (s.correct / s.total) : 0;
-        const strength = (typeof Strength !== 'undefined')
-          ? Strength.classifyLegacy(s)
-          : 'medium';
+        const strength = (typeof Strength !== 'undefined') ? Strength.classifyLegacy(s, CONFIG || {}) : 'rare';
 
         const tr = document.createElement('tr');
-        tr.classList.add('strength-' + strength);
+        tr.className = 'strength-' + strength;
 
-        const tdIndex = document.createElement('td');
-        tdIndex.textContent = idx + 1;
+        const tdIdx = document.createElement('td');
+        tdIdx.textContent = String(idx + 1);
+        tr.appendChild(tdIdx);
+
         const tdQ = document.createElement('td');
-        tdQ.innerHTML = (q.tex ? `\\(\\displaystyle ${q.tex}\\)` : (q.text || q.question || q.heText || ''));
+        tdQ.style.textAlign = 'right';
+        tdQ.innerHTML = row.unitId
+          ? `<div><b>${row.unitId}</b> <span dir="ltr" style="unicode-bidi:isolate">${row.display}</span></div><div>${row.prompt}</div>`
+          : `<div>${row.prompt}</div>`;
+        tr.appendChild(tdQ);
+
         const tdC = document.createElement('td');
-        tdC.textContent = s.correct;
+        tdC.textContent = String(s.correct || 0);
+        tr.appendChild(tdC);
+
         const tdT = document.createElement('td');
-        tdT.textContent = s.total;
-        const tdP = document.createElement('td');
-        tdP.textContent = (ratio * 100).toFixed(0) + '%';
+        tdT.textContent = String(s.total || 0);
+        tr.appendChild(tdT);
+
+        const tdR = document.createElement('td');
+        tdR.textContent = s.total ? Math.round(ratio * 100) + '%' : '0%';
+        tr.appendChild(tdR);
+
         const tdS = document.createElement('td');
         tdS.textContent = strength;
-
-        tr.appendChild(tdIndex);
-        tr.appendChild(tdQ);
-        tr.appendChild(tdC);
-        tr.appendChild(tdT);
-        tr.appendChild(tdP);
         tr.appendChild(tdS);
+
         tbody.appendChild(tr);
       });
+
+      if (window.MathJax) {
+        try { MathJax.typesetPromise(); } catch (_) {}
+      }
     }
+
 
     function resetStats() {
       const code = prompt('סיסמה לאיפוס סטטיסטיקה:');
