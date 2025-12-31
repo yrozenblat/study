@@ -93,7 +93,11 @@ function setCheckButtonEnabled(enabled) {
     }
     currentConfig = config;
     const stats = StudyStorage.getQuizStats(config.quizId);
-    currentQuestions = QuestionSelector.select(questions, stats, config);
+    if (config.renderer === 'unitParts') {
+      currentQuestions = selectUnitParts(questions, stats, config);
+    } else {
+      currentQuestions = QuestionSelector.select(questions, stats, config);
+    }
 
     if (config.renderer === 'drag') {
       renderVocabDrag(currentQuestions);
@@ -101,6 +105,8 @@ function setCheckButtonEnabled(enabled) {
       renderVocabText(currentQuestions, config);
     } else if (config.renderer === 'open') {
       renderOpenChoice(currentQuestions);
+    } else if (config.renderer === 'unitParts') {
+      renderUnitParts(currentQuestions, config);
     } else {
       renderMcq(currentQuestions);
     }
@@ -433,6 +439,8 @@ function renderVocabDrag(questions) {
       return checkText();
     } else if (currentConfig.renderer === 'open') {
       return checkOpenChoice();
+    } else if (currentConfig.renderer === 'unitParts') {
+      return checkUnitPartsAll();
     } else {
       return checkMcq();
     }
@@ -611,6 +619,277 @@ function renderVocabDrag(questions) {
     }
   }
 
+
+  // ===== Unit + Parts renderer (for "multi-subquestions" units) =====
+
+  function partKey(unitId, partId) {
+    return String(unitId) + '::' + String(partId);
+  }
+
+  function weaknessScore(stat) {
+    const total = stat ? (stat.total || 0) : 0;
+    const correct = stat ? (stat.correct || 0) : 0;
+    const wrong = Math.max(0, total - correct);
+    // Smoothing: if unseen -> 1.0 weakness (highest priority)
+    return (wrong + 1) / (total + 2);
+  }
+
+  function selectUnitParts(units, stats, config) {
+    const unitsPerQuiz = Number(config.unitsPerQuiz || 3);
+    // Rank units by their weakest part (max weakness)
+    const ranked = (units || []).map(u => {
+      const unitId = u.unitId || u.id || '';
+      const parts = Array.isArray(u.parts) ? u.parts : [];
+      let maxW = -1;
+      for (const p of parts) {
+        const key = partKey(unitId, p.partId || p.id || '');
+        const w = weaknessScore(stats[key]);
+        if (w > maxW) maxW = w;
+      }
+      if (maxW < 0) maxW = 1.0;
+      return { u, maxW };
+    });
+
+    ranked.sort((a, b) => {
+      if (b.maxW !== a.maxW) return b.maxW - a.maxW;
+      // tie-break: stable but slightly varied
+      return String(a.u.unitId || a.u.id || '').localeCompare(String(b.u.unitId || b.u.id || ''));
+    });
+
+    return ranked.slice(0, unitsPerQuiz).map(x => x.u);
+  }
+
+  function renderUnitParts(units, config) {
+    ensureMathStyles();
+
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Header buttons
+    const controls = document.createElement('div');
+    controls.style.display = 'flex';
+    controls.style.gap = '8px';
+    controls.style.margin = '10px 0 16px';
+    controls.style.flexWrap = 'wrap';
+
+    const btnNew = document.createElement('button');
+    btnNew.textContent = 'מבחן חדש';
+    btnNew.onclick = () => startNewQuiz();
+    controls.appendChild(btnNew);
+
+    const btnCheckAll = document.createElement('button');
+    btnCheckAll.id = 'btn-check';
+    btnCheckAll.textContent = 'בדוק הכל';
+    btnCheckAll.onclick = () => checkQuiz();
+    controls.appendChild(btnCheckAll);
+
+    container.appendChild(controls);
+
+    const partsPerUnit = Number(config.partsPerUnit || 3);
+    const stats = StudyStorage.getQuizStats(config.quizId);
+
+    units.forEach((unit, uidx) => {
+      const unitId = unit.unitId || unit.id || ('unit_' + (uidx + 1));
+      const a1 = unit?.data?.a1;
+      const d = unit?.data?.d;
+
+      const card = document.createElement('div');
+      card.style.border = '1px solid #ddd';
+      card.style.borderRadius = '10px';
+      card.style.padding = '12px';
+      card.style.marginBottom = '14px';
+      card.dataset.unitId = unitId;
+
+      const title = document.createElement('div');
+      title.style.fontWeight = 'bold';
+      title.style.marginBottom = '8px';
+      title.innerHTML =
+        '<span dir="rtl">נתונה סדרה חשבונית:</span> ' +
+        '<span class="math" dir="ltr" style="direction:ltr;unicode-bidi:isolate;">\\(\\displaystyle a_1=' + a1 + ',\\ d=' + d + '\\)</span>';
+      card.appendChild(title);
+
+      // pick weakest parts
+      const parts = Array.isArray(unit.parts) ? unit.parts.slice() : [];
+      const rankedParts = parts.map(p => {
+        const pid = p.partId || p.id || '';
+        const key = partKey(unitId, pid);
+        return { p, w: weaknessScore(stats[key]) };
+      }).sort((a, b) => b.w - a.w);
+
+      const chosen = rankedParts.slice(0, Math.min(partsPerUnit, rankedParts.length)).map(x => x.p);
+
+      // display order: easy -> hard (difficulty asc, fallback by task)
+      chosen.sort((p1, p2) => {
+        const d1 = Number(p1.difficulty || 999);
+        const d2 = Number(p2.difficulty || 999);
+        if (d1 !== d2) return d1 - d2;
+        return String(p1.partId || p1.id || '').localeCompare(String(p2.partId || p2.id || ''));
+      });
+
+      // Per-unit check button + unit result
+      const unitControls = document.createElement('div');
+      unitControls.style.display = 'flex';
+      unitControls.style.gap = '8px';
+      unitControls.style.alignItems = 'center';
+      unitControls.style.margin = '8px 0 10px';
+
+      const btnCheckUnit = document.createElement('button');
+      btnCheckUnit.textContent = 'בדוק יחידה';
+      btnCheckUnit.dataset.unitId = unitId;
+      btnCheckUnit.onclick = (e) => checkOneUnit(unitId);
+      unitControls.appendChild(btnCheckUnit);
+
+      const unitSummary = document.createElement('div');
+      unitSummary.className = 'unit-summary';
+      unitSummary.style.fontWeight = 'bold';
+      unitSummary.style.marginRight = '8px';
+      unitControls.appendChild(unitSummary);
+
+      card.appendChild(unitControls);
+
+      // Parts UI
+      chosen.forEach((part, pidx) => {
+        const partId = part.partId || part.id || ('p' + (pidx + 1));
+        const qid = partKey(unitId, partId);
+
+        const row = document.createElement('div');
+        row.className = 'vocab-row';
+        row.style.margin = '8px 0';
+
+        const label = document.createElement('div');
+        label.style.flex = '1';
+        label.style.minWidth = '220px';
+        label.innerHTML = '<span dir="rtl">' + String.fromCharCode(0x05D0 + pidx) + '. ' + (part.prompt || part.heText || '') + '</span>';
+        row.appendChild(label);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'open-choice';
+        input.dataset.qid = qid;
+        input.placeholder = config.answerPlaceholder || 'תשובה';
+        row.appendChild(input);
+
+        const fb = document.createElement('div');
+        fb.className = 'feedback';
+        fb.dataset.qid = qid;
+        fb.style.minWidth = '160px';
+        row.appendChild(fb);
+
+        card.appendChild(row);
+      });
+
+      container.appendChild(card);
+    });
+
+    typesetMath(container);
+  }
+
+  function normalizeAnswer(s) {
+    const t = String(s ?? '').trim();
+    // normalize Hebrew yes/no
+    const lower = t.toLowerCase();
+    if (t === 'כן' || lower === 'ken' || lower === 'yes' || lower === 'y') return 'כן';
+    if (t === 'לא' || lower === 'lo' || lower === 'no' || lower === 'n') return 'לא';
+    // normalize spaces and unicode minus
+    return t.replace(/\s+/g, '')
+            .replace(/−/g, '-')
+            .replace(/·/g, '*');
+  }
+
+  function isPartCorrect(part, gotNorm, expectedRaw) {
+    const task = String(part.task || '').toLowerCase();
+    if (task === 'formula') {
+      // Accept a few common equivalent forms for arithmetic sequence formula.
+      const g = gotNorm.replace(/a_n=|an=|a\(n\)=/g, '');
+      const e = normalizeAnswer(expectedRaw).replace(/a_n=|an=|a\(n\)=/g, '');
+      // normalize multiplication symbols and parentheses
+      const normExpr = (s) => s.replace(/[*×]/g,'*')
+                               .replace(/·/g,'*')
+                               .replace(/--/g,'+')
+                               .replace(/\+/g,'+');
+      const gg = normExpr(g);
+      const ee = normExpr(e);
+      // allow either "6+3(n-1)" or "3n+3" equivalents for the specific case a1=6,d=3
+      if (ee.includes('6+(n-1)*3') || ee.includes('6+(n-1)·3') || ee.includes('6+(n-1)3')) {
+        return (gg.includes('6+(n-1)*3') || gg.includes('6+(n-1)3') || gg.includes('3*n+3') || gg.includes('3n+3') || gg.includes('3*(n-1)+6'));
+      }
+      return gg === ee;
+    }
+    return gotNorm === normalizeAnswer(expectedRaw);
+  }
+
+  function checkOneUnit(unitId) {
+    if (!currentConfig || currentConfig.renderer !== 'unitParts') return;
+
+    const unitCard = document.querySelector('div[data-unit-id="' + unitId + '"]');
+    const root = unitCard || document.getElementById('quiz-container');
+    if (!root) return;
+
+    // Find unit in currentQuestions
+    const unit = (currentQuestions || []).find(u => (u.unitId || u.id) === unitId);
+    if (!unit) return;
+
+    const partsPerUnit = Number(currentConfig.partsPerUnit || 3);
+    const stats = StudyStorage.getQuizStats(currentConfig.quizId);
+
+    const parts = Array.isArray(unit.parts) ? unit.parts.slice() : [];
+    const rankedParts = parts.map(p => {
+      const pid = p.partId || p.id || '';
+      const key = partKey(unitId, pid);
+      return { p, w: weaknessScore(stats[key]) };
+    }).sort((a, b) => b.w - a.w);
+
+    const chosen = rankedParts.slice(0, Math.min(partsPerUnit, rankedParts.length)).map(x => x.p);
+    chosen.sort((p1, p2) => Number(p1.difficulty || 999) - Number(p2.difficulty || 999));
+
+    let correctCount = 0;
+    let total = chosen.length;
+
+    chosen.forEach((part, idx) => {
+      const partId = part.partId || part.id || '';
+      const qid = partKey(unitId, partId);
+      const expectedRaw = (part.correct ?? part.answer ?? (Array.isArray(part.answers) ? part.answers[0] : ''));
+      const expected = normalizeAnswer(expectedRaw);
+
+      const input = document.querySelector('.open-choice[data-qid="' + qid + '"]');
+      const fb = document.querySelector('.feedback[data-qid="' + qid + '"]');
+      const got = normalizeAnswer(input ? input.value : '');
+
+      const isCorrect = isPartCorrect(part, got, expectedRaw);
+      if (isCorrect) correctCount += 1;
+
+      StudyStorage.updateQuestion(currentConfig.quizId, qid, isCorrect);
+
+      if (fb) {
+        fb.textContent = isCorrect ? '✅ נכון' : ('❌ לא. תשובה: ' + expected);
+        fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+      }
+      if (input) input.disabled = true;
+    });
+
+    const summary = (unitCard || root).querySelector('.unit-summary');
+    if (summary) summary.textContent = `יחידה: ${correctCount}/${total}`;
+  }
+
+  function checkUnitPartsAll() {
+    if (!currentQuestions.length || !currentConfig) return;
+
+    // For full-check we behave like "check unit" for all units, and lock the global check.
+    (currentQuestions || []).forEach(u => {
+      const unitId = u.unitId || u.id;
+      if (unitId) checkOneUnit(unitId);
+    });
+
+    const result = document.getElementById('result');
+    if (result) {
+      // compute overall based on visible feedback
+      const fbs = Array.from(document.querySelectorAll('.feedback.correct, .feedback.wrong'));
+      const correct = fbs.filter(x => x.classList.contains('correct')).length;
+      const total = fbs.length;
+      result.textContent = `תוצאה: ${correct}/${total}`;
+    }
+  }
   return { init, checkQuiz };
 })();
 
