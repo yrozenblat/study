@@ -50,7 +50,68 @@ let QuizCore = (() => {
     }
   }
 
-  function buildQuestionHTML(idx, q) {
+  
+  function ensureMathStyles() {
+    try {
+      if (document.getElementById('math-unit-style')) return;
+      const style = document.createElement('style');
+      style.id = 'math-unit-style';
+      style.textContent = `
+        .question-row, .unit-header-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .math, .he-text {
+          unicode-bidi: isolate;
+        }
+        .math { direction: ltr; }
+        .he-text { direction: rtl; }
+
+        .math mjx-container { font-size: 135%; }
+
+        .unit-block {
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 12px;
+          margin: 0 0 14px;
+          background: #fff;
+        }
+        .unit-title {
+          font-weight: 700;
+          margin-bottom: 8px;
+        }
+        .unit-data {
+          margin-bottom: 10px;
+        }
+        .part-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 0;
+          border-top: 1px dashed #eee;
+        }
+        .part-row:first-of-type { border-top: none; }
+        .part-prompt {
+          flex: 1 1 auto;
+          min-width: 260px;
+        }
+        .part-input {
+          width: 180px;
+          max-width: 50vw;
+        }
+        .part-feedback {
+          min-width: 180px;
+        }
+      `;
+      document.head.appendChild(style);
+    } catch (_) {
+      // no-op
+    }
+  }
+
+function buildQuestionHTML(idx, q) {
     const n = (idx + 1) + '. ';
     const hasTex = q && typeof q.tex === 'string' && q.tex.trim();
     const heText = (q && typeof q.heText === 'string') ? q.heText.trim() : '';
