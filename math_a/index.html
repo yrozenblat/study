@@ -155,6 +155,8 @@
       const mode = getSelectedVocabMode();
       const tags = getSelectedTags();
       const params = new URLSearchParams();
+      const outerName = new URLSearchParams(location.search).get('name');
+      if (outerName) params.set('name', outerName);
       params.set('mode', mode);
       if (tags.length) params.set('tags', tags.join(','));
       return base + '?' + params.toString();
@@ -165,6 +167,8 @@
       const base = (q && q.page) ? q.page : 'quizzes/am_is_are/quiz.html';
       const mode = getSelectedAmMode(); // mcq/open
       const params = new URLSearchParams();
+      const outerName = new URLSearchParams(location.search).get('name');
+      if (outerName) params.set('name', outerName);
       params.set('mode', mode);
       return base + '?' + params.toString();
     }
