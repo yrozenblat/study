@@ -121,9 +121,16 @@
       const resolveQuestionsUrl = async () => {
         const rawName = (params.get('name') || '').trim();
         // allow only safe filename chars to avoid path issues
-        const safeName = rawName.replace(/[^a-zA-Z0-9_-]/g, '');
-        if (safeName) {
-          const candidate = `questions_${safeName}.json`;
+        const safeName = (() => {
+          const s = (rawName || '').toString().trim();
+          try {
+            return s.replace(/[^\p{L}\p{N}_-]/gu, '');
+          } catch (e) {
+            return s.replace(/[^a-zA-Z0-9_\-\u0590-\u05FF]/g, '');
+          }
+        })();
+if (safeName) {
+          const candidate = `questions_${encodeURIComponent(safeName)}.json`;
           try {
             // Prefer HEAD to avoid downloading the file twice.
             const head = await fetch(candidate, { method: 'HEAD' });
