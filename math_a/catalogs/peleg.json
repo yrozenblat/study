@@ -2,6 +2,26 @@
   "_comment_1": "Auto-generated catalog for peleg (math g7)",
   "quizzes": [
     {
+      "id": "vocab",
+      "title": "אוצר מילים",
+      "page": "quizzes/vocab/quiz.html",
+      "stats": "quizzes/vocab/stats.html",
+      "modes": [
+        {
+          "id": "drag",
+          "label": "מחסן (גרירה)"
+        },
+        {
+          "id": "open",
+          "label": "פתוח"
+        }
+      ],
+      "defaultMode": "drag",
+      "tagFilter": {
+        "enabled": true
+      }
+    },
+    {
       "id": "math_order_ops_g7",
       "title": "מתמטיקה כיתה ז – סדר פעולות",
       "page": "quizzes/math_order_ops_g7/quiz.html",
