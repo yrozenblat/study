@@ -124,11 +124,25 @@
         let questions = null;
 
         if (name) {
-          const personalizedPath = `quizzes/vocab/questions_${encodeURIComponent(name)}.json`;
-          const res = await fetch(personalizedPath);
-          if (res.ok) {
-            questions = await res.json();
-            console.log('Loaded personalized vocab tags from:', personalizedPath);
+          // Try exact, then ASCII-lowercase variant (GitHub Pages is case-sensitive)
+          const candidates = [];
+          candidates.push(`quizzes/vocab/questions_${encodeURIComponent(name)}.json`);
+          // lower-case only for ASCII letters to avoid changing Hebrew/other scripts
+          const asciiLower = name.replace(/[A-Z]/g, ch => ch.toLowerCase());
+          if (asciiLower && asciiLower !== name) {
+            candidates.push(`quizzes/vocab/questions_${encodeURIComponent(asciiLower)}.json`);
+          }
+          for (const personalizedPath of candidates) {
+            try {
+              const res = await fetch(personalizedPath, { cache: 'no-store' });
+              if (res.ok) {
+                questions = await res.json();
+                console.log('Loaded personalized vocab tags from:', personalizedPath);
+                break;
+              }
+            } catch (e) {
+              // keep trying candidates
+            }
           }
         }
 
