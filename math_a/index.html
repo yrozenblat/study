@@ -100,7 +100,7 @@
       if (quizById['vocab']) sel.value = 'vocab';
     }
 
-    async function sanitizeName(name) {
+    function sanitizeName(name) {
       const s = (name || '').toString().trim();
       // Allow letters/numbers from any language (e.g., Hebrew) plus _ and -
       try {
