@@ -101,8 +101,14 @@
     }
 
     async function sanitizeName(name) {
-      // allow only letters, numbers, underscore, dash
-      return (name || '').toString().trim().replace(/[^a-zA-Z0-9_-]/g, '');
+      const s = (name || '').toString().trim();
+      // Allow letters/numbers from any language (e.g., Hebrew) plus _ and -
+      try {
+        return s.replace(/[^\p{L}\p{N}_-]/gu, '');
+      } catch (e) {
+        // Fallback for browsers without Unicode property escapes
+        return s.replace(/[^a-zA-Z0-9_\-\u0590-\u05FF]/g, '');
+      }
     }
 
     const vocabTagsCache = {}; // key: name or '__default__' -> [tags]
@@ -118,7 +124,7 @@
         let questions = null;
 
         if (name) {
-          const personalizedPath = `quizzes/vocab/questions_${name}.json`;
+          const personalizedPath = `quizzes/vocab/questions_${encodeURIComponent(name)}.json`;
           const res = await fetch(personalizedPath);
           if (res.ok) {
             questions = await res.json();
