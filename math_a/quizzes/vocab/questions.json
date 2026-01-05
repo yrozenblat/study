@@ -232,12 +232,6 @@
   { "id": "w200", "english": "sentence", "hebrew": "משפט", "tags": ["בית ספר", "שפה", "שמות עצם", "date03.01.2026"] },
   { "id": "w201", "english": "paper", "hebrew": "נייר", "tags": ["בית ספר", "חפצים", "שמות עצם", "date03.01.2026"] },
   { "id": "w202", "english": "word", "hebrew": "מילה", "tags": ["בית ספר", "שפה", "שמות עצם", "date03.01.2026"] },
-
-  { "id": "w203", "english": "am not", "hebrew": "אני לא", "tags": ["דקדוק", "שלילה", "date03.01.2026"] },
-  { "id": "w204", "english": "is not", "hebrew": "הוא/היא/זה לא", "tags": ["דקדוק", "שלילה", "date03.01.2026"] },
-  { "id": "w205", "english": "are not", "hebrew": "הם/הן לא", "tags": ["דקדוק", "שלילה", "date03.01.2026"] },
-  { "id": "w206", "english": "isn't", "hebrew": "הוא/היא/זה לא", "tags": ["דקדוק", "שלילה", "קיצור", "date03.01.2026"] },
-  { "id": "w207", "english": "aren't", "hebrew": "הם/הן לא", "tags": ["דקדוק", "שלילה", "קיצור", "date03.01.2026"] },
   
   { "id": "num_000", "english": "Zero", "hebrew": "0", "tags": ["מספרים"] },
   { "id": "num_001", "english": "One", "hebrew": "1", "tags": ["מספרים"] },
