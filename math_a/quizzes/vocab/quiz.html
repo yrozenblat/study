@@ -117,9 +117,36 @@
           : 'מוצגת מילה באנגלית. כתבו את התרגום בעברית בשדה.';
       }
 
+      // Resolve personalized questions file by ?name=... (if exists)
+      const resolveQuestionsUrl = async () => {
+        const rawName = (params.get('name') || '').trim();
+        // allow only safe filename chars to avoid path issues
+        const safeName = rawName.replace(/[^a-zA-Z0-9_-]/g, '');
+        if (safeName) {
+          const candidate = `questions_${safeName}.json`;
+          try {
+            // Prefer HEAD to avoid downloading the file twice.
+            const head = await fetch(candidate, { method: 'HEAD' });
+            if (head.ok) return candidate;
+          } catch (e) {
+            // ignore and fallback
+          }
+          // Fallback: some servers may not support HEAD; try GET.
+          try {
+            const res = await fetch(candidate, { cache: 'no-store' });
+            if (res.ok) return candidate;
+          } catch (e) {
+            // ignore and fallback
+          }
+        }
+        return 'questions.json';
+      };
+
+      const questionsUrl = await resolveQuestionsUrl();
+
       QuizCore.init({
         configUrl,
-        questionsUrl: 'questions.json'
+        questionsUrl
       });
     }
 
