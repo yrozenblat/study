@@ -100,17 +100,46 @@
       if (quizById['vocab']) sel.value = 'vocab';
     }
 
+    async function sanitizeName(name) {
+      // allow only letters, numbers, underscore, dash
+      return (name || '').toString().trim().replace(/[^a-zA-Z0-9_-]/g, '');
+    }
+
+    const vocabTagsCache = {}; // key: name or '__default__' -> [tags]
+
     async function loadVocabTagsOnce() {
-      if (vocabTags.length) return vocabTags;
+      const rawName = new URLSearchParams(window.location.search).get('name');
+      const name = sanitizeName(rawName);
+      const cacheKey = name || '__default__';
+      if (vocabTagsCache[cacheKey]) return vocabTagsCache[cacheKey];
+
       try {
-        const questions = await fetch('quizzes/vocab/questions.json').then(r => r.json());
+        // Prefer personalized questions_<name>.json when available
+        let questions = null;
+
+        if (name) {
+          const personalizedPath = `quizzes/vocab/questions_${name}.json`;
+          const res = await fetch(personalizedPath);
+          if (res.ok) {
+            questions = await res.json();
+            console.log('Loaded personalized vocab tags from:', personalizedPath);
+          }
+        }
+
+        if (!questions) {
+          questions = await fetch('quizzes/vocab/questions.json').then(r => r.json());
+        }
+
         const set = new Set();
         questions.forEach(q => (q.tags || []).forEach(t => set.add(t)));
-        vocabTags = Array.from(set).sort((a,b) => a.localeCompare(b, 'he'));
+        const tags = Array.from(set).sort((a,b) => a.localeCompare(b, 'he'));
+
+        vocabTagsCache[cacheKey] = tags;
+        return tags;
       } catch (e) {
-        vocabTags = [];
+        vocabTagsCache[cacheKey] = [];
+        return vocabTagsCache[cacheKey];
       }
-      return vocabTags;
     }
 
     function getSelectedVocabMode() {
