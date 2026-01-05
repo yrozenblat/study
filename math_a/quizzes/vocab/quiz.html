@@ -130,20 +130,28 @@
           }
         })();
 if (safeName) {
-          const candidate = `questions_${encodeURIComponent(safeName)}.json`;
-          try {
-            // Prefer HEAD to avoid downloading the file twice.
-            const head = await fetch(candidate, { method: 'HEAD' });
-            if (head.ok) return candidate;
-          } catch (e) {
-            // ignore and fallback
+          const candidates = [];
+          candidates.push(`questions_${encodeURIComponent(safeName)}.json`);
+          const asciiLower = safeName.replace(/[A-Z]/g, ch => ch.toLowerCase());
+          if (asciiLower && asciiLower !== safeName) {
+            candidates.push(`questions_${encodeURIComponent(asciiLower)}.json`);
           }
-          // Fallback: some servers may not support HEAD; try GET.
-          try {
-            const res = await fetch(candidate, { cache: 'no-store' });
-            if (res.ok) return candidate;
-          } catch (e) {
-            // ignore and fallback
+
+          for (const candidate of candidates) {
+            try {
+              // Prefer HEAD to avoid downloading the file twice.
+              const head = await fetch(candidate, { method: 'HEAD' });
+              if (head.ok) return candidate;
+            } catch (e) {
+              // ignore and fallback
+            }
+            // Fallback: some servers may not support HEAD; try GET.
+            try {
+              const res = await fetch(candidate, { cache: 'no-store' });
+              if (res.ok) return candidate;
+            } catch (e) {
+              // ignore and try next candidate
+            }
           }
         }
         return 'questions.json';
