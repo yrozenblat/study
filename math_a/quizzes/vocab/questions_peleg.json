@@ -165,5 +165,5 @@
   {"id": "w264", "english": "win", "hebrew": "לנצח", "tags": ["unit2", "פעלים"]},
   {"id": "w265", "english": "wish", "hebrew": "לאחל", "tags": ["unit2", "פעלים"]},
   {"id": "w266", "english": "your own", "hebrew": "משלך", "tags": ["unit2", "כינויי שייכות"]},
-  {"id": "w267", "english": "yours", "hebrew": "שלך", "tags": ["unit2", "כינויי שייכות"]},
+  {"id": "w267", "english": "yours", "hebrew": "שלך", "tags": ["unit2", "כינויי שייכות"]}
 ]
