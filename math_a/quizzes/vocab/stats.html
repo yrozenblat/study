@@ -54,9 +54,50 @@
     const WEAK_THRESHOLD = 0.60;
     const MEDIUM_THRESHOLD = 0.85;
 
+    function getParam(name) {
+      try {
+        return new URLSearchParams(window.location.search).get(name);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Keep letters/numbers in any language + '_' + '-'
+    function sanitizeName(raw) {
+      if (!raw) return "";
+      const s = String(raw).trim();
+      const norm = s.normalize ? s.normalize('NFKC') : s;
+      const cleaned = norm.replace(/[^\p{L}\p{N}_-]+/gu, "");
+      // Match StudyStorage behavior: latin-only => lowercase
+      if (/^[A-Za-z0-9_-]+$/.test(cleaned)) return cleaned.toLowerCase();
+      return cleaned;
+    }
+
+    async function tryFetchJson(path) {
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
     async function fetchQuestions() {
-      const res = await fetch("questions.json", { cache: "no-store" });
-      return await res.json();
+      const rawName = getParam("name");
+      const name = sanitizeName(rawName);
+
+      if (name) {
+        // Support Unicode file names too
+        const personalized = `questions_${encodeURIComponent(name)}.json`;
+        const q1 = await tryFetchJson(personalized);
+        if (q1) return q1;
+      }
+
+      const q0 = await tryFetchJson("questions.json");
+      if (q0) return q0;
+
+      throw new Error("Failed to load questions.json");
     }
 
     function buildTags(questions) {
