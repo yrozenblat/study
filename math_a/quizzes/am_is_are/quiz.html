@@ -26,6 +26,11 @@
   <div id="quiz-container"></div>
   <div id="result"></div>
   <script>
+    (function () {
+      const a = document.getElementById('stats-link');
+      if (a) a.href = 'stats.html' + window.location.search;
+    })();
+
     function getParam(name) {
       const p = new URLSearchParams(location.search);
       return p.get(name);
