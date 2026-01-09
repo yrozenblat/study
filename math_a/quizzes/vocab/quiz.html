@@ -82,6 +82,12 @@
   <div id="result"></div>
 
   <script>
+    // Ensure stats page uses the same query params (e.g., name=peleg)
+    (function () {
+      const a = document.getElementById('stats-link');
+      if (a) a.href = 'stats.html' + window.location.search;
+    })();
+
     async function startQuiz() {
       const params = new URLSearchParams(location.search);
       const mode = (params.get('mode') || 'drag').toLowerCase(); // 'drag' or 'open'
