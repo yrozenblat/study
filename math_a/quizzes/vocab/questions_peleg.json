@@ -35,7 +35,7 @@
   {"id": "w134", "english": "guide", "hebrew": "מדריך", "tags": ["unit1", "שמות עצם"]},
   {"id": "w135", "english": "help", "hebrew": "עזרה", "answers": ["לעזור"], "tags": ["unit1", "שמות עצם", "פעלים"]},
   {"id": "w136", "english": "history", "hebrew": "היסטוריה", "tags": ["unit1", "שמות עצם"]},
-  {"id": "w137", "english": "I'd love to", "hebrew": "אשמח ל־", "tags": ["unit1", "ביטויים"]},
+  {"id": "w137", "english": "I'd love to", "hebrew": "אשמח ל", "answers": ["אני אשמח ל"], "tags": ["unit1", "ביטויים"]},
   {"id": "w138", "english": "imagine", "hebrew": "לדמיין", "tags": ["unit1", "פעלים"]},
   {"id": "w139", "english": "interested in", "hebrew": "מעוניין ב", "tags": ["unit1", "תארים"]},
   {"id": "w140", "english": "job", "hebrew": "עבודה", "tags": ["unit1", "שמות עצם"]},
