@@ -310,7 +310,7 @@
   { "id": "w270", "english": "work", "hebrew": "עבודה", "answers": ["מלאכה"], "tags": ["מקצועות", "שמות עצם", "date08.03.2026"] },
   { "id": "w271", "english": "world", "hebrew": "עולם", "tags": ["מקומות", "שמות עצם", "date08.03.2026"] },
   { "id": "w272", "english": "wrong", "hebrew": "לא נכון", "answers": ["שגוי"], "tags": ["תיאורים", "תארים", "date08.03.2026"] },
-  { "id": "w273", "english": "you're welcome", "hebrew": "בבקשה", "answers": ["אין בעד מה"], "tags": ["מילים שימושיות", "date08.03.2026"] }  { "id": "w274", "english": "welcome", "hebrew": "ברוך הבא", "answers": ["ברוכה הבאה", "בבקשה"], "tags": ["מילים שימושיות", "date08.03.2026"] },
+  { "id": "w273", "english": "you're welcome", "hebrew": "בבקשה", "answers": ["אין בעד מה"], "tags": ["מילים שימושיות", "date08.03.2026"] },
   
   { "id": "w274", "english": "throw", "hebrew": "לזרוק", "answers": ["זורק", "זרק"], "tags": ["פעלים", "date08.03.2026"] },
   { "id": "w275", "english": "toilet", "hebrew": "שירותים", "tags": ["בית", "מקומות", "שמות עצם", "date08.03.2026"] },
