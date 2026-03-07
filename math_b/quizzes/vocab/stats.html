@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>סטטיסטיקה – אוצר מילים</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    #controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom: 10px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    .strength-rare { background: #ffe4b5; }
+    .strength-weak { background: #ffcccc; }
+    .strength-medium { background: #fff3cd; }
+    .strength-strong { background: #d4edda; }
+    #summary { margin: 6px 0; color:#444; }
+    .hidden { display:none; }
+  </style>
+  <script src="../../quiz_core/auth_config.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+</head>
+<body>
+  <h2>סטטיסטיקה – אוצר מילים</h2>
+
+  <div id="controls">
+    <button id="btnRefresh" type="button">רענן</button>
+    <button id="btnReset" type="button">איפוס סטטיסטיקה</button>
+
+    <span id="tagControls" class="hidden">
+      <label for="tagSelect">סינון לפי תגית:</label>
+      <select id="tagSelect"></select>
+    </span>
+  </div>
+
+  <div id="summary"></div>
+  <div id="attemptsSummary" style="margin:6px 0; color:#444;"></div>
+  <div id="questionsSource" style="margin:6px 0; color:#666;"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>אנגלית</th>
+        <th>עברית</th>
+        <th>נכונות</th>
+        <th>סך הכל</th>
+        <th>% הצלחה</th>
+        <th>חוזק</th>
+      </tr>
+    </thead>
+    <tbody id="statsTableBody"></tbody>
+  </table>
+
+  <script>
+    const QUIZ_ID = "vocab";
+    const WEAK_THRESHOLD = 0.60;
+    const MEDIUM_THRESHOLD = 0.85;
+
+    function getParam(name) {
+      try {
+        return new URLSearchParams(window.location.search).get(name);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Keep letters/numbers in any language + '_' + '-'
+    function sanitizeName(raw) {
+      if (!raw) return "";
+      const s = String(raw).trim();
+      const norm = s.normalize ? s.normalize('NFKC') : s;
+      const cleaned = norm.replace(/[^\p{L}\p{N}_-]+/gu, "");
+      // Match StudyStorage behavior: latin-only => lowercase
+      if (/^[A-Za-z0-9_-]+$/.test(cleaned)) return cleaned.toLowerCase();
+      return cleaned;
+    }
+
+    async function tryFetchJson(path) {
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function fetchQuestionsWithSource() {
+      const rawName = getParam("name");
+      const name = sanitizeName(rawName);
+
+      // Try personalized first
+      if (name) {
+        // 1) plain (best for ASCII names)
+        const p1 = `questions_${name}.json`;
+        const q1 = await tryFetchJson(p1);
+        if (q1) return { questions: q1, source: p1 };
+
+        // 2) encoded (best for Unicode file names on some servers)
+        const p2 = `questions_${encodeURIComponent(name)}.json`;
+        const q2 = await tryFetchJson(p2);
+        if (q2) return { questions: q2, source: p2 };
+      }
+
+      // Default
+      const q0 = await tryFetchJson("questions.json");
+      if (q0) return { questions: q0, source: "questions.json" };
+
+      throw new Error("Failed to load questions.json");
+    }
+
+    function buildTags(questions) {
+      const s = new Set();
+      questions.forEach(q => (q.tags || []).forEach(t => s.add(String(t))));
+      return Array.from(s).sort((a,b)=>a.localeCompare(b,'he'));
+    }
+
+    function populateTagSelect(tags) {
+      const tagControls = document.getElementById("tagControls");
+      const sel = document.getElementById("tagSelect");
+      if (!tags.length) {
+        tagControls.classList.add("hidden");
+        sel.innerHTML = "";
+        return;
+      }
+      tagControls.classList.remove("hidden");
+
+      const prev = sel.value || "";
+      sel.innerHTML = "";
+
+      const optAll = document.createElement("option");
+      optAll.value = "";
+      optAll.textContent = "הכל";
+      sel.appendChild(optAll);
+
+      tags.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        sel.appendChild(opt);
+      });
+
+      sel.value = tags.includes(prev) ? prev : "";
+    }
+
+    function matchesSelectedTag(q, selectedTag) {
+      if (!selectedTag) return true;
+      return (q.tags || []).includes(selectedTag);
+    }
+
+    function renderTable(questions, stats, selectedTag) {
+      const tbody = document.getElementById("statsTableBody");
+      tbody.innerHTML = "";
+
+      let shown = 0;
+      questions.forEach(q => {
+        if (!matchesSelectedTag(q, selectedTag)) return;
+
+        const st = stats[q.id] || { correct: 0, total: 0 };
+        const acc = st.total ? (st.correct / st.total) : null;
+        const strength = Strength.classifyLegacy(st, { weakThreshold: WEAK_THRESHOLD, mediumThreshold: MEDIUM_THRESHOLD });
+
+        const tr = document.createElement("tr");
+        tr.classList.add("strength-" + strength);
+
+        const tdIndex = document.createElement("td");
+        tdIndex.textContent = String(shown + 1);
+
+        const tdE = document.createElement("td");
+        tdE.textContent = q.english;
+
+        const tdH = document.createElement("td");
+        tdH.textContent = q.hebrew;
+
+        const tdCorrect = document.createElement("td");
+        tdCorrect.textContent = String(st.correct || 0);
+
+        const tdTotal = document.createElement("td");
+        tdTotal.textContent = String(st.total || 0);
+
+        const tdPct = document.createElement("td");
+        tdPct.textContent = (acc === null) ? "—" : (Math.round(acc * 100) + "%");
+
+        const tdStrength = document.createElement("td");
+        tdStrength.textContent = strength;
+
+        tr.appendChild(tdIndex);
+        tr.appendChild(tdE);
+        tr.appendChild(tdH);
+        tr.appendChild(tdCorrect);
+        tr.appendChild(tdTotal);
+        tr.appendChild(tdPct);
+        tr.appendChild(tdStrength);
+
+        tbody.appendChild(tr);
+        shown++;
+      });
+
+      const summary = document.getElementById("summary");
+      summary.textContent = selectedTag
+        ? `מציג ${shown} פריטים (תגית: ${selectedTag})`
+        : `מציג ${shown} פריטים (הכל)`;
+    }
+
+    function updateAttemptsSummary() {
+      const summary = StudyStorage.getQuizAttemptSummary(QUIZ_ID);
+      const el = document.getElementById('attemptsSummary');
+      if (el) el.textContent = `מספר מבחנים שנכללים בסטטיסטיקה: ${summary.attemptsCount}`;
+    }
+
+    async function loadStats() {
+      const loaded = await fetchQuestionsWithSource();
+      const questions = loaded.questions;
+      const srcEl = document.getElementById('questionsSource');
+      if (srcEl) srcEl.textContent = `מקור שאלות: ${loaded.source}`;
+      const stats = StudyStorage.getQuizStats(QUIZ_ID) || {};
+      updateAttemptsSummary();
+
+      const tags = buildTags(questions);
+      populateTagSelect(tags);
+
+      const selectedTag = (document.getElementById("tagSelect")?.value) || "";
+      renderTable(questions, stats, selectedTag);
+    }
+
+    async function resetStats() {
+      if (!confirm("לאפס סטטיסטיקה?")) return;
+      const pass = await StudyUI.promptPassword("סיסמה לאיפוס סטטיסטיקה:");
+      if (pass === null) return;
+      if (!StudyUI.isValidPassword(pass)) {
+        alert("סיסמה שגויה.");
+        return;
+      }
+      StudyStorage.resetQuiz(QUIZ_ID);
+      loadStats();
+    }
+
+    document.getElementById("btnRefresh").addEventListener("click", loadStats);
+    document.getElementById("btnReset").addEventListener("click", resetStats);
+    document.getElementById("tagSelect").addEventListener("change", loadStats);
+
+    // Initial
+    loadStats();
+  </script>
+</body>
+</html>

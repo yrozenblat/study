@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>אוצר מילים</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+
+    .vocab-row { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .arabic-label { min-width: 220px; font-size: 18px; direction: rtl; }
+
+    .text-answer {
+      flex: 1;
+      min-width: 160px;
+      padding: 6px 8px;
+      font-size: 16px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+    }
+
+    .feedback.correct { color: green; margin-right: 8px; }
+    .feedback.wrong { color: red; margin-right: 8px; }
+    #result { margin-top: 15px; font-weight: bold; }
+    .note { margin: 8px 0 14px; color: #444; }
+  
+
+    /* ---- Drag (word bank) styles ---- */
+    #word-bank { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
+    #word-bank > div:first-child { font-weight: 700; margin-bottom: 8px; }
+    .bank-inner {
+      margin-top: 5px;
+      direction: ltr;             /* so Arabic letters don't get weird inside chips */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .draggable-word {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      margin: 0;
+      border: 1px solid #666;
+      border-radius: 999px;
+      cursor: grab;
+      background: #f7f7f7;
+      user-select: none;
+      white-space: nowrap;
+      font-size: 18px;            /* Arabic looks nicer a bit bigger */
+      line-height: 1.2;
+    }
+    .draggable-word:active { cursor: grabbing; }
+
+    .hebrew-label { min-width: 160px; }
+    .dropzone {
+      min-width: 140px;
+      min-height: 32px;
+      border: 1px dashed #999;
+      padding: 4px 8px;
+      background: #fafafa;
+      direction: ltr;
+      border-radius: 8px;
+    }
+
+</style>
+
+  <script src="../../quiz_core/auth_config.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2 id="quiz-title">אוצר מילים</h2>
+  <div id="quiz-note" class="note"></div>
+
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a id="stats-link" href="stats.html" target="_blank">סטטיסטיקה</a>
+
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+
+  <script>
+    // Ensure stats page uses the same query params (e.g., name=peleg)
+    (function () {
+      const a = document.getElementById('stats-link');
+      if (a) a.href = 'stats.html' + window.location.search;
+    })();
+
+    async function startQuiz() {
+      const params = new URLSearchParams(location.search);
+      const mode = (params.get('mode') || 'drag').toLowerCase(); // 'drag' or 'open'
+      const tagsRaw = params.get('tags') || ''; // comma-separated, optional
+      const includeTags = tagsRaw
+        ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean)
+        : [];
+
+      const baseConfig = await fetch('quiz_config.json').then(r => r.json());
+
+      // Renderer by mode
+      baseConfig.renderer = (mode === 'open' || mode === 'text') ? 'text' : 'drag';
+
+      // Optional tag filtering
+      baseConfig.tags = baseConfig.tags || { include: [], exclude: [] };
+      if (includeTags.length) baseConfig.tags.include = includeTags;
+
+      // Build a data: URL so QuizCore can load the modified config without an extra file.
+      const configUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(baseConfig));
+
+      // Update page title
+      const titleEl = document.getElementById('quiz-title');
+      if (titleEl) {
+        titleEl.textContent = 'אוצר מילים — ' + (baseConfig.renderer === 'drag' ? 'מחסן (גרירה)' : 'פתוח');
+      }
+
+      
+
+      const noteEl = document.getElementById('quiz-note');
+      if (noteEl) {
+        noteEl.textContent = (baseConfig.renderer === 'drag')
+          ? 'גררו את המילים מהמחסן למקום הנכון.'
+          : 'מוצגת מילה באנגלית. כתבו את התרגום בעברית בשדה.';
+      }
+
+      // Resolve personalized questions file by ?name=... (if exists)
+      const resolveQuestionsUrl = async () => {
+        const rawName = (params.get('name') || '').trim();
+        // allow only safe filename chars to avoid path issues
+        const safeName = (() => {
+          const s = (rawName || '').toString().trim();
+          try {
+            return s.replace(/[^\p{L}\p{N}_-]/gu, '');
+          } catch (e) {
+            return s.replace(/[^a-zA-Z0-9_\-\u0590-\u05FF]/g, '');
+          }
+        })();
+if (safeName) {
+          const candidates = [];
+          candidates.push(`questions_${encodeURIComponent(safeName)}.json`);
+          const asciiLower = safeName.replace(/[A-Z]/g, ch => ch.toLowerCase());
+          if (asciiLower && asciiLower !== safeName) {
+            candidates.push(`questions_${encodeURIComponent(asciiLower)}.json`);
+          }
+
+          for (const candidate of candidates) {
+            try {
+              // Prefer HEAD to avoid downloading the file twice.
+              const head = await fetch(candidate, { method: 'HEAD' });
+              if (head.ok) return candidate;
+            } catch (e) {
+              // ignore and fallback
+            }
+            // Fallback: some servers may not support HEAD; try GET.
+            try {
+              const res = await fetch(candidate, { cache: 'no-store' });
+              if (res.ok) return candidate;
+            } catch (e) {
+              // ignore and try next candidate
+            }
+          }
+        }
+        return 'questions.json';
+      };
+
+      const questionsUrl = await resolveQuestionsUrl();
+
+      // Debug/help: show which questions file is in use
+      if (noteEl) {
+        noteEl.textContent += ` (מקור שאלות: ${questionsUrl})`;
+      }
+
+      QuizCore.init({
+        configUrl,
+        questionsUrl
+      });
+    }
+
+    (function () {
+      const link = document.getElementById('stats-link');
+      if (link) StudyUI.protectLinkWithPassword(link, StudyUI.getConfiguredPassword(), 'סיסמה לצפייה בסטטיסטיקה:');
+    })();
+    startQuiz();
+</script>
+</body>
+</html>
