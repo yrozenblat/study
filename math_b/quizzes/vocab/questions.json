@@ -33,7 +33,7 @@
   { "id": "w029", "english": "school", "hebrew": "בית ספר", "answers": ["ביה\"ס"], "tags": ["מקומות", "בית ספר", "שמות עצם"] },
   { "id": "w030", "english": "class", "hebrew": "כיתה", "answers": ["שיעור"], "tags": ["בית ספר", "מקומות", "שמות עצם"] },
   { "id": "w031", "english": "park", "hebrew": "פארק", "tags": ["מקומות", "שמות עצם"] },
-  { "id": "w032", "english": "pool", "hebrew": "בריכה", "tags": ["מקומות", "שמות עצם"] },
+  { "id": "w032", "english": "pool", "hebrew": "בריכה", "tags": ["מקומות", "שמות עצם", "date08.03.2026"] },
   { "id": "w033", "english": "house", "hebrew": "בית", "answers": ["הבית"], "tags": ["מקומות", "בית", "שמות עצם"] },
 
   { "id": "w034", "english": "table", "hebrew": "שולחן", "tags": ["בית", "חפצים", "שמות עצם"] },
@@ -52,7 +52,7 @@
   { "id": "w045", "english": "egg", "hebrew": "ביצה", "tags": ["אוכל", "שמות עצם"] },
   { "id": "w046", "english": "milk", "hebrew": "חלב", "tags": ["אוכל", "שתייה", "שמות עצם"] },
   { "id": "w047", "english": "water", "hebrew": "מים", "tags": ["שתייה", "שמות עצם"] },
-  { "id": "w048", "english": "food", "hebrew": "אוכל", "answers": ["מזון"], "tags": ["אוכל", "שמות עצם"] },
+  { "id": "w048", "english": "food", "hebrew": "אוכל", "answers": ["מזון"], "tags": ["אוכל", "שמות עצם", "date08.03.2026"] },
 
   { "id": "w049", "english": "bus", "hebrew": "אוטובוס", "answers": ["אוטובוס ציבורי"], "tags": ["תחבורה", "שמות עצם"] },
   { "id": "w050", "english": "car", "hebrew": "מכונית", "answers": ["אוטו", "רכב"], "tags": ["תחבורה", "שמות עצם"] },
@@ -91,14 +91,14 @@
   { "id": "w081", "english": "talk", "hebrew": "לדבר", "answers": ["לשוחח"], "tags": ["פעלים"] },
 
   { "id": "w082", "english": "game", "hebrew": "משחק", "answers": ["משחקים"], "tags": ["משחקים", "שמות עצם"] },
-  { "id": "w083", "english": "chess", "hebrew": "שחמט", "tags": ["משחקים", "שמות עצם"] },
+  { "id": "w083", "english": "chess", "hebrew": "שחמט", "tags": ["משחקים", "שמות עצם", "date08.03.2026"] },
 
   { "id": "w084", "english": "age", "hebrew": "גיל", "tags": ["זמן", "שמות עצם"] },
   { "id": "w085", "english": "year", "hebrew": "שנה", "tags": ["זמן", "שמות עצם"] },
   { "id": "w086", "english": "month", "hebrew": "חודש", "tags": ["זמן", "שמות עצם"] },
   { "id": "w087", "english": "birthday", "hebrew": "יום הולדת", "answers": ["יומולדת"], "tags": ["זמן", "אירועים", "שמות עצם"] },
 
-  { "id": "w088", "english": "hobby", "hebrew": "תחביב", "tags": ["תחביבים", "שמות עצם"] },
+  { "id": "w088", "english": "hobby", "hebrew": "תחביב", "tags": ["תחביבים", "שמות עצם", "date08.03.2026"] },
   { "id": "w089", "english": "hobbies", "hebrew": "תחביבים", "tags": ["תחביבים", "רבים", "שמות עצם"] },
 
   { "id": "w090", "english": "January", "hebrew": "ינואר", "tags": ["זמן", "חודשים", "שמות עצם"] },
@@ -122,8 +122,8 @@
   { "id": "w106", "english": "first", "hebrew": "ראשון", "answers": ["הראשון"], "tags": ["תארים", "סדר"] },
   { "id": "w107", "english": "important", "hebrew": "חשוב", "tags": ["תארים"] },
   { "id": "w108", "english": "special", "hebrew": "מיוחד", "answers": ["ייחודי"], "tags": ["תארים"] },
-  { "id": "w109", "english": "young", "hebrew": "צעיר", "answers": ["צעירה"], "tags": ["תארים"] },
-  { "id": "w110", "english": "old", "hebrew": "זקן", "answers": ["ישן"], "tags": ["תארים"] },
+  { "id": "w109", "english": "young", "hebrew": "צעיר", "answers": ["צעירה"], "tags": ["תארים", "date08.03.2026"] },
+  { "id": "w110", "english": "old", "hebrew": "זקן", "answers": ["ישן"], "tags": ["תארים", "date08.03.2026"] },
   { "id": "w111", "english": "short", "hebrew": "קצר", "answers": ["נמוך"], "tags": ["תארים"] },
   { "id": "w112", "english": "tall", "hebrew": "גבוה", "tags": ["תארים"] },
   { "id": "w113", "english": "small", "hebrew": "קטן", "tags": ["תארים"] },
@@ -134,10 +134,10 @@
   { "id": "w118", "english": "dirty", "hebrew": "מלוכלך", "tags": ["תארים"] },
   { "id": "w119", "english": "hot", "hebrew": "חם", "tags": ["מזג אוויר", "תארים"] },
 
-  { "id": "w120", "english": "together", "hebrew": "ביחד", "answers": ["יחד"], "tags": ["תיאורים", "מילות קישור"] },
+  { "id": "w120", "english": "together", "hebrew": "ביחד", "answers": ["יחד"], "tags": ["תיאורים", "מילות קישור", "date08.03.2026"] },
   { "id": "w121", "english": "a lot of", "hebrew": "הרבה", "answers": ["רבים"], "tags": ["כמות", "מילות קישור"] },
-  { "id": "w122", "english": "the same", "hebrew": "אותו דבר", "answers": ["אותו הדבר"], "tags": ["תיאורים"] },
-  { "id": "w123", "english": "different", "hebrew": "שונה", "answers": ["אחר"], "tags": ["תיאורים", "תארים"] },
+  { "id": "w122", "english": "the same", "hebrew": "אותו דבר", "answers": ["אותו הדבר"], "tags": ["תיאורים", "date08.03.2026"] },
+  { "id": "w123", "english": "different", "hebrew": "שונה", "answers": ["אחר"], "tags": ["תיאורים", "תארים", "date08.03.2026"] },
   { "id": "w124", "english": "also", "hebrew": "גם", "tags": ["מילות קישור"] },
   { "id": "w125", "english": "yes", "hebrew": "כן", "tags": ["מילים שימושיות"] },
   { "id": "w126", "english": "no", "hebrew": "לא", "tags": ["מילים שימושיות"] },
@@ -202,7 +202,7 @@
   { "id": "w174", "english": "to brush", "hebrew": "לצחצח", "answers": ["צחצח", "מצחצח"], "tags": ["פעלים", "בית", "date03.01.2026"] },
 
   { "id": "w175", "english": "with", "hebrew": "עם", "tags": ["מילות קישור", "date03.01.2026"] },
-  { "id": "w176", "english": "every", "hebrew": "כל", "tags": ["מילות קישור", "תיאורים", "date03.01.2026"] },
+  { "id": "w176", "english": "every", "hebrew": "כל", "tags": ["מילות קישור", "תיאורים", "date03.01.2026", "date08.03.2026"] },
   { "id": "w177", "english": "time", "hebrew": "זמן", "answers": ["פעם"], "tags": ["זמן", "שמות עצם", "date03.01.2026"] },
   { "id": "w178", "english": "at night", "hebrew": "בלילה", "tags": ["זמן", "תיאורים", "date03.01.2026"] },
   { "id": "w179", "english": "take care of", "hebrew": "לטפל ב", "answers": ["טיפל", "מטפל", "דאג", "דואג"], "tags": ["פעלים", "ביטויים", "date03.01.2026"] },
@@ -215,7 +215,7 @@
   { "id": "w185", "english": "beautiful", "hebrew": "יפה", "tags": ["תארים", "date03.01.2026"] },
   { "id": "w186", "english": "break", "hebrew": "הפסקה", "answers": ["הפסקה בבית ספר"], "tags": ["בית ספר", "שמות עצם", "date03.01.2026"] },
   { "id": "w187", "english": "their", "hebrew": "שלהם", "answers": ["שלהן"], "tags": ["כינויי שייכות", "date03.01.2026"] },
-  { "id": "w188", "english": "near", "hebrew": "ליד", "tags": ["מילות קישור", "מקומות", "date03.01.2026"] },
+  { "id": "w188", "english": "near", "hebrew": "ליד", "tags": ["מילות קישור", "מקומות", "date03.01.2026", "date08.03.2026"] },
   { "id": "w189", "english": "for", "hebrew": "בשביל", "answers": ["למען"], "tags": ["מילות קישור", "date03.01.2026"] },
 
   { "id": "w190", "english": "choose", "hebrew": "לבחור", "answers": ["בחר", "בוחר"], "tags": ["פעלים", "מילים שימושיות", "date03.01.2026"] },
@@ -322,6 +322,15 @@
   { "id": "w281", "english": "clean (פועל)", "hebrew": "לנקות", "answers": ["ניקה", "מנקה"], "tags": ["פעלים", "בית", "date08.03.2026"] },
   { "id": "w282", "english": "fall (פועל)", "hebrew": "ליפול", "answers": ["נפל", "נופל"], "tags": ["פעלים", "תנועה", "date08.03.2026"] },
 
+  { "id": "w283", "english": "kid", "hebrew": "ילד", "answers": ["ילדה", "ילדים"], "tags": ["אנשים", "משפחה", "שמות עצם", "date08.03.2026"] },
+  { "id": "w284", "english": "money", "hebrew": "כסף", "tags": ["שמות עצם", "מילים שימושיות", "date08.03.2026"] },
+  { "id": "w285", "english": "a hundred", "hebrew": "מאה", "tags": ["מספרים", "date08.03.2026"] },
+  { "id": "w286", "english": "always", "hebrew": "תמיד", "tags": ["זמן", "תיאורים", "date08.03.2026"] },
+  { "id": "w287", "english": "fast", "hebrew": "מהר", "answers": ["מהיר"], "tags": ["תיאורים", "תארים", "date08.03.2026"] },
+  { "id": "w288", "english": "a rain forest", "hebrew": "יער גשם", "tags": ["טבע", "מקומות", "שמות עצם", "date08.03.2026"] },
+  { "id": "w289", "english": "a jungle", "hebrew": "ג'ונגל", "tags": ["טבע", "מקומות", "שמות עצם", "date08.03.2026"] },
+  { "id": "w290", "english": "fruit", "hebrew": "פרי", "answers": ["פירות"], "tags": ["אוכל", "פירות", "שמות עצם", "date08.03.2026"] },
+  
   { "id": "num_000", "english": "Zero", "hebrew": "0", "tags": ["מספרים"] },
   { "id": "num_001", "english": "One", "hebrew": "1", "tags": ["מספרים"] },
   { "id": "num_002", "english": "Two", "hebrew": "2", "tags": ["מספרים"] },
@@ -335,7 +344,7 @@
   { "id": "num_010", "english": "Ten", "hebrew": "10", "tags": ["מספרים"] },
   { "id": "num_011", "english": "Eleven", "hebrew": "11", "tags": ["מספרים"] },
   { "id": "num_012", "english": "Twelve", "hebrew": "12", "tags": ["מספרים"] },
-  { "id": "num_013", "english": "Thirteen", "hebrew": "13", "tags": ["מספרים"] },
+  { "id": "num_013", "english": "Thirteen", "hebrew": "13", "tags": ["מספרים", "date08.03.2026"] },
   { "id": "num_014", "english": "Fourteen", "hebrew": "14", "tags": ["מספרים"] },
   { "id": "num_015", "english": "Fifteen", "hebrew": "15", "tags": ["מספרים"] },
   { "id": "num_016", "english": "Sixteen", "hebrew": "16", "tags": ["מספרים"] },
