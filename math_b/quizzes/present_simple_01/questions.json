@@ -368,7 +368,10 @@
       "do not play",
       "does not play"
     ],
-    "correct": "do not play",
+    "correct": [
+      "do not play",
+      "don't play"
+    ],
     "rule": "בשלילה עם I משתמשים ב-do not + פועל בסיס."
   },
   {
@@ -380,7 +383,10 @@
       "do not play",
       "does not play"
     ],
-    "correct": "does not play",
+    "correct": [
+      "does not play",
+      "doesn't play"
+    ],
     "rule": "בשלילה עם he / she / it משתמשים ב-does not + פועל בסיס."
   },
   {
@@ -392,7 +398,10 @@
       "do not watch",
       "does not watch"
     ],
-    "correct": "do not watch",
+    "correct": [
+      "do not watch",
+      "don't watch"
+    ],
     "rule": "עם we בשלילה: do not + פועל בסיס."
   },
   {
@@ -404,7 +413,10 @@
       "do not watch",
       "does not watch"
     ],
-    "correct": "does not watch",
+    "correct": [
+      "does not watch",
+      "doesn't watch"
+    ],
     "rule": "עם she בשלילה: does not + פועל בסיס."
   },
   {
@@ -416,7 +428,10 @@
       "do not go",
       "does not go"
     ],
-    "correct": "do not go",
+    "correct": [
+      "do not go",
+      "don't go"
+    ],
     "rule": "עם they בשלילה משתמשים ב-do not go."
   },
   {
@@ -428,7 +443,10 @@
       "do not go",
       "does not go"
     ],
-    "correct": "does not go",
+    "correct": [
+      "does not go",
+      "doesn't go"
+    ],
     "rule": "עם it בשלילה משתמשים ב-does not + פועל בסיס."
   },
   {
@@ -440,7 +458,10 @@
       "do not like",
       "does not like"
     ],
-    "correct": "do not like",
+    "correct": [
+      "do not like",
+      "don't like"
+    ],
     "rule": "עם you בשלילה משתמשים ב-do not."
   },
   {
@@ -452,7 +473,10 @@
       "do not like",
       "does not like"
     ],
-    "correct": "does not like",
+    "correct": [
+      "does not like",
+      "doesn't like"
+    ],
     "rule": "עם she בשלילה משתמשים ב-does not."
   },
   {
@@ -464,7 +488,10 @@
       "do not study",
       "does not study"
     ],
-    "correct": "do not study",
+    "correct": [
+      "do not study",
+      "don't study"
+    ],
     "rule": "רבים → do not study."
   },
   {
@@ -476,7 +503,10 @@
       "do not study",
       "does not study"
     ],
-    "correct": "does not study",
+    "correct": [
+      "does not study",
+      "doesn't study"
+    ],
     "rule": "יחיד → does not study."
   },
   {
@@ -488,7 +518,10 @@
       "do not have",
       "does not have"
     ],
-    "correct": "do not have",
+    "correct": [
+      "do not have",
+      "don't have"
+    ],
     "rule": "עם I משתמשים ב-do not have."
   },
   {
@@ -500,7 +533,10 @@
       "do not have",
       "does not have"
     ],
-    "correct": "does not have",
+    "correct": [
+      "does not have",
+      "doesn't have"
+    ],
     "rule": "עם she משתמשים ב-does not have."
   },
   {
@@ -512,7 +548,10 @@
       "do not do",
       "does not do"
     ],
-    "correct": "do not do",
+    "correct": [
+      "do not do",
+      "don't do"
+    ],
     "rule": "עם we בשלילה: do not do."
   },
   {
@@ -524,7 +563,10 @@
       "do not do",
       "does not do"
     ],
-    "correct": "does not do",
+    "correct": [
+      "does not do",
+      "doesn't do"
+    ],
     "rule": "עם he בשלילה: does not do."
   },
   {
@@ -536,7 +578,10 @@
       "do not wash",
       "does not wash"
     ],
-    "correct": "do not wash",
+    "correct": [
+      "do not wash",
+      "don't wash"
+    ],
     "rule": "do not + פועל בסיס."
   },
   {
@@ -548,7 +593,10 @@
       "do not wash",
       "does not wash"
     ],
-    "correct": "does not wash",
+    "correct": [
+      "does not wash",
+      "doesn't wash"
+    ],
     "rule": "does not + פועל בסיס."
   },
   {
@@ -560,7 +608,10 @@
       "do not cry",
       "does not cry"
     ],
-    "correct": "do not cry",
+    "correct": [
+      "do not cry",
+      "don't cry"
+    ],
     "rule": "רבים → do not cry."
   },
   {
@@ -572,7 +623,10 @@
       "do not cry",
       "does not cry"
     ],
-    "correct": "does not cry",
+    "correct": [
+      "does not cry",
+      "doesn't cry"
+    ],
     "rule": "יחיד → does not cry."
   },
   {
@@ -584,7 +638,10 @@
       "are not",
       "be not"
     ],
-    "correct": "am not",
+    "correct": [
+      "am not",
+      "I'm not"
+    ],
     "rule": "עם I בשלילה משתמשים ב-am not."
   },
   {
@@ -596,7 +653,10 @@
       "are not",
       "be not"
     ],
-    "correct": "is not",
+    "correct": [
+      "is not",
+      "isn't"
+    ],
     "rule": "עם he בשלילה משתמשים ב-is not."
   },
   {
@@ -608,7 +668,10 @@
       "are not",
       "be not"
     ],
-    "correct": "are not",
+    "correct": [
+      "are not",
+      "aren't"
+    ],
     "rule": "עם we בשלילה משתמשים ב-are not."
   },
   {
@@ -620,7 +683,10 @@
       "are not",
       "be not"
     ],
-    "correct": "is not",
+    "correct": [
+      "is not",
+      "isn't"
+    ],
     "rule": "The cat = it → is not."
   },
   {
@@ -632,7 +698,10 @@
       "do not carry",
       "does not carry"
     ],
-    "correct": "do not carry",
+    "correct": [
+      "do not carry",
+      "don't carry"
+    ],
     "rule": "עם you בשלילה: do not carry."
   },
   {
@@ -644,7 +713,10 @@
       "do not carry",
       "does not carry"
     ],
-    "correct": "does not carry",
+    "correct": [
+      "does not carry",
+      "doesn't carry"
+    ],
     "rule": "יחיד → does not carry."
   },
   {
@@ -656,7 +728,10 @@
       "do not fix",
       "does not fix"
     ],
-    "correct": "do not fix",
+    "correct": [
+      "do not fix",
+      "don't fix"
+    ],
     "rule": "רבים → do not fix."
   },
   {
@@ -668,7 +743,10 @@
       "do not fix",
       "does not fix"
     ],
-    "correct": "does not fix",
+    "correct": [
+      "does not fix",
+      "doesn't fix"
+    ],
     "rule": "יחיד → does not fix."
   },
   {
@@ -680,7 +758,10 @@
       "do not fly",
       "does not fly"
     ],
-    "correct": "do not fly",
+    "correct": [
+      "do not fly",
+      "don't fly"
+    ],
     "rule": "עם I בשלילה משתמשים ב-do not fly."
   },
   {
@@ -692,7 +773,10 @@
       "do not fly",
       "does not fly"
     ],
-    "correct": "does not fly",
+    "correct": [
+      "does not fly",
+      "doesn't fly"
+    ],
     "rule": "יחיד → does not fly."
   },
   {
@@ -704,7 +788,10 @@
       "do not pass",
       "does not pass"
     ],
-    "correct": "do not pass",
+    "correct": [
+      "do not pass",
+      "don't pass"
+    ],
     "rule": "עם we משתמשים ב-do not + פועל בסיס."
   },
   {
@@ -716,7 +803,10 @@
       "do not pass",
       "does not pass"
     ],
-    "correct": "does not pass",
+    "correct": [
+      "does not pass",
+      "doesn't pass"
+    ],
     "rule": "יחיד → does not pass."
   },
   {
