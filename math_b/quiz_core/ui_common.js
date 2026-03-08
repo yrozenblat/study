@@ -432,14 +432,34 @@ function renderVocabDrag(questions) {
       .replace(/\s+/g, ' ');
   }
 
-  function getExpectedAnswer(q) {
+  function getExpectedAnswers(q) {
     // Support multiple quiz formats:
-    // - math/text quizzes: q.correct
-    // - vocab/open-choice quizzes: q.answers[0] or q.answer
-    if (q && q.correct !== undefined && q.correct !== null && String(q.correct).length) return String(q.correct);
-    if (q && Array.isArray(q.answers) && q.answers.length) return String(q.answers[0]);
-    if (q && q.answer !== undefined && q.answer !== null && String(q.answer).length) return String(q.answer);
-    return '';
+    // - single correct answer: q.correct / q.answer
+    // - multiple valid answers: q.correct = [..] or q.answers = [..]
+    if (!q) return [];
+
+    if (Array.isArray(q.correct)) {
+      return q.correct.map(a => String(a));
+    }
+
+    if (q.correct !== undefined && q.correct !== null && String(q.correct).length) {
+      return [String(q.correct)];
+    }
+
+    if (Array.isArray(q.answers) && q.answers.length) {
+      return q.answers.map(a => String(a));
+    }
+
+    if (q.answer !== undefined && q.answer !== null && String(q.answer).length) {
+      return [String(q.answer)];
+    }
+
+    return [];
+  }
+
+  function getExpectedAnswer(q) {
+    const answers = getExpectedAnswers(q);
+    return answers.length ? answers[0] : '';
   }
 
 
@@ -539,7 +559,12 @@ function renderVocabDrag(questions) {
     let correctCount = 0;
     let total = currentQuestions.length;
 
-    const norm = (s) => String(s ?? '').trim().toLowerCase();
+    const norm = (s) =>
+      String(s ?? '')
+        .trim()
+        .toLowerCase()
+        .replace(/[’]/g, "'")
+        .replace(/\s+/g, ' ');
 
     currentQuestions.forEach(q => {
       const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
@@ -547,8 +572,8 @@ function renderVocabDrag(questions) {
       if (input) input.disabled = true;
 
       const userAns = norm(raw);
-      const expected = norm(getExpectedAnswer(q));
-      const isCorrect = userAns.length > 0 && userAns === expected;
+      const expectedList = getExpectedAnswers(q).map(norm);
+      const isCorrect = userAns.length > 0 && expectedList.includes(userAns);
       if (isCorrect) correctCount++;
 
       StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
