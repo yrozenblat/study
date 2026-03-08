@@ -1,0 +1,1082 @@
+[
+  {
+    "id": "ps01",
+    "text": "My sister _____ (read) a book every evening.",
+    "options": [
+      "read",
+      "reads",
+      "do not read",
+      "does not read"
+    ],
+    "correct": "reads",
+    "rule": "עם he / she / it מוסיפים s לפועל."
+  },
+  {
+    "id": "ps02",
+    "text": "Frank _____ (like) dogs.",
+    "options": [
+      "like",
+      "likes",
+      "do not like",
+      "does not like"
+    ],
+    "correct": "likes",
+    "rule": "עם he / she / it מוסיפים s לפועל."
+  },
+  {
+    "id": "ps03",
+    "text": "My parents _____ (do) the shopping on Fridays.",
+    "options": [
+      "do",
+      "does",
+      "do not do",
+      "does not do"
+    ],
+    "correct": "do",
+    "rule": "עם רבים משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps04",
+    "text": "We sometimes _____ (meet) in front of the cinema.",
+    "options": [
+      "meet",
+      "meets",
+      "do not meet",
+      "does not meet"
+    ],
+    "correct": "meet",
+    "rule": "עם we משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps05",
+    "text": "Uncle George _____ (go) to the doctor's every month.",
+    "options": [
+      "go",
+      "goes",
+      "do not go",
+      "does not go"
+    ],
+    "correct": "goes",
+    "rule": "פעלים שמסתיימים ב-o מקבלים בדרך כלל es עם he / she / it."
+  },
+  {
+    "id": "ps06",
+    "text": "Our friends _____ (play) football in the park.",
+    "options": [
+      "play",
+      "plays",
+      "do not play",
+      "does not play"
+    ],
+    "correct": "play",
+    "rule": "עם רבים משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps07",
+    "text": "She _____ (go) to the park every Friday.",
+    "options": [
+      "go",
+      "goes",
+      "do not go",
+      "does not go"
+    ],
+    "correct": "goes",
+    "rule": "she → goes."
+  },
+  {
+    "id": "ps08",
+    "text": "He _____ (ride) his bike every day.",
+    "options": [
+      "ride",
+      "rides",
+      "do not ride",
+      "does not ride"
+    ],
+    "correct": "rides",
+    "rule": "he → rides."
+  },
+  {
+    "id": "ps09",
+    "text": "We _____ (have) the best ideas.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "have",
+    "rule": "עם we משתמשים ב-have."
+  },
+  {
+    "id": "ps10",
+    "text": "Carol _____ (say) goodbye to everyone.",
+    "options": [
+      "say",
+      "says",
+      "do not say",
+      "does not say"
+    ],
+    "correct": "says",
+    "rule": "Carol = she → says."
+  },
+  {
+    "id": "ps11",
+    "text": "She _____ (be) the best singer in our class.",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "is",
+    "rule": "עם she משתמשים ב-is."
+  },
+  {
+    "id": "ps12",
+    "text": "My sister _____ (live) in a big house.",
+    "options": [
+      "live",
+      "lives",
+      "do not live",
+      "does not live"
+    ],
+    "correct": "lives",
+    "rule": "עם he / she / it מוסיפים s."
+  },
+  {
+    "id": "ps13",
+    "text": "The children _____ (eat) hamburgers on Saturdays.",
+    "options": [
+      "eat",
+      "eats",
+      "do not eat",
+      "does not eat"
+    ],
+    "correct": "eat",
+    "rule": "children הוא רבים, לכן משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps14",
+    "text": "Bill _____ (have) got two notebooks.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "has",
+    "rule": "Bill = he → has."
+  },
+  {
+    "id": "ps15",
+    "text": "I _____ (be) at home after school.",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "am",
+    "rule": "עם I משתמשים ב-am."
+  },
+  {
+    "id": "ps16",
+    "text": "Tom _____ (watch) TV after dinner.",
+    "options": [
+      "watch",
+      "watches",
+      "do not watch",
+      "does not watch"
+    ],
+    "correct": "watches",
+    "rule": "פעלים שמסתיימים ב-ch מקבלים es עם he / she / it."
+  },
+  {
+    "id": "ps17",
+    "text": "The bus _____ (pass) our house at eight.",
+    "options": [
+      "pass",
+      "passes",
+      "do not pass",
+      "does not pass"
+    ],
+    "correct": "passes",
+    "rule": "פעלים שמסתיימים ב-s מקבלים es."
+  },
+  {
+    "id": "ps18",
+    "text": "My baby brother _____ (cry) every night.",
+    "options": [
+      "cry",
+      "cries",
+      "do not cry",
+      "does not cry"
+    ],
+    "correct": "cries",
+    "rule": "עיצור + y משתנה ל-ies עם he / she / it."
+  },
+  {
+    "id": "ps19",
+    "text": "The boys _____ (study) English every day.",
+    "options": [
+      "study",
+      "studies",
+      "do not study",
+      "does not study"
+    ],
+    "correct": "study",
+    "rule": "עם רבים משתמשים בצורה הבסיסית: study."
+  },
+  {
+    "id": "ps20",
+    "text": "Dana _____ (study) English every day.",
+    "options": [
+      "study",
+      "studies",
+      "do not study",
+      "does not study"
+    ],
+    "correct": "studies",
+    "rule": "Dana = she, ולכן study הופך ל-studies."
+  },
+  {
+    "id": "ps21",
+    "text": "The teacher _____ (wash) the cups.",
+    "options": [
+      "wash",
+      "washes",
+      "do not wash",
+      "does not wash"
+    ],
+    "correct": "washes",
+    "rule": "פעלים שמסתיימים ב-sh מקבלים es."
+  },
+  {
+    "id": "ps22",
+    "text": "Birds _____ (fly) in the sky.",
+    "options": [
+      "fly",
+      "flies",
+      "do not fly",
+      "does not fly"
+    ],
+    "correct": "fly",
+    "rule": "עם רבים משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps23",
+    "text": "A bird _____ (fly) over our garden every morning.",
+    "options": [
+      "fly",
+      "flies",
+      "do not fly",
+      "does not fly"
+    ],
+    "correct": "flies",
+    "rule": "עיצור + y → ies עם יחיד."
+  },
+  {
+    "id": "ps24",
+    "text": "My dad _____ (fix) the car on Sundays.",
+    "options": [
+      "fix",
+      "fixes",
+      "do not fix",
+      "does not fix"
+    ],
+    "correct": "fixes",
+    "rule": "פעלים שמסתיימים ב-x מקבלים es."
+  },
+  {
+    "id": "ps25",
+    "text": "I always _____ (carry) my bag to school.",
+    "options": [
+      "carry",
+      "carries",
+      "do not carry",
+      "does not carry"
+    ],
+    "correct": "carry",
+    "rule": "עם I משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps26",
+    "text": "Nina _____ (carry) her lunch box to school.",
+    "options": [
+      "carry",
+      "carries",
+      "do not carry",
+      "does not carry"
+    ],
+    "correct": "carries",
+    "rule": "carry → carries עם she."
+  },
+  {
+    "id": "ps27",
+    "text": "They _____ (teach) math in this classroom.",
+    "options": [
+      "teach",
+      "teaches",
+      "do not teach",
+      "does not teach"
+    ],
+    "correct": "teach",
+    "rule": "עם they משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps28",
+    "text": "Mr. Cohen _____ (teach) math in this classroom.",
+    "options": [
+      "teach",
+      "teaches",
+      "do not teach",
+      "does not teach"
+    ],
+    "correct": "teaches",
+    "rule": "פעלים שמסתיימים ב-ch מקבלים es."
+  },
+  {
+    "id": "ps29",
+    "text": "You _____ (finish) your homework early.",
+    "options": [
+      "finish",
+      "finishes",
+      "do not finish",
+      "does not finish"
+    ],
+    "correct": "finish",
+    "rule": "עם you משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps30",
+    "text": "My little sister _____ (finish) her homework early.",
+    "options": [
+      "finish",
+      "finishes",
+      "do not finish",
+      "does not finish"
+    ],
+    "correct": "finishes",
+    "rule": "finish → finishes עם she."
+  },
+  {
+    "id": "ps31",
+    "text": "I _____ (not / play) tennis on Mondays.",
+    "options": [
+      "play",
+      "plays",
+      "do not play",
+      "does not play"
+    ],
+    "correct": "do not play",
+    "rule": "בשלילה עם I משתמשים ב-do not + פועל בסיס."
+  },
+  {
+    "id": "ps32",
+    "text": "He _____ (not / play) tennis on Mondays.",
+    "options": [
+      "play",
+      "plays",
+      "do not play",
+      "does not play"
+    ],
+    "correct": "does not play",
+    "rule": "בשלילה עם he / she / it משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps33",
+    "text": "We _____ (not / watch) TV in the morning.",
+    "options": [
+      "watch",
+      "watches",
+      "do not watch",
+      "does not watch"
+    ],
+    "correct": "do not watch",
+    "rule": "עם we בשלילה: do not + פועל בסיס."
+  },
+  {
+    "id": "ps34",
+    "text": "My mother _____ (not / watch) TV in the morning.",
+    "options": [
+      "watch",
+      "watches",
+      "do not watch",
+      "does not watch"
+    ],
+    "correct": "does not watch",
+    "rule": "עם she בשלילה: does not + פועל בסיס."
+  },
+  {
+    "id": "ps35",
+    "text": "They _____ (not / go) to school on Saturday.",
+    "options": [
+      "go",
+      "goes",
+      "do not go",
+      "does not go"
+    ],
+    "correct": "do not go",
+    "rule": "עם they בשלילה משתמשים ב-do not go."
+  },
+  {
+    "id": "ps36",
+    "text": "It _____ (not / go) fast.",
+    "options": [
+      "go",
+      "goes",
+      "do not go",
+      "does not go"
+    ],
+    "correct": "does not go",
+    "rule": "עם it בשלילה משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps37",
+    "text": "You _____ (not / like) spicy food.",
+    "options": [
+      "like",
+      "likes",
+      "do not like",
+      "does not like"
+    ],
+    "correct": "do not like",
+    "rule": "עם you בשלילה משתמשים ב-do not."
+  },
+  {
+    "id": "ps38",
+    "text": "Sara _____ (not / like) spicy food.",
+    "options": [
+      "like",
+      "likes",
+      "do not like",
+      "does not like"
+    ],
+    "correct": "does not like",
+    "rule": "עם she בשלילה משתמשים ב-does not."
+  },
+  {
+    "id": "ps39",
+    "text": "The boys _____ (not / study) French.",
+    "options": [
+      "study",
+      "studies",
+      "do not study",
+      "does not study"
+    ],
+    "correct": "do not study",
+    "rule": "רבים → do not study."
+  },
+  {
+    "id": "ps40",
+    "text": "The boy _____ (not / study) French.",
+    "options": [
+      "study",
+      "studies",
+      "do not study",
+      "does not study"
+    ],
+    "correct": "does not study",
+    "rule": "יחיד → does not study."
+  },
+  {
+    "id": "ps41",
+    "text": "I _____ (not / have) a dog.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "do not have",
+    "rule": "עם I משתמשים ב-do not have."
+  },
+  {
+    "id": "ps42",
+    "text": "She _____ (not / have) a dog.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "does not have",
+    "rule": "עם she משתמשים ב-does not have."
+  },
+  {
+    "id": "ps43",
+    "text": "We _____ (not / do) our homework at night.",
+    "options": [
+      "do",
+      "does",
+      "do not do",
+      "does not do"
+    ],
+    "correct": "do not do",
+    "rule": "עם we בשלילה: do not do."
+  },
+  {
+    "id": "ps44",
+    "text": "My brother _____ (not / do) his homework at night.",
+    "options": [
+      "do",
+      "does",
+      "do not do",
+      "does not do"
+    ],
+    "correct": "does not do",
+    "rule": "עם he בשלילה: does not do."
+  },
+  {
+    "id": "ps45",
+    "text": "They _____ (not / wash) the car every week.",
+    "options": [
+      "wash",
+      "washes",
+      "do not wash",
+      "does not wash"
+    ],
+    "correct": "do not wash",
+    "rule": "do not + פועל בסיס."
+  },
+  {
+    "id": "ps46",
+    "text": "Dad _____ (not / wash) the car every week.",
+    "options": [
+      "wash",
+      "washes",
+      "do not wash",
+      "does not wash"
+    ],
+    "correct": "does not wash",
+    "rule": "does not + פועל בסיס."
+  },
+  {
+    "id": "ps47",
+    "text": "The children _____ (not / cry) at bedtime.",
+    "options": [
+      "cry",
+      "cries",
+      "do not cry",
+      "does not cry"
+    ],
+    "correct": "do not cry",
+    "rule": "רבים → do not cry."
+  },
+  {
+    "id": "ps48",
+    "text": "The baby _____ (not / cry) at bedtime.",
+    "options": [
+      "cry",
+      "cries",
+      "do not cry",
+      "does not cry"
+    ],
+    "correct": "does not cry",
+    "rule": "יחיד → does not cry."
+  },
+  {
+    "id": "ps49",
+    "text": "I _____ (not / be) late for school.",
+    "options": [
+      "am not",
+      "is not",
+      "are not",
+      "be not"
+    ],
+    "correct": "am not",
+    "rule": "עם I בשלילה משתמשים ב-am not."
+  },
+  {
+    "id": "ps50",
+    "text": "He _____ (not / be) late for school.",
+    "options": [
+      "am not",
+      "is not",
+      "are not",
+      "be not"
+    ],
+    "correct": "is not",
+    "rule": "עם he בשלילה משתמשים ב-is not."
+  },
+  {
+    "id": "ps51",
+    "text": "We _____ (not / be) hungry now.",
+    "options": [
+      "am not",
+      "is not",
+      "are not",
+      "be not"
+    ],
+    "correct": "are not",
+    "rule": "עם we בשלילה משתמשים ב-are not."
+  },
+  {
+    "id": "ps52",
+    "text": "The cat _____ (not / be) hungry now.",
+    "options": [
+      "am not",
+      "is not",
+      "are not",
+      "be not"
+    ],
+    "correct": "is not",
+    "rule": "The cat = it → is not."
+  },
+  {
+    "id": "ps53",
+    "text": "You _____ (not / carry) heavy bags.",
+    "options": [
+      "carry",
+      "carries",
+      "do not carry",
+      "does not carry"
+    ],
+    "correct": "do not carry",
+    "rule": "עם you בשלילה: do not carry."
+  },
+  {
+    "id": "ps54",
+    "text": "Maya _____ (not / carry) heavy bags.",
+    "options": [
+      "carry",
+      "carries",
+      "do not carry",
+      "does not carry"
+    ],
+    "correct": "does not carry",
+    "rule": "יחיד → does not carry."
+  },
+  {
+    "id": "ps55",
+    "text": "They _____ (not / fix) computers.",
+    "options": [
+      "fix",
+      "fixes",
+      "do not fix",
+      "does not fix"
+    ],
+    "correct": "do not fix",
+    "rule": "רבים → do not fix."
+  },
+  {
+    "id": "ps56",
+    "text": "The technician _____ (not / fix) computers on Sunday.",
+    "options": [
+      "fix",
+      "fixes",
+      "do not fix",
+      "does not fix"
+    ],
+    "correct": "does not fix",
+    "rule": "יחיד → does not fix."
+  },
+  {
+    "id": "ps57",
+    "text": "I _____ (not / fly) in winter.",
+    "options": [
+      "fly",
+      "flies",
+      "do not fly",
+      "does not fly"
+    ],
+    "correct": "do not fly",
+    "rule": "עם I בשלילה משתמשים ב-do not fly."
+  },
+  {
+    "id": "ps58",
+    "text": "A plane _____ (not / fly) without fuel.",
+    "options": [
+      "fly",
+      "flies",
+      "do not fly",
+      "does not fly"
+    ],
+    "correct": "does not fly",
+    "rule": "יחיד → does not fly."
+  },
+  {
+    "id": "ps59",
+    "text": "We _____ (not / pass) this street every day.",
+    "options": [
+      "pass",
+      "passes",
+      "do not pass",
+      "does not pass"
+    ],
+    "correct": "do not pass",
+    "rule": "עם we משתמשים ב-do not + פועל בסיס."
+  },
+  {
+    "id": "ps60",
+    "text": "The train _____ (not / pass) this street every day.",
+    "options": [
+      "pass",
+      "passes",
+      "do not pass",
+      "does not pass"
+    ],
+    "correct": "does not pass",
+    "rule": "יחיד → does not pass."
+  },
+  {
+    "id": "ps61",
+    "text": "My teacher _____ (try) to help us.",
+    "options": [
+      "try",
+      "tries",
+      "do not try",
+      "does not try"
+    ],
+    "correct": "tries",
+    "rule": "עיצור + y → ies עם he / she / it."
+  },
+  {
+    "id": "ps62",
+    "text": "I _____ (try) to help my friends.",
+    "options": [
+      "try",
+      "tries",
+      "do not try",
+      "does not try"
+    ],
+    "correct": "try",
+    "rule": "עם I משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps63",
+    "text": "The baby _____ (kiss) his mother goodnight.",
+    "options": [
+      "kiss",
+      "kisses",
+      "do not kiss",
+      "does not kiss"
+    ],
+    "correct": "kisses",
+    "rule": "פעלים שמסתיימים ב-s מקבלים es."
+  },
+  {
+    "id": "ps64",
+    "text": "The girls _____ (kiss) their mother goodnight.",
+    "options": [
+      "kiss",
+      "kisses",
+      "do not kiss",
+      "does not kiss"
+    ],
+    "correct": "kiss",
+    "rule": "עם רבים משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps65",
+    "text": "Ron _____ (brush) his teeth every morning.",
+    "options": [
+      "brush",
+      "brushes",
+      "do not brush",
+      "does not brush"
+    ],
+    "correct": "brushes",
+    "rule": "פעלים שמסתיימים ב-sh מקבלים es."
+  },
+  {
+    "id": "ps66",
+    "text": "We _____ (brush) our teeth every morning.",
+    "options": [
+      "brush",
+      "brushes",
+      "do not brush",
+      "does not brush"
+    ],
+    "correct": "brush",
+    "rule": "עם we משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps67",
+    "text": "A fox _____ (catch) small animals.",
+    "options": [
+      "catch",
+      "catches",
+      "do not catch",
+      "does not catch"
+    ],
+    "correct": "catches",
+    "rule": "פעלים שמסתיימים ב-ch מקבלים es."
+  },
+  {
+    "id": "ps68",
+    "text": "Foxes _____ (catch) small animals.",
+    "options": [
+      "catch",
+      "catches",
+      "do not catch",
+      "does not catch"
+    ],
+    "correct": "catch",
+    "rule": "עם רבים משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps69",
+    "text": "He _____ (miss) the bus every day.",
+    "options": [
+      "miss",
+      "misses",
+      "do not miss",
+      "does not miss"
+    ],
+    "correct": "misses",
+    "rule": "miss → misses עם he."
+  },
+  {
+    "id": "ps70",
+    "text": "They _____ (miss) the bus every day.",
+    "options": [
+      "miss",
+      "misses",
+      "do not miss",
+      "does not miss"
+    ],
+    "correct": "miss",
+    "rule": "עם they משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps71",
+    "text": "My aunt _____ (teach) music at school.",
+    "options": [
+      "teach",
+      "teaches",
+      "do not teach",
+      "does not teach"
+    ],
+    "correct": "teaches",
+    "rule": "teach → teaches עם she."
+  },
+  {
+    "id": "ps72",
+    "text": "Our music teachers _____ (teach) at this school.",
+    "options": [
+      "teach",
+      "teaches",
+      "do not teach",
+      "does not teach"
+    ],
+    "correct": "teach",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps73",
+    "text": "The dog _____ (push) the door with its nose.",
+    "options": [
+      "push",
+      "pushes",
+      "do not push",
+      "does not push"
+    ],
+    "correct": "pushes",
+    "rule": "פעלים שמסתיימים ב-sh מקבלים es."
+  },
+  {
+    "id": "ps74",
+    "text": "The boys _____ (push) the door together.",
+    "options": [
+      "push",
+      "pushes",
+      "do not push",
+      "does not push"
+    ],
+    "correct": "push",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps75",
+    "text": "I _____ (wash) my hands before dinner.",
+    "options": [
+      "wash",
+      "washes",
+      "do not wash",
+      "does not wash"
+    ],
+    "correct": "wash",
+    "rule": "עם I משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps76",
+    "text": "My sister _____ (wash) her hands before dinner.",
+    "options": [
+      "wash",
+      "washes",
+      "do not wash",
+      "does not wash"
+    ],
+    "correct": "washes",
+    "rule": "wash → washes עם she."
+  },
+  {
+    "id": "ps77",
+    "text": "The class _____ (start) at eight o'clock.",
+    "options": [
+      "start",
+      "starts",
+      "do not start",
+      "does not start"
+    ],
+    "correct": "starts",
+    "rule": "יחיד → מוסיפים s."
+  },
+  {
+    "id": "ps78",
+    "text": "Our classes _____ (start) at eight o'clock.",
+    "options": [
+      "start",
+      "starts",
+      "do not start",
+      "does not start"
+    ],
+    "correct": "start",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps79",
+    "text": "He _____ (have) breakfast at seven.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "has",
+    "rule": "he → has."
+  },
+  {
+    "id": "ps80",
+    "text": "They _____ (have) breakfast at seven.",
+    "options": [
+      "have",
+      "has",
+      "do not have",
+      "does not have"
+    ],
+    "correct": "have",
+    "rule": "they → have."
+  },
+  {
+    "id": "ps81",
+    "text": "My father _____ (do) the dishes every evening.",
+    "options": [
+      "do",
+      "does",
+      "do not do",
+      "does not do"
+    ],
+    "correct": "does",
+    "rule": "he / she / it → does."
+  },
+  {
+    "id": "ps82",
+    "text": "We _____ (do) the dishes together.",
+    "options": [
+      "do",
+      "does",
+      "do not do",
+      "does not do"
+    ],
+    "correct": "do",
+    "rule": "we → do."
+  },
+  {
+    "id": "ps83",
+    "text": "The baby _____ (sleep) in this room.",
+    "options": [
+      "sleep",
+      "sleeps",
+      "do not sleep",
+      "does not sleep"
+    ],
+    "correct": "sleeps",
+    "rule": "יחיד → מוסיפים s."
+  },
+  {
+    "id": "ps84",
+    "text": "The babies _____ (sleep) in this room.",
+    "options": [
+      "sleep",
+      "sleeps",
+      "do not sleep",
+      "does not sleep"
+    ],
+    "correct": "sleep",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps85",
+    "text": "I _____ (be) very tired after work.",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "am",
+    "rule": "I → am."
+  },
+  {
+    "id": "ps86",
+    "text": "My friends _____ (be) very tired after work.",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "are",
+    "rule": "רבים → are."
+  },
+  {
+    "id": "ps87",
+    "text": "Lior _____ (be) very tired after work.",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "is",
+    "rule": "Lior = he / she → is."
+  },
+  {
+    "id": "ps88",
+    "text": "This lesson _____ (finish) at noon.",
+    "options": [
+      "finish",
+      "finishes",
+      "do not finish",
+      "does not finish"
+    ],
+    "correct": "finishes",
+    "rule": "finish → finishes עם יחיד."
+  },
+  {
+    "id": "ps89",
+    "text": "These lessons _____ (finish) at noon.",
+    "options": [
+      "finish",
+      "finishes",
+      "do not finish",
+      "does not finish"
+    ],
+    "correct": "finish",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps90",
+    "text": "Noa _____ (study) English and _____ (try) very hard.",
+    "options": [
+      "studies / tries",
+      "study / try",
+      "studies / try",
+      "study / tries"
+    ],
+    "correct": "studies / tries",
+    "rule": "Noa = she, ולכן בשני הפעלים מוסיפים s/ies."
+  }
+]

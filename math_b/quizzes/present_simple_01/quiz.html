@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>מבחן Present Simple</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    h2 { margin-top: 0; }
+    .question { margin-bottom: 12px; }
+    .question-text { direction: ltr; }
+    .options { direction: ltr; margin-right: 20px; }
+    .feedback.correct { color: green; }
+    .feedback.wrong { color: red; }
+    #result { margin-top: 15px; font-weight: bold; }
+  </style>
+  <script src="../../quiz_core/auth_config.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2 id="quiz-title">מבחן Present Simple</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a id="stats-link" href="stats_present_simple.html" target="_blank">סטטיסטיקה</a>
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+  <script>
+    (function () {
+      const a = document.getElementById('stats-link');
+      if (a) a.href = 'stats_present_simple.html' + window.location.search;
+    })();
+
+    function getParam(name) {
+      const p = new URLSearchParams(location.search);
+      return p.get(name);
+    }
+
+    function startQuiz() {
+      const mode = (getParam('mode') || 'mcq').toLowerCase();
+      const configUrl = (mode === 'open') ? 'quiz_config_open_present_simple.json' : 'quiz_config_present_simple.json';
+
+      const title = document.getElementById('quiz-title');
+      if (title) {
+        title.textContent = (mode === 'open') ? 'מבחן Present Simple — פתוח' : 'מבחן Present Simple — בחירה';
+      }
+
+      QuizCore.init({
+        configUrl,
+        questionsUrl: 'questions_present_simple.json'
+      });
+    }
+
+    (function () {
+      const link = document.getElementById('stats-link');
+      if (link) StudyUI.protectLinkWithPassword(link, StudyUI.getConfiguredPassword(), 'סיסמה לצפייה בסטטיסטיקה:');
+    })();
+    startQuiz();
+  </script>
+</body>
+</html>
