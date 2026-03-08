@@ -30,12 +30,18 @@
         <div id="tagList" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
       </div>
     </div>
-
     <div id="amOptions" style="display:none; margin-top:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
       <div style="margin-bottom:10px;">
         <span style="font-weight:600;">סוג:</span>
         <label style="margin-inline-start:10px;"><input type="radio" name="amMode" value="mcq" checked> בחירה</label>
         <label style="margin-inline-start:10px;"><input type="radio" name="amMode" value="open"> פתוח</label>
+      </div>
+    </div>
+    <div id="presentSimpleOptions" style="display:none; margin-top:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+      <div style="margin-bottom:10px;">
+        <span style="font-weight:600;">סוג:</span>
+        <label style="margin-inline-start:10px;"><input type="radio" name="presentSimpleMode" value="mcq" checked> בחירה</label>
+        <label style="margin-inline-start:10px;"><input type="radio" name="presentSimpleMode" value="open"> פתוח</label>
       </div>
     </div>
   </div>
@@ -48,7 +54,8 @@
     const vocabOptions = document.getElementById('vocabOptions');
     const tagList = document.getElementById('tagList');
     const amOptions = document.getElementById('amOptions');
-
+    const presentSimpleOptions = document.getElementById('presentSimpleOptions');
+	
     let vocabTags = [];
     let catalog = null;
     let quizById = {};
@@ -176,7 +183,11 @@
       const r = document.querySelector('input[name="amMode"]:checked');
       return r ? r.value : 'mcq';
     }
-
+	
+    function getSelectedPresentSimpleMode() {
+      const r = document.querySelector('input[name="presentSimpleMode"]:checked');
+      return r ? r.value : 'mcq';
+    }
     async function refreshVocabTagsUI() {
       const tags = await loadVocabTagsOnce();
       tagList.innerHTML = '';
@@ -221,10 +232,22 @@
       params.set('mode', mode);
       return base + '?' + params.toString();
     }
-
+	
+    function buildPresentSimpleUrl() {
+      const q = quizById['present_simple'];
+      const base = (q && q.page) ? q.page : 'quizzes/present_simple/quiz.html';
+      const mode = getSelectedPresentSimpleMode();
+      const params = new URLSearchParams();
+      const outerName = new URLSearchParams(location.search).get('name');
+      if (outerName) params.set('name', outerName);
+      params.set('mode', mode);
+      return base + '?' + params.toString();
+    }
+	
     function hideAllOptions() {
       vocabOptions.style.display = 'none';
       amOptions.style.display = 'none';
+      presentSimpleOptions.style.display = 'none';
     }
 
     async function onSelectChanged() {
@@ -243,7 +266,13 @@
         setFrameSrc(buildAmUrl());
         return;
       }
-
+	  
+      if (id === 'present_simple') {
+        presentSimpleOptions.style.display = 'block';
+        setFrameSrc(buildPresentSimpleUrl());
+        return;
+      }
+	  
       const q = quizById[id];
       if (q && q.page) {
         setFrameSrc(q.page);
@@ -259,6 +288,7 @@
     document.addEventListener('change', (e) => {
       if (e.target && e.target.name === 'vocabTag') setFrameSrc(buildVocabUrl());
       if (e.target && e.target.name === 'amMode') setFrameSrc(buildAmUrl());
+      if (e.target && e.target.name === 'presentSimpleMode') setFrameSrc(buildPresentSimpleUrl());
     });
 
     (async () => {
