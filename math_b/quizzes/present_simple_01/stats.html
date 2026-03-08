@@ -51,7 +51,7 @@
     async function loadStats() {
       const stats = StudyStorage.getQuizStats(QUIZ_ID);
       updateAttemptsSummary();
-      const resp = await fetch('questions_present_simple.json');
+      const resp = await fetch('questions.json');
       const questions = await resp.json();
       const tbody = document.querySelector('#statsTable tbody');
       tbody.innerHTML = '';
