@@ -23,13 +23,13 @@
   <h2 id="quiz-title">מבחן Present Simple</h2>
   <button onclick="startQuiz()">מבחן חדש</button>
   <button id="btn-check" onclick="checkQuiz()">בדוק</button>
-  <a id="stats-link" href="stats_present_simple.html" target="_blank">סטטיסטיקה</a>
+  <a id="stats-link" href="stats.html" target="_blank">סטטיסטיקה</a>
   <div id="quiz-container"></div>
   <div id="result"></div>
   <script>
     (function () {
       const a = document.getElementById('stats-link');
-      if (a) a.href = 'stats_present_simple.html' + window.location.search;
+      if (a) a.href = 'stats.html' + window.location.search;
     })();
 
     function getParam(name) {
