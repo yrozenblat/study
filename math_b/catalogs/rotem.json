@@ -22,6 +22,12 @@
       }
     },
     {
+      "id": "present_simple_01",
+      "title": "Present Simple",
+      "page": "quizzes/present_simple_01/quiz.html",
+      "stats": "quizzes/present_simple_01/stats.html"
+    },
+    {
       "id": "a_an",
       "title": "a / an",
       "page": "quizzes/a_an/quiz.html",
