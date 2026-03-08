@@ -39,7 +39,7 @@
 
     function startQuiz() {
       const mode = (getParam('mode') || 'mcq').toLowerCase();
-      const configUrl = (mode === 'open') ? 'quiz_config_open_present_simple.json' : 'quiz_config_present_simple.json';
+      const configUrl = (mode === 'open') ? 'quiz_config_open.json' : 'quiz_config.json';
 
       const title = document.getElementById('quiz-title');
       if (title) {
