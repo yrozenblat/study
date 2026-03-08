@@ -1270,7 +1270,7 @@
   {
   "id":"ps105",
   "text":"My father _____ (not / make) breakfast on weekdays.",
-  "options":["do not make","does not make","don't make","doesn't make"],
+  "options":["do not make","does not make","make","does not makes"],
   "correct":["does not make","doesn't make"],
   "rule":"בשלילה עם he / she / it משתמשים ב-does not + פועל בסיס."
   },
@@ -1284,21 +1284,21 @@
   {
   "id":"ps107",
   "text":"She _____ (not / write) letters every week.",
-  "options":["do not write","does not write","don't write","doesn't write"],
+  "options":["do not write","does not write","write","does not writes"],
   "correct":["does not write","doesn't write"],
   "rule":"בשלילה עם she משתמשים ב-does not + פועל בסיס."
   },
   {
   "id":"ps108",
   "text":"I _____ (not / speak) Italian at home.",
-  "options":["do not speak","does not speak","don't speak","doesn't speak"],
+  "options":["do not speak","does not speak","don't speak","do not speaks"],
   "correct":["do not speak","don't speak"],
   "rule":"בשלילה עם I משתמשים ב-do not + פועל בסיס."
   },
   {
   "id":"ps109",
   "text":"Danny _____ (not / phone) his father on Sundays.",
-  "options":["do not phone","does not phone","don't phone","doesn't phone"],
+  "options":["do not phone","does not phone","phones","doesn't phones"],
   "correct":["does not phone","doesn't phone"],
   "rule":"Danny = he, לכן does not + פועל בסיס."
   },
@@ -1354,307 +1354,307 @@
   {
   "id":"ps117",
   "text":"The girls _____ (not / carry) heavy boxes.",
-  "options":["do not carry","does not carry","don't carry","doesn't carry"],
+  "options":["do not carry","does not carry"],
   "correct":["do not carry","don't carry"],
   "rule":"רבים → do not."
   },
   {
   "id":"ps118",
   "text":"His sister _____ (not / study) on Saturdays.",
-  "options":["do not study","does not study","don't study","doesn't study"],
+  "options":["do not study","does not study"],
   "correct":["does not study","doesn't study"],
   "rule":"she → does not."
   },
   {
   "id":"ps119",
   "text":"Our dog _____ (not / like) loud music.",
-  "options":["do not like","does not like","don't like","doesn't like"],
+  "options":["do not like","does not like","don't likes","doesn't likes"],
   "correct":["does not like","doesn't like"],
   "rule":"dog = it."
   },
   {
   "id":"ps120",
   "text":"We _____ (not / watch) TV before homework.",
-  "options":["do not watch","does not watch","don't watch","doesn't watch"],
+  "options":["do not watch","does not watch"],
   "correct":["do not watch","don't watch"],
   "rule":"we → do not."
   },
   {
   "id":"ps201",
-  "text":"They _____ about his iPod. (talk)",
+  "text":"They _____ (talk) about his iPod. ",
   "options":["talk","talks","talking","talkes"],
   "correct":"talk",
   "rule":"they → talk."
   },
   {
   "id":"ps202",
-  "text":"Mary _____ stamps. (collect)",
+  "text":"Mary _____ (collect) stamps. ",
   "options":["collect","collects","collecting","collectes"],
   "correct":"collects",
   "rule":"she → collects."
   },
   {
   "id":"ps203",
-  "text":"Tom and Sue _____ two T-shirts. (buy)",
+  "text":"Tom and Sue _____ (buy) two T-shirts. ",
   "options":["buy","buys","buying","buyes"],
   "correct":"buy",
   "rule":"רבים."
   },
   {
   "id":"ps204",
-  "text":"We _____ behind a tree. (hide)",
+  "text":"We _____ (hide) behind a tree. ",
   "options":["hide","hides","hiding","hides"],
   "correct":"hide",
   "rule":"we → hide."
   },
   {
   "id":"ps205",
-  "text":"The children _____ in the garden. (play)",
+  "text":"The children _____ (play) in the garden. ",
   "options":["play","plays","playing","playes"],
   "correct":"play",
   "rule":"children רבים."
   },
   {
   "id":"ps206",
-  "text":"She _____ my pencil. (borrow)",
+  "text":"She _____ (borrow) my pencil. ",
   "options":["borrow","borrows","borrowing","borrowes"],
   "correct":"borrows",
   "rule":"she → borrows."
   },
   {
   "id":"ps207",
-  "text":"My mother _____ shopping every Friday. (go)",
+  "text":"My mother _____ (go) shopping every Friday. ",
   "options":["go","goes","going","gos"],
   "correct":"goes",
   "rule":"go → goes."
   },
   {
   "id":"ps208",
-  "text":"He _____ my name. (call)",
+  "text":"He _____ (call) my name. ",
   "options":["call","calls","calling","calles"],
   "correct":"calls",
   "rule":"he → calls."
   },
   {
   "id":"ps209",
-  "text":"They always _____ in the first row. (sit)",
+  "text":"They always _____ (sit) in the first row. ",
   "options":["sit","sits","sitting","sites"],
   "correct":"sit",
   "rule":"they → sit."
   },
   {
   "id":"ps210",
-  "text":"Ken and Sam _____ stamps. (collect)",
+  "text":"Ken and Sam _____ (collect) stamps. ",
   "options":["collect","collects","collecting","collectes"],
   "correct":"collect",
   "rule":"רבים."
   },
   {
   "id":"ps211",
-  "text":"Carol _____ goodbye. (say)",
+  "text":"Carol _____ (say) goodbye. ",
   "options":["say","says","saying","sayes"],
   "correct":"says",
   "rule":"say → says."
   },
   {
   "id":"ps212",
-  "text":"She usually _____ Tom with the homework. (help)",
+  "text":"She usually _____ (help) Tom with the homework. ",
   "options":["help","helps","helping","helpes"],
   "correct":"helps",
   "rule":"she → helps."
   },
   {
   "id":"ps213",
-  "text":"He _____ in a big house. (live)",
+  "text":"He _____ (live) in a big house. ",
   "options":["live","lives","living","liveses"],
   "correct":"lives",
   "rule":"he → lives."
   },
   {
   "id":"ps214",
-  "text":"The girls _____ up. (stand)",
+  "text":"The girls _____ (stand) up. ",
   "options":["stand","stands","standing","standes"],
   "correct":"stand",
   "rule":"girls רבים."
   },
   {
   "id":"ps215",
-  "text":"Bill _____ going shopping. (like)",
+  "text":"Bill _____ (like) going shopping. ",
   "options":["like","likes","liking","likees"],
   "correct":"likes",
   "rule":"Bill = he."
   },
   {
   "id":"ps216",
-  "text":"My parents often _____ westerns. (watch)",
+  "text":"My parents often _____ (watch) westerns. ",
   "options":["watch","watches","watching","watchs"],
   "correct":"watch",
   "rule":"parents רבים."
   },
   {
   "id":"ps217",
-  "text":"They _____ hungry. (be)",
+  "text":"They _____ (be) hungry. ",
   "options":["am","is","are","be"],
   "correct":"are",
   "rule":"they → are."
   },
   {
   "id":"ps218",
-  "text":"Mum _____ all the dirty clothes. (wash)",
+  "text":"Mum _____ (wash) all the dirty clothes. ",
   "options":["wash","washes","washing","washs"],
   "correct":"washes",
   "rule":"wash → washes."
   },
   {
   "id":"ps219",
-  "text":"Peter _____ got a brother. (have)",
+  "text":"Peter _____ (have) got a brother.",
   "options":["have","has","having","haves"],
   "correct":"has",
   "rule":"Peter = he."
   },
   {
   "id":"ps220",
-  "text":"Dad _____ a new plasma TV. (buy)",
+  "text":"Dad _____ (buy) a new plasma TV.",
   "options":["buy","buys","buying","buyes"],
   "correct":"buys",
   "rule":"buy → buys."
   },
   {
   "id":"ps221",
-  "text":"The boys _____ football. (play)",
+  "text":"The boys _____ (play) football.",
   "options":["play","plays","playing","playes"],
   "correct":"play",
   "rule":"boys רבים."
   },
   {
   "id":"ps222",
-  "text":"In summer it _____ hot. (be)",
+  "text":"In summer it _____ (be) hot.",
   "options":["am","is","are","be"],
   "correct":"is",
   "rule":"it → is."
   },
   {
   "id":"ps223",
-  "text":"I _____ good at school. (be)",
+  "text":"I _____ (be) good at school.",
   "options":["am","is","are","be"],
   "correct":"am",
   "rule":"I → am."
   },
   {
   "id":"ps224",
-  "text":"On Friday we always _____ our piano lesson. (have)",
+  "text":"On Friday we always _____ (have) our piano lesson.",
   "options":["have","has","having","haves"],
   "correct":"have",
   "rule":"we → have."
   },
   {
   "id":"ps225",
-  "text":"Mary _____ her homework. (do)",
+  "text":"Mary _____ (do) her homework.",
   "options":["do","does","doing","did"],
   "correct":"does",
   "rule":"she → does."
   },
   {
   "id":"ps226",
-  "text":"Sarah _____ like reading books.",
-  "options":["do not","does not","don't","doesn't"],
+  "text":"Sarah _____ (not) like reading books.",
+  "options":["do not","does not"],
   "correct":["does not","doesn't"],
   "rule":"she → does not."
   },
   {
   "id":"ps227",
-  "text":"Rita's mother _____ watch horror movies.",
-  "options":["do not","does not","don't","doesn't"],
+  "text":"Rita's mother _____ (not) watch horror movies.",
+  "options":["do not","does not"],
   "correct":["does not","doesn't"],
   "rule":"mother = she."
   },
   {
   "id":"ps228",
-  "text":"We _____ often go to the cinema.",
-  "options":["do not","does not","don't","doesn't"],
+  "text":"We _____ (not) often go to the cinema.",
+  "options":["do not","does not"],
   "correct":["do not","don't"],
   "rule":"we → do not."
   },
   {
   "id":"ps229",
-  "text":"Kevin _____ like spinach and beans.",
-  "options":["do not","does not","don't","doesn't"],
+  "text":"Kevin _____ (not) like spinach and beans.",
+  "options":["do not","does not"],
   "correct":["does not","doesn't"],
   "rule":"Kevin = he."
   },
   {
   "id":"ps230",
-  "text":"The children _____ play in the garden very often.",
-  "options":["do not","does not","don't","doesn't"],
+  "text":"The children _____ (not) play in the garden very often.",
+  "options":["do not","does not"],
   "correct":["do not","don't"],
   "rule":"children רבים."
   },
   {
   "id":"ps236",
-  "text":"I _____ lemonade very much. (like)",
+  "text":"I _____ (like) lemonade very much.",
   "options":["like","likes","liking","likees"],
   "correct":"like",
   "rule":"I → like."
   },
   {
   "id":"ps237",
-  "text":"The girls always _____ to pop music. (listen)",
+  "text":"The girls always _____ (listen) to pop music.",
   "options":["listen","listens","listening","listenes"],
   "correct":"listen",
   "rule":"girls רבים."
   },
   {
   "id":"ps238",
-  "text":"Janet never _____ jeans. (wear)",
+  "text":"Janet never _____ (wear) jeans.",
   "options":["wear","wears","wearing","weares"],
   "correct":"wears",
   "rule":"Janet = she."
   },
   {
   "id":"ps239",
-  "text":"Mr Smith _____ Spanish and French. (teach)",
+  "text":"Mr Smith _____ (teach) Spanish and French.",
   "options":["teach","teaches","teaching","teachs"],
   "correct":"teaches",
   "rule":"teach → teaches."
   },
   {
   "id":"ps240",
-  "text":"You _____ your homework after school. (do)",
+  "text":"You _____ (do) your homework after school.",
   "options":["do","does","doing","did"],
   "correct":"do",
   "rule":"you → do."
   },
   {
   "id":"ps241",
-  "text":"We _____ a nice garden. (have)",
+  "text":"We _____ (have) a nice garden.",
   "options":["have","has","having","haves"],
   "correct":"have",
   "rule":"we → have."
   },
   {
   "id":"ps242",
-  "text":"She _____ six years old. (be)",
+  "text":"She _____ (be) six years old.",
   "options":["am","is","are","be"],
   "correct":"is",
   "rule":"she → is."
   },
   {
   "id":"ps243",
-  "text":"Simon _____ two rabbits and five goldfish. (have)",
+  "text":"Simon _____ (have) two rabbits and five goldfish.",
   "options":["have","has","having","haves"],
   "correct":"has",
   "rule":"Simon = he."
   },
   {
   "id":"ps244",
-  "text":"I _____ from Vienna, Austria. (be)",
+  "text":"I _____ (be) from Vienna, Austria.",
   "options":["am","is","are","be"],
   "correct":"am",
   "rule":"I → am."
   },
   {
   "id":"ps245",
-  "text":"They _____ Sandy's parents. (be)",
+  "text":"They _____ (be) Sandy's parents.",
   "options":["am","is","are","be"],
   "correct":"are",
   "rule":"they → are."
