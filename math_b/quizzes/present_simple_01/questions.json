@@ -1168,5 +1168,452 @@
     ],
     "correct": "studies / tries",
     "rule": "Noa = she, ולכן בשני הפעלים מוסיפים s/ies."
+  },
+  {
+    "id": "ps091",
+    "text": "We often _____ (read) adventure stories at school.",
+    "correct": "read",
+    "rule": "עם we משתמשים בצורה הבסיסית של הפועל."
+  },
+  {
+    "id": "ps092",
+    "text": "Emily _____ (go) to dance class on Tuesdays.",
+    "correct": "goes",
+    "rule": "עם he / she / it מוסיפים es לפעלים מסוימים כמו go → goes."
+  },
+  {
+    "id": "ps093",
+    "text": "It usually _____ (rain) here in winter.",
+    "correct": "rains",
+    "rule": "עם it מוסיפים s לפועל."
+  },
+  {
+    "id": "ps094",
+    "text": "Pete and his sister _____ (wash) the family car on Sundays.",
+    "correct": "wash",
+    "rule": "נושא ברבים → צורת בסיס."
+  },
+  {
+    "id": "ps095",
+    "text": "I always _____ (hurry) to the bus stop in the morning.",
+    "correct": "hurry",
+    "rule": "עם I משתמשים בצורה הבסיסית של הפועל."
+  },
+  {
+    "id": "ps096",
+    "text": "The girls _____ (listen) to music after dinner.",
+    "correct": "listen",
+    "rule": "רבים → צורת בסיס."
+  },
+  {
+    "id": "ps097",
+    "text": "Janet never _____ (wear) jeans to school.",
+    "correct": "wears",
+    "rule": "עם Janet = she מוסיפים s לפועל."
+  },
+  {
+    "id": "ps098",
+    "text": "Mr. Smith _____ (teach) English and French.",
+    "correct": "teaches",
+    "rule": "teach מסתיים ב-ch ולכן עם he / she / it מוסיפים es."
+  },
+  {
+    "id": "ps099",
+    "text": "You _____ (do) your homework after school.",
+    "correct": "do",
+    "rule": "עם you משתמשים בצורה הבסיסית."
+  },
+  {
+    "id": "ps100",
+    "text": "We _____ (have) a small garden behind the house.",
+    "correct": "have",
+    "rule": "עם we משתמשים ב-have."
+  },
+  {
+    "id": "ps101",
+    "text": "She _____ (be) six years old.",
+    "correct": "is",
+    "rule": "עם she משתמשים ב-is."
+  },
+  {
+    "id": "ps102",
+    "text": "Simon _____ (have) two rabbits and a turtle.",
+    "correct": "has",
+    "rule": "עם he / she / it משתמשים ב-has."
+  },
+  {
+    "id": "ps103",
+    "text": "I _____ (be) from Jerusalem.",
+    "correct": "am",
+    "rule": "עם I משתמשים ב-am."
+  },
+  {
+    "id": "ps104",
+    "text": "They _____ (be) our new neighbors.",
+    "correct": "are",
+    "rule": "עם they משתמשים ב-are."
+  },
+  {
+    "id": "ps105",
+    "text": "My father _____ (not / make) breakfast on weekdays.",
+    "correct": [
+      "does not make",
+      "doesn't make"
+    ],
+    "rule": "בשלילה עם he / she / it משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps106",
+    "text": "They _____ (not / be) eleven years old.",
+    "correct": [
+      "are not",
+      "aren't"
+    ],
+    "rule": "עם they משתמשים ב-are not / aren't."
+  },
+  {
+    "id": "ps107",
+    "text": "She _____ (not / write) letters every week.",
+    "correct": [
+      "does not write",
+      "doesn't write"
+    ],
+    "rule": "בשלילה עם she משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps108",
+    "text": "I _____ (not / speak) Italian at home.",
+    "correct": [
+      "do not speak",
+      "don't speak"
+    ],
+    "rule": "בשלילה עם I משתמשים ב-do not + פועל בסיס."
+  },
+  {
+    "id": "ps109",
+    "text": "Danny _____ (not / phone) his father on Sundays.",
+    "correct": [
+      "does not phone",
+      "doesn't phone"
+    ],
+    "rule": "Danny = he, לכן does not + פועל בסיס."
+  },
+  {
+    "id": "ps110",
+    "text": "The baby _____ (cry) every night.",
+    "correct": "cries",
+    "rule": "פועל שמסתיים ב-y אחרי עיצור משתנה ל-ies: cry → cries."
+  },
+  {
+    "id": "ps111",
+    "text": "My uncle _____ (fix) old radios.",
+    "correct": "fixes",
+    "rule": "פועל שמסתיים ב-x מקבל es: fix → fixes."
+  },
+  {
+    "id": "ps112",
+    "text": "The bus _____ (pass) our street at 7:00.",
+    "correct": "passes",
+    "rule": "פועל שמסתיים ב-ss מקבל es: pass → passes."
+  },
+  {
+    "id": "ps113",
+    "text": "A mechanic _____ (wash) the cars every morning.",
+    "correct": "washes",
+    "rule": "פועל שמסתיים ב-sh מקבל es: wash → washes."
+  },
+  {
+    "id": "ps114",
+    "text": "The teacher _____ (watch) the class carefully.",
+    "correct": "watches",
+    "rule": "פועל שמסתיים ב-ch מקבל es: watch → watches."
+  },
+  {
+    "id": "ps115",
+    "text": "My cousin _____ (study) English every evening.",
+    "correct": "studies",
+    "rule": "study מסתיים ב-y אחרי עיצור, לכן studies."
+  },
+  {
+    "id": "ps116",
+    "text": "The boy _____ (carry) the bags to the car.",
+    "correct": "carries",
+    "rule": "carry → carries כי y אחרי עיצור משתנה ל-ies."
+  },
+  {
+    "id": "ps117",
+    "text": "The girls _____ (not / carry) heavy boxes.",
+    "correct": [
+      "do not carry",
+      "don't carry"
+    ],
+    "rule": "ברבים משתמשים ב-do not + פועל בסיס."
+  },
+  {
+    "id": "ps118",
+    "text": "His sister _____ (not / study) on Saturdays.",
+    "correct": [
+      "does not study",
+      "doesn't study"
+    ],
+    "rule": "עם she משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps119",
+    "text": "Our dog _____ (not / like) loud music.",
+    "correct": [
+      "does not like",
+      "doesn't like"
+    ],
+    "rule": "עם it / dog יחיד משתמשים ב-does not + פועל בסיס."
+  },
+  {
+    "id": "ps120",
+    "text": "We _____ (not / watch) TV before homework.",
+    "correct": [
+      "do not watch",
+      "don't watch"
+    ],
+    "rule": "עם we משתמשים ב-do not + פועל בסיס."
+  },
+  {
+  "id":"ps201",
+  "text":"They _____ about his iPod. (talk)",
+  "correct":"talk",
+  "rule":"עם they משתמשים בצורה הבסיסית."
+  },
+  {
+  "id":"ps202",
+  "text":"Mary _____ stamps. (collect)",
+  "correct":"collects",
+  "rule":"עם she מוסיפים s לפועל."
+  },
+  {
+  "id":"ps203",
+  "text":"Tom and Sue _____ two T-shirts. (buy)",
+  "correct":"buy",
+  "rule":"נושא ברבים → צורת בסיס."
+  },
+  {
+  "id":"ps204",
+  "text":"We _____ behind a tree. (hide)",
+  "correct":"hide",
+  "rule":"עם we משתמשים בצורה הבסיסית."
+  },
+  {
+  "id":"ps205",
+  "text":"The children _____ in the garden. (play)",
+  "correct":"play",
+  "rule":"children רבים → play."
+  },
+  {
+  "id":"ps206",
+  "text":"She _____ my pencil. (borrow)",
+  "correct":"borrows",
+  "rule":"she → מוסיפים s."
+  },
+  {
+  "id":"ps207",
+  "text":"My mother _____ shopping every Friday. (go)",
+  "correct":"goes",
+  "rule":"go → goes עם he/she/it."
+  },
+  {
+  "id":"ps208",
+  "text":"He _____ my name. (call)",
+  "correct":"calls",
+  "rule":"he → calls."
+  },
+  {
+  "id":"ps209",
+  "text":"They always _____ in the first row. (sit)",
+  "correct":"sit",
+  "rule":"עם they משתמשים בצורה הבסיסית."
+  },
+  {
+  "id":"ps210",
+  "text":"Ken and Sam _____ stamps. (collect)",
+  "correct":"collect",
+  "rule":"נושא ברבים → collect."
+  },
+  {
+  "id":"ps211",
+  "text":"Carol _____ goodbye. (say)",
+  "correct":"says",
+  "rule":"say → says."
+  },
+  {
+  "id":"ps212",
+  "text":"She usually _____ Tom with the homework. (help)",
+  "correct":"helps",
+  "rule":"she → helps."
+  },
+  {
+  "id":"ps213",
+  "text":"He _____ in a big house. (live)",
+  "correct":"lives",
+  "rule":"he → lives."
+  },
+  {
+  "id":"ps214",
+  "text":"The girls _____ up. (stand)",
+  "correct":"stand",
+  "rule":"girls רבים → stand."
+  },
+  {
+  "id":"ps215",
+  "text":"Bill _____ going shopping. (like)",
+  "correct":"likes",
+  "rule":"Bill = he → likes."
+  },
+  {
+  "id":"ps216",
+  "text":"My parents often _____ westerns. (watch)",
+  "correct":"watch",
+  "rule":"parents רבים → watch."
+  },
+  {
+  "id":"ps217",
+  "text":"They _____ hungry. (be)",
+  "correct":"are",
+  "rule":"they → are."
+  },
+  {
+  "id":"ps218",
+  "text":"Mum _____ all the dirty clothes. (wash)",
+  "correct":"washes",
+  "rule":"wash → washes."
+  },
+  {
+  "id":"ps219",
+  "text":"Peter _____ got a brother. (have)",
+  "correct":"has",
+  "rule":"Peter = he → has."
+  },
+  {
+  "id":"ps220",
+  "text":"Dad _____ a new plasma TV. (buy)",
+  "correct":"buys",
+  "rule":"buy → buys."
+  },
+  {
+  "id":"ps221",
+  "text":"The boys _____ football. (play)",
+  "correct":"play",
+  "rule":"boys רבים → play."
+  },
+  {
+  "id":"ps222",
+  "text":"In summer it _____ hot. (be)",
+  "correct":"is",
+  "rule":"it → is."
+  },
+  {
+  "id":"ps223",
+  "text":"I _____ good at school. (be)",
+  "correct":"am",
+  "rule":"I → am."
+  },
+  {
+  "id":"ps224",
+  "text":"On Friday we always _____ our piano lesson. (have)",
+  "correct":"have",
+  "rule":"we → have."
+  },
+  {
+  "id":"ps225",
+  "text":"Mary _____ her homework. (do)",
+  "correct":"does",
+  "rule":"do → does עם she."
+  },
+  {
+  "id":"ps226",
+  "text":"Sarah _____ like reading books.",
+  "correct":["does not","doesn't"],
+  "rule":"עם she משתמשים ב-does not."
+  },
+  {
+  "id":"ps227",
+  "text":"Rita's mother _____ watch horror movies.",
+  "correct":["does not","doesn't"],
+  "rule":"mother = she."
+  },
+  {
+  "id":"ps228",
+  "text":"We _____ often go to the cinema.",
+  "correct":["do not","don't"],
+  "rule":"עם we משתמשים ב-do not."
+  },
+  {
+  "id":"ps229",
+  "text":"Kevin _____ like spinach and beans.",
+  "correct":["does not","doesn't"],
+  "rule":"Kevin = he."
+  },
+  {
+  "id":"ps230",
+  "text":"The children _____ play in the garden very often.",
+  "correct":["do not","don't"],
+  "rule":"children רבים."
+  },
+  {
+  "id":"ps236",
+  "text":"I _____ lemonade very much. (like)",
+  "correct":"like",
+  "rule":"I → like."
+  },
+  {
+  "id":"ps237",
+  "text":"The girls always _____ to pop music. (listen)",
+  "correct":"listen",
+  "rule":"girls רבים."
+  },
+  {
+  "id":"ps238",
+  "text":"Janet never _____ jeans. (wear)",
+  "correct":"wears",
+  "rule":"Janet = she."
+  },
+  {
+  "id":"ps239",
+  "text":"Mr Smith _____ Spanish and French. (teach)",
+  "correct":"teaches",
+  "rule":"teach → teaches."
+  },
+  {
+  "id":"ps240",
+  "text":"You _____ your homework after school. (do)",
+  "correct":"do",
+  "rule":"you → do."
+  },
+  {
+  "id":"ps241",
+  "text":"We _____ a nice garden. (have)",
+  "correct":"have",
+  "rule":"we → have."
+  },
+  {
+  "id":"ps242",
+  "text":"She _____ six years old. (be)",
+  "correct":"is",
+  "rule":"she → is."
+  },
+  {
+  "id":"ps243",
+  "text":"Simon _____ two rabbits and five goldfish. (have)",
+  "correct":"has",
+  "rule":"Simon = he."
+  },
+  {
+  "id":"ps244",
+  "text":"I _____ from Vienna, Austria. (be)",
+  "correct":"am",
+  "rule":"I → am."
+  },
+  {
+  "id":"ps245",
+  "text":"They _____ Sandy's parents. (be)",
+  "correct":"are",
+  "rule":"they → are."
   }
 ]
