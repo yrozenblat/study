@@ -169,6 +169,14 @@
       return requested.filter(t => visible.has(t));
     }
 
+    function getLockedSelectedTags(visibleTags) {
+      const q = getVocabQuizConfig();
+      const tagFilter = q.tagFilter || {};
+      const requested = Array.isArray(tagFilter.lockedSelectedTags) ? tagFilter.lockedSelectedTags : [];
+      const visible = new Set(visibleTags || []);
+      return requested.filter(t => visible.has(t));
+    }
+
     function getVocabTagMaxSelectable() {
       const q = getVocabQuizConfig();
       const tagFilter = q.tagFilter || {};
@@ -258,6 +266,7 @@
       const enabled = tagFilter.enabled !== false;
       const tags = getVisibleVocabTags(allTags);
       const defaultSelected = new Set(getDefaultSelectedTags(tags));
+      const lockedSelected = new Set(getLockedSelectedTags(tags));
 
       document.getElementById('tagBox').style.display = enabled ? '' : 'none';
       tagList.innerHTML = '';
@@ -271,7 +280,8 @@
         cb.type = 'checkbox';
         cb.name = 'vocabTag';
         cb.value = t;
-        cb.checked = defaultSelected.has(t);
+        cb.checked = defaultSelected.has(t) || lockedSelected.has(t);
+        cb.disabled = lockedSelected.has(t);
         label.appendChild(cb);
         label.appendChild(document.createTextNode(' ' + t));
         tagList.appendChild(label);
