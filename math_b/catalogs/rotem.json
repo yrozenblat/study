@@ -18,9 +18,10 @@
       ],
       "defaultMode": "drag",
       "tagFilter": {
-        "enabled": true,
+        "enabled": false,
         "allowedTags": ["date08.03.2026"],
         "defaultSelectedTags": ["date08.03.2026"],
+        "forcedTags": ["date08.03.2026"],
         "maxSelectable": 1
       }
     },
