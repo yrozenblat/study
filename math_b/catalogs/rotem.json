@@ -18,10 +18,16 @@
       ],
       "defaultMode": "drag",
       "tagFilter": {
-        "enabled": false,
-        "allowedTags": ["date08.03.2026"],
-        "defaultSelectedTags": ["date08.03.2026"],
-        "forcedTags": ["date08.03.2026"],
+        "enabled": true,
+        "allowedTags": [
+          "date08.03.2026"
+        ],
+        "defaultSelectedTags": [
+          "date08.03.2026"
+        ],
+        "lockedSelectedTags": [
+          "date08.03.2026"
+        ],
         "maxSelectable": 1
       }
     },
