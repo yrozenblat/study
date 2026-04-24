@@ -289,7 +289,7 @@ function setCheckButtonEnabled(enabled) {
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'open-choice';
-        input.dataset.qid = q.id;
+        input.dataset.qid = q.quotient !== undefined ? q.id + '__q' : q.id;
         input.autocomplete = 'off';
         input.spellcheck = false;
         input.placeholder = '';
@@ -298,9 +298,26 @@ function setCheckButtonEnabled(enabled) {
         input.style.margin = '0 6px';
         input.style.padding = '2px 6px';
         input.style.width = '70px';
-
         line.appendChild(input);
-        line.appendChild(document.createTextNode(parts.slice(1).join('_____') || ''));
+
+        if (parts.length >= 3 && q.quotient !== undefined) {
+          line.appendChild(document.createTextNode(parts[1] || ''));
+          const input2 = document.createElement('input');
+          input2.type = 'text';
+          input2.className = 'open-choice';
+          input2.dataset.qid = q.id + '__r';
+          input2.autocomplete = 'off';
+          input2.spellcheck = false;
+          input2.style.direction = 'ltr';
+          input2.style.textAlign = 'center';
+          input2.style.margin = '0 6px';
+          input2.style.padding = '2px 6px';
+          input2.style.width = '50px';
+          line.appendChild(input2);
+          if (parts[2]) line.appendChild(document.createTextNode(parts[2]));
+        } else {
+          line.appendChild(document.createTextNode(parts.slice(1).join('_____') || ''));
+        }
         wrap.appendChild(line);
       } else {
         const textDiv = document.createElement('div');
@@ -567,6 +584,36 @@ function renderVocabDrag(questions) {
         .replace(/\s+/g, ' ');
 
     currentQuestions.forEach(q => {
+      const fb = document.getElementById('fb-' + q.id);
+
+      const inputQ = document.querySelector('.open-choice[data-qid="' + q.id + '__q"]');
+      const inputR = document.querySelector('.open-choice[data-qid="' + q.id + '__r"]');
+      if (inputQ && inputR) {
+        inputQ.disabled = true;
+        inputR.disabled = true;
+        const userQ = norm(inputQ.value);
+        const userR = norm(inputR.value);
+        const expQ = norm(String(q.quotient));
+        const expR = norm(String(q.remainder));
+        const isCorrect = userQ === expQ && userR === expR;
+        if (isCorrect) correctCount++;
+        StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
+        if (fb) {
+          fb.classList.remove('correct', 'wrong');
+          if (!userQ && !userR) {
+            fb.classList.add('wrong');
+            fb.textContent = '✗ לא נכתבה תשובה. תשובה נכונה: ' + q.quotient + ' שארית ' + q.remainder;
+          } else if (isCorrect) {
+            fb.classList.add('correct');
+            fb.textContent = '✓ נכון';
+          } else {
+            fb.classList.add('wrong');
+            fb.textContent = '✗ שגוי. תשובה נכונה: ' + q.quotient + ' שארית ' + q.remainder;
+          }
+        }
+        return;
+      }
+
       const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
       const raw = input ? input.value : '';
       if (input) input.disabled = true;
@@ -578,7 +625,6 @@ function renderVocabDrag(questions) {
 
       StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), isCorrect);
 
-      const fb = document.getElementById('fb-' + q.id);
       if (!fb) return;
       fb.classList.remove('correct', 'wrong');
 
