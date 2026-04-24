@@ -54,6 +54,12 @@
       "title": "There is / There are",
       "page": "quizzes/there_is_are/quiz.html",
       "stats": "quizzes/there_is_are/stats.html"
+    },
+    {
+      "id": "math_order_ops_rotem_01",
+      "title": "מתמטיקה – סדר פעולות",
+      "page": "quizzes/math_order_ops_rotem_01/quiz.html",
+      "stats": "quizzes/math_order_ops_rotem_01/stats.html"
     }
   ]
 }
