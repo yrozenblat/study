@@ -2,88 +2,213 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>מערכת מבחנים</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
-    h1 { margin-top: 0; }
-    #selector { margin-bottom: 15px; }
-    iframe { width: 100%; height: 600px; border: 1px solid #ccc; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #f0f4f8;
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      background: #fff;
+      border-bottom: 1px solid #dde3ed;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .top-bar h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .selector-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .selector-row label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    #quizSelect {
+      padding: 8px 14px;
+      border: 2px solid #dde3ed;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1e293b;
+      cursor: pointer;
+      min-width: 220px;
+      transition: border-color 0.15s;
+      appearance: auto;
+    }
+    #quizSelect:focus {
+      outline: none;
+      border-color: #4f7cff;
+    }
+
+    /* ── Option panels ── */
+    #optionPanel {
+      background: #eff6ff;
+      border-bottom: 1px solid #bfdbfe;
+      padding: 10px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    #optionPanel[hidden] { display: none; }
+
+    #optionPanel .panel-label {
+      font-weight: 600;
+      color: #1d4ed8;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    #optionPanel label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #1e40af;
+      margin-left: 12px;
+    }
+
+    #tagList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    #tagList label {
+      background: #dbeafe;
+      border: 1px solid #93c5fd;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #tagList label:has(input:checked) {
+      background: #3b82f6;
+      border-color: #2563eb;
+      color: #fff;
+    }
+    #tagList input { display: none; }
+
+    /* ── Frame area ── */
+    .frame-area {
+      flex: 1;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .frame-card {
+      flex: 1;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #dde3ed;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      min-height: 560px;
+    }
   </style>
 </head>
 <body>
-  <h1>מערכת מבחנים</h1>
-  <div id="selector">
-    <label for="quizSelect">בחר מבחן:</label>
-    <select id="quizSelect">
-      <!-- options populated from quiz_catalog.json -->
-    </select>
 
-    <div id="vocabOptions" style="display:none; margin-top:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-      <div style="margin-bottom:10px;">
-        <span style="font-weight:600;">סוג:</span>
-        <span id="vocabModeList"></span>
-      </div>
-
-      <div id="tagBox" style="margin-top:8px;">
-        <div style="font-weight:600; margin-bottom:6px;">תגיות (הצג רק מילים מתוייגות):</div>
-        <div id="tagList" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
-      </div>
-    </div>
-
-    <div id="amOptions" style="display:none; margin-top:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-      <div style="margin-bottom:10px;">
-        <span style="font-weight:600;">סוג:</span>
-        <label style="margin-inline-start:10px;"><input type="radio" name="amMode" value="mcq" checked> בחירה</label>
-        <label style="margin-inline-start:10px;"><input type="radio" name="amMode" value="open"> פתוח</label>
-      </div>
+  <div class="top-bar">
+    <h1>מערכת מבחנים</h1>
+    <div class="selector-row">
+      <label for="quizSelect">בחר מבחן:</label>
+      <select id="quizSelect"></select>
     </div>
   </div>
-  <iframe id="quizFrame" src="quizzes/vocab/quiz.html?mode=drag"></iframe>
+
+  <div id="optionPanel" hidden>
+    <div id="vocabOptions" hidden>
+      <span class="panel-label">סוג:</span>
+      <span id="vocabModeList"></span>
+      <div id="tagBox" hidden style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="panel-label">תגיות:</span>
+        <div id="tagList"></div>
+      </div>
+    </div>
+    <div id="amOptions" hidden>
+      <span class="panel-label">סוג:</span>
+      <label><input type="radio" name="amMode" value="mcq" checked> בחירה</label>
+      <label><input type="radio" name="amMode" value="open"> פתוח</label>
+    </div>
+  </div>
+
+  <div class="frame-area">
+    <div class="frame-card">
+      <iframe id="quizFrame" src="quizzes/vocab/quiz.html?mode=drag"></iframe>
+    </div>
+  </div>
 
   <script>
-
     const sel = document.getElementById('quizSelect');
     const frame = document.getElementById('quizFrame');
+    const optionPanel = document.getElementById('optionPanel');
     const vocabOptions = document.getElementById('vocabOptions');
     const tagList = document.getElementById('tagList');
+    const tagBox = document.getElementById('tagBox');
     const vocabModeList = document.getElementById('vocabModeList');
     const amOptions = document.getElementById('amOptions');
 
-    let vocabTags = [];
     let catalog = null;
     let quizById = {};
 
     async function loadCatalog() {
       if (catalog) return catalog;
-
       const params = new URLSearchParams(location.search);
       const name = (params.get('name') || '').trim();
-
-      // Prefer per-name catalog: catalogs/<name>.json
       const perNameUrl = name ? ('catalogs/' + encodeURIComponent(name) + '.json') : null;
-
       async function tryFetch(url) {
-        try {
-          const r = await fetch(url, { cache: 'no-cache' });
-          if (!r.ok) return null;
-          return await r.json();
-        } catch (e) {
-          return null;
-        }
+        try { const r = await fetch(url, { cache: 'no-cache' }); return r.ok ? r.json() : null; }
+        catch (e) { return null; }
       }
-
       const perNameCatalog = perNameUrl ? await tryFetch(perNameUrl) : null;
       catalog = perNameCatalog || await tryFetch('quiz_catalog.json') || { quizzes: [] };
-
       quizById = {};
       (catalog.quizzes || []).forEach(q => { if (q && q.id) quizById[q.id] = q; });
-
-      // Optional: show who this catalog is for
-      const whoEl = document.getElementById('catalog-owner');
-      if (whoEl) {
-        whoEl.textContent = name ? ('קטלוג: ' + name) : '';
-      }
-
       return catalog;
     }
 
@@ -96,35 +221,24 @@
         opt.textContent = q.title || q.id;
         sel.appendChild(opt);
       });
-      // default to vocab if exists
       if (quizById['vocab']) sel.value = 'vocab';
     }
 
     function sanitizeName(name) {
       const s = (name || '').toString().trim();
-      // Allow letters/numbers from any language (e.g., Hebrew) plus _ and -
-      try {
-        return s.replace(/[^\p{L}\p{N}_-]/gu, '');
-      } catch (e) {
-        // Fallback for browsers without Unicode property escapes
-        return s.replace(/[^a-zA-Z0-9_\-\u0590-\u05FF]/g, '');
-      }
+      try { return s.replace(/[^\p{L}\p{N}_-]/gu, ''); }
+      catch (e) { return s.replace(/[^a-zA-Z0-9_\-֐-׿]/g, ''); }
     }
 
-    const vocabTagsCache = {}; // key: name or '__default__' -> [tags]
+    const vocabTagsCache = {};
 
-    function getVocabQuizConfig() {
-      return quizById['vocab'] || {};
-    }
+    function getVocabQuizConfig() { return quizById['vocab'] || {}; }
 
     function getAllowedVocabModes() {
       const q = getVocabQuizConfig();
       const modes = Array.isArray(q.modes) && q.modes.length
         ? q.modes
-        : [
-            { id: 'drag', label: 'מחסן (גרירה)' },
-            { id: 'open', label: 'פתוח' }
-          ];
+        : [{ id: 'drag', label: 'מחסן (גרירה)' }, { id: 'open', label: 'פתוח' }];
       return modes.filter(m => m && m.id);
     }
 
@@ -134,11 +248,8 @@
       vocabModeList.innerHTML = '';
       modes.forEach((mode, idx) => {
         const label = document.createElement('label');
-        label.style.marginInlineStart = '10px';
         const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'vocabMode';
-        input.value = mode.id;
+        input.type = 'radio'; input.name = 'vocabMode'; input.value = mode.id;
         input.checked = mode.id === defaultMode || (!modes.some(m => m.id === defaultMode) && idx === 0);
         label.appendChild(input);
         label.appendChild(document.createTextNode(' ' + (mode.label || mode.id)));
@@ -148,51 +259,42 @@
 
     function getVisibleVocabTags(allTags) {
       const q = getVocabQuizConfig();
-      const tagFilter = q.tagFilter || {};
+      const tf = q.tagFilter || {};
       let tags = Array.isArray(allTags) ? allTags.slice() : [];
-      if (Array.isArray(tagFilter.allowedTags) && tagFilter.allowedTags.length) {
-        const allowed = new Set(tagFilter.allowedTags);
-        tags = tags.filter(t => allowed.has(t));
+      if (Array.isArray(tf.allowedTags) && tf.allowedTags.length) {
+        const allowed = new Set(tf.allowedTags); tags = tags.filter(t => allowed.has(t));
       }
-      if (Array.isArray(tagFilter.hiddenTags) && tagFilter.hiddenTags.length) {
-        const hidden = new Set(tagFilter.hiddenTags);
-        tags = tags.filter(t => !hidden.has(t));
+      if (Array.isArray(tf.hiddenTags) && tf.hiddenTags.length) {
+        const hidden = new Set(tf.hiddenTags); tags = tags.filter(t => !hidden.has(t));
       }
       return tags;
     }
 
     function getDefaultSelectedTags(visibleTags) {
-      const q = getVocabQuizConfig();
-      const tagFilter = q.tagFilter || {};
-      const requested = Array.isArray(tagFilter.defaultSelectedTags) ? tagFilter.defaultSelectedTags : [];
+      const tf = (getVocabQuizConfig().tagFilter || {});
+      const requested = Array.isArray(tf.defaultSelectedTags) ? tf.defaultSelectedTags : [];
       const visible = new Set(visibleTags || []);
       return requested.filter(t => visible.has(t));
     }
 
     function getLockedSelectedTags(visibleTags) {
-      const q = getVocabQuizConfig();
-      const tagFilter = q.tagFilter || {};
-      const requested = Array.isArray(tagFilter.lockedSelectedTags) ? tagFilter.lockedSelectedTags : [];
+      const tf = (getVocabQuizConfig().tagFilter || {});
+      const requested = Array.isArray(tf.lockedSelectedTags) ? tf.lockedSelectedTags : [];
       const visible = new Set(visibleTags || []);
       return requested.filter(t => visible.has(t));
     }
 
     function getVocabTagMaxSelectable() {
-      const q = getVocabQuizConfig();
-      const tagFilter = q.tagFilter || {};
-      const n = Number(tagFilter.maxSelectable || 0);
+      const n = Number((getVocabQuizConfig().tagFilter || {}).maxSelectable || 0);
       return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
     }
 
     function applyVocabTagSelectionLimit(changedInput) {
-      const maxSelectable = getVocabTagMaxSelectable();
-      if (!maxSelectable) return;
+      const max = getVocabTagMaxSelectable();
+      if (!max) return;
       const checked = Array.from(document.querySelectorAll('input[name="vocabTag"]:checked'));
-      if (checked.length <= maxSelectable) return;
-      if (changedInput && changedInput.checked) {
-        changedInput.checked = false;
-        alert('אפשר לבחור עד ' + maxSelectable + ' תגיות.');
-      }
+      if (checked.length <= max) return;
+      if (changedInput && changedInput.checked) { changedInput.checked = false; alert('אפשר לבחור עד ' + max + ' תגיות.'); }
     }
 
     async function loadVocabTagsOnce() {
@@ -200,86 +302,42 @@
       const name = sanitizeName(rawName);
       const cacheKey = name || '__default__';
       if (vocabTagsCache[cacheKey]) return vocabTagsCache[cacheKey];
-
       try {
-        // Prefer personalized questions_<name>.json when available
         let questions = null;
-
         if (name) {
-          // Try exact, then ASCII-lowercase variant (GitHub Pages is case-sensitive)
-          const candidates = [];
-          candidates.push(`quizzes/vocab/questions_${encodeURIComponent(name)}.json`);
-          // lower-case only for ASCII letters to avoid changing Hebrew/other scripts
+          const candidates = [`quizzes/vocab/questions_${encodeURIComponent(name)}.json`];
           const asciiLower = name.replace(/[A-Z]/g, ch => ch.toLowerCase());
-          if (asciiLower && asciiLower !== name) {
-            candidates.push(`quizzes/vocab/questions_${encodeURIComponent(asciiLower)}.json`);
-          }
-          for (const personalizedPath of candidates) {
-            try {
-              const res = await fetch(personalizedPath, { cache: 'no-store' });
-              if (res.ok) {
-                questions = await res.json();
-                console.log('Loaded personalized vocab tags from:', personalizedPath);
-                break;
-              }
-            } catch (e) {
-              // keep trying candidates
-            }
+          if (asciiLower !== name) candidates.push(`quizzes/vocab/questions_${encodeURIComponent(asciiLower)}.json`);
+          for (const p of candidates) {
+            try { const r = await fetch(p, { cache: 'no-store' }); if (r.ok) { questions = await r.json(); break; } } catch (e) {}
           }
         }
-
-        if (!questions) {
-          questions = await fetch('quizzes/vocab/questions.json').then(r => r.json());
-        }
-
+        if (!questions) questions = await fetch('quizzes/vocab/questions.json').then(r => r.json());
         const set = new Set();
         questions.forEach(q => (q.tags || []).forEach(t => set.add(t)));
-        const tags = Array.from(set).sort((a,b) => a.localeCompare(b, 'he'));
-
-        vocabTagsCache[cacheKey] = tags;
-        return tags;
-      } catch (e) {
-        vocabTagsCache[cacheKey] = [];
-        return vocabTagsCache[cacheKey];
-      }
+        vocabTagsCache[cacheKey] = Array.from(set).sort((a, b) => a.localeCompare(b, 'he'));
+      } catch (e) { vocabTagsCache[cacheKey] = []; }
+      return vocabTagsCache[cacheKey];
     }
 
-    function getSelectedVocabMode() {
-      const r = document.querySelector('input[name="vocabMode"]:checked');
-      return r ? r.value : 'drag';
-    }
-
-    function getSelectedTags() {
-      const checked = Array.from(document.querySelectorAll('input[name="vocabTag"]:checked'));
-      return checked.map(x => x.value);
-    }
-
-    function getSelectedAmMode() {
-      const r = document.querySelector('input[name="amMode"]:checked');
-      return r ? r.value : 'mcq';
-    }
+    function getSelectedVocabMode() { const r = document.querySelector('input[name="vocabMode"]:checked'); return r ? r.value : 'drag'; }
+    function getSelectedTags() { return Array.from(document.querySelectorAll('input[name="vocabTag"]:checked')).map(x => x.value); }
+    function getSelectedAmMode() { const r = document.querySelector('input[name="amMode"]:checked'); return r ? r.value : 'mcq'; }
 
     async function refreshVocabTagsUI() {
       const allTags = await loadVocabTagsOnce();
-      const q = getVocabQuizConfig();
-      const tagFilter = q.tagFilter || {};
-      const enabled = tagFilter.enabled !== false;
+      const tf = (getVocabQuizConfig().tagFilter || {});
+      const enabled = tf.enabled !== false;
       const tags = getVisibleVocabTags(allTags);
       const defaultSelected = new Set(getDefaultSelectedTags(tags));
       const lockedSelected = new Set(getLockedSelectedTags(tags));
-
-      document.getElementById('tagBox').style.display = enabled ? '' : 'none';
+      tagBox.hidden = !enabled;
       tagList.innerHTML = '';
       if (!enabled) return;
-
       tags.forEach(t => {
         const label = document.createElement('label');
-        label.style.display = 'inline-block';
-        label.style.margin = '4px 8px';
         const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.name = 'vocabTag';
-        cb.value = t;
+        cb.type = 'checkbox'; cb.name = 'vocabTag'; cb.value = t;
         cb.checked = defaultSelected.has(t) || lockedSelected.has(t);
         cb.disabled = lockedSelected.has(t);
         label.appendChild(cb);
@@ -288,19 +346,16 @@
       });
     }
 
-    function setFrameSrc(url) {
-      frame.src = url;
-    }
+    function setFrameSrc(url) { frame.src = url; }
 
     function buildVocabUrl() {
       const q = quizById['vocab'];
       const base = (q && q.page) ? q.page : 'quizzes/vocab/quiz.html';
-      const mode = getSelectedVocabMode();
-      const tags = getSelectedTags();
       const params = new URLSearchParams();
       const outerName = new URLSearchParams(location.search).get('name');
       if (outerName) params.set('name', outerName);
-      params.set('mode', mode);
+      params.set('mode', getSelectedVocabMode());
+      const tags = getSelectedTags();
       if (tags.length) params.set('tags', tags.join(','));
       return base + '?' + params.toString();
     }
@@ -308,63 +363,49 @@
     function buildAmUrl() {
       const q = quizById['am_is_are'];
       const base = (q && q.page) ? q.page : 'quizzes/am_is_are/quiz.html';
-      const mode = getSelectedAmMode(); // mcq/open
       const params = new URLSearchParams();
       const outerName = new URLSearchParams(location.search).get('name');
       if (outerName) params.set('name', outerName);
-      params.set('mode', mode);
+      params.set('mode', getSelectedAmMode());
       return base + '?' + params.toString();
     }
 
     function hideAllOptions() {
-      vocabOptions.style.display = 'none';
-      amOptions.style.display = 'none';
+      vocabOptions.hidden = true;
+      amOptions.hidden = true;
+      optionPanel.hidden = true;
     }
 
     async function onSelectChanged() {
       const id = sel.value;
       hideAllOptions();
-
       if (id === 'vocab') {
-        vocabOptions.style.display = 'block';
+        optionPanel.hidden = false;
+        vocabOptions.hidden = false;
         renderVocabModeOptions();
         await refreshVocabTagsUI();
         setFrameSrc(buildVocabUrl());
         return;
       }
-
       if (id === 'am_is_are') {
-        amOptions.style.display = 'block';
+        optionPanel.hidden = false;
+        amOptions.hidden = false;
         setFrameSrc(buildAmUrl());
         return;
       }
-
       const q = quizById[id];
-      if (q && q.page) {
-        setFrameSrc(q.page);
-      } else {
-        // Fallback: treat as direct URL if catalog is missing/old
-        setFrameSrc(id);
-      }
+      if (q && q.page) setFrameSrc(q.page);
+      else setFrameSrc(id);
     }
 
-    // Wire UI events
     sel.addEventListener('change', onSelectChanged);
     document.addEventListener('change', (e) => {
       if (e.target && e.target.name === 'vocabMode') setFrameSrc(buildVocabUrl());
-      if (e.target && e.target.name === 'vocabTag') {
-        applyVocabTagSelectionLimit(e.target);
-        setFrameSrc(buildVocabUrl());
-      }
+      if (e.target && e.target.name === 'vocabTag') { applyVocabTagSelectionLimit(e.target); setFrameSrc(buildVocabUrl()); }
       if (e.target && e.target.name === 'amMode') setFrameSrc(buildAmUrl());
     });
 
-    (async () => {
-      await populateSelect();
-      renderVocabModeOptions();
-      await onSelectChanged();
-    })();
-
+    (async () => { await populateSelect(); renderVocabModeOptions(); await onSelectChanged(); })();
   </script>
 </body>
 </html>

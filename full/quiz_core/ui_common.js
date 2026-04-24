@@ -133,7 +133,137 @@ function setCheckButtonEnabled(enabled) {
     if (btn) btn.disabled = !enabled;
   }
 
+  function ensureQuizStyles() {
+    if (document.getElementById('quiz-global-style')) return;
+    const style = document.createElement('style');
+    style.id = 'quiz-global-style';
+    style.textContent = `
+      :root {
+        --q-accent: #4f7cff;
+        --q-accent-dark: #3563e9;
+        --q-success: #16a34a;
+        --q-error: #dc2626;
+        --q-bg: #f0f4f8;
+        --q-card: #ffffff;
+        --q-border: #dde3ed;
+        --q-text: #1e293b;
+        --q-muted: #64748b;
+        --q-radius: 12px;
+      }
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif !important;
+        background: var(--q-bg) !important;
+        margin: 0 !important;
+        padding: 20px 24px !important;
+        color: var(--q-text);
+        min-height: 100vh;
+      }
+      h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--q-text);
+        margin: 0 0 14px;
+      }
+      button {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        font-size: 0.9rem;
+        font-family: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: filter 0.15s, transform 0.1s;
+        margin-left: 6px;
+      }
+      button:hover:not(:disabled) { filter: brightness(1.08); }
+      button:active:not(:disabled) { transform: scale(0.97); }
+      button:disabled { opacity: 0.4; cursor: not-allowed; }
+      button[onclick*="startQuiz"] { background: var(--q-accent); color: #fff; }
+      #btn-check { background: #22c55e; color: #fff; }
+      a[href="stats.html"] {
+        display: inline-block;
+        color: var(--q-muted);
+        font-size: 0.85rem;
+        text-decoration: none;
+        padding: 7px 13px;
+        border-radius: 8px;
+        border: 1px solid var(--q-border);
+        vertical-align: middle;
+        transition: background 0.15s;
+      }
+      a[href="stats.html"]:hover { background: var(--q-border); }
+      #quiz-container { margin-top: 14px; }
+      .question {
+        background: var(--q-card);
+        border: 1px solid var(--q-border);
+        border-radius: var(--q-radius);
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .question-text {
+        font-size: 1.05rem;
+        font-weight: 500;
+        flex: 1;
+        min-width: 180px;
+      }
+      input.open-choice {
+        height: 36px !important;
+        min-width: 72px;
+        border: 2px solid var(--q-border) !important;
+        border-radius: 8px !important;
+        font-size: 1rem !important;
+        padding: 0 10px !important;
+        background: #f8fafc;
+        color: var(--q-text);
+        transition: border-color 0.15s, background 0.15s;
+        box-sizing: border-box;
+      }
+      input.open-choice:focus {
+        outline: none !important;
+        border-color: var(--q-accent) !important;
+        background: #fff;
+      }
+      input.open-choice:disabled { background: #f1f5f9; color: #475569; }
+      .feedback {
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+      .feedback.correct { background: #dcfce7 !important; color: var(--q-success) !important; }
+      .feedback.wrong   { background: #fee2e2 !important; color: var(--q-error)   !important; }
+      #result {
+        margin-top: 18px;
+        padding: 14px 22px;
+        background: var(--q-card);
+        border: 1px solid var(--q-border);
+        border-radius: var(--q-radius);
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      }
+      #daily-quiz-summary {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        color: #1d4ed8;
+        margin-bottom: 10px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   async function init(options) {
+    ensureQuizStyles();
     const { configUrl, questionsUrl } = options;
     let config, questions;
     try {
