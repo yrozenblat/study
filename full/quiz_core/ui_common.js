@@ -722,7 +722,7 @@ function renderVocabDrag(questions) {
         inputQ.disabled = true;
         inputR.disabled = true;
         const userQ = norm(inputQ.value);
-        const userR = norm(inputR.value);
+        const userR = inputR.value.trim() === '' ? '0' : norm(inputR.value);
         const expQ = norm(String(q.quotient));
         const expR = norm(String(q.remainder));
         const isCorrect = userQ === expQ && userR === expR;
