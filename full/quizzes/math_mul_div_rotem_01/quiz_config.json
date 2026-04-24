@@ -1,0 +1,15 @@
+{
+  "quizId": "math_mul_div_rotem_01",
+  "numQuestions": 7,
+  "renderer": "open",
+  "selectionWeights": {
+    "new": 5,
+    "weak": 4,
+    "medium": 2,
+    "strong": 1
+  },
+  "weakThreshold": 0.60,
+  "mediumThreshold": 0.85,
+  "noveltyK": 1.5,
+  "minNewRatio": 0.15
+}
