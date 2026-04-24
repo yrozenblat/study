@@ -1,0 +1,364 @@
+[
+  {
+    "unitId": "seq_a1_6_d_3",
+    "type": "arith_seq",
+    "data": {
+      "a1": 6,
+      "d": 3
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "6,9,12,15"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "correct": "a_n = 6 + (n-1)·3"
+      },
+      {
+        "partId": "findn_300",
+        "difficulty": 3,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא 300? (כתוב n)",
+        "correct": "99"
+      },
+      {
+        "partId": "is_member_624",
+        "difficulty": 4,
+        "task": "is_member",
+        "prompt": "האם 624 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "3003"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=6,\\ d=3"
+  },
+  {
+    "unitId": "seq_a1_5_d_4",
+    "type": "arith_seq",
+    "data": {
+      "a1": 5,
+      "d": 4
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "5,9,13,17"
+      },
+      {
+        "partId": "a10",
+        "difficulty": 2,
+        "task": "term_n",
+        "prompt": "מהו האיבר העשירי בסדרה?",
+        "correct": "41"
+      },
+      {
+        "partId": "is_member_397",
+        "difficulty": 3,
+        "task": "is_member",
+        "prompt": "האם 397 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "findn_401",
+        "difficulty": 4,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא 401? (כתוב n)",
+        "correct": "100"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "4001"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "answers": [
+          "a_n=5+(n-1)4",
+          "an=5+(n-1)4",
+          "a_n=5+4(n-1)",
+          "an=5+4(n-1)",
+          "5+4(n-1)",
+          "5+(n-1)4",
+          "a_n = 5 + (n-1)·4"
+        ],
+        "correct": "a_n = 5 + (n-1)·4"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=5,\\ d=4"
+  },
+  {
+    "unitId": "seq_a1_12_d_5",
+    "type": "arith_seq",
+    "data": {
+      "a1": 12,
+      "d": 5
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "12,17,22,27"
+      },
+      {
+        "partId": "a10",
+        "difficulty": 2,
+        "task": "term_n",
+        "prompt": "מהו האיבר העשירי בסדרה?",
+        "correct": "57"
+      },
+      {
+        "partId": "is_member_502",
+        "difficulty": 3,
+        "task": "is_member",
+        "prompt": "האם 502 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "findn_507",
+        "difficulty": 4,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא 507? (כתוב n)",
+        "correct": "100"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "5007"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "answers": [
+          "a_n=12+(n-1)5",
+          "an=12+(n-1)5",
+          "a_n=12+5(n-1)",
+          "an=12+5(n-1)",
+          "12+5(n-1)",
+          "12+(n-1)5",
+          "a_n = 12 + (n-1)·5"
+        ],
+        "correct": "a_n = 12 + (n-1)·5"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=12,\\ d=5"
+  },
+  {
+    "unitId": "seq_a1_m7_d_2",
+    "type": "arith_seq",
+    "data": {
+      "a1": -7,
+      "d": 2
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "-7,-5,-3,-1"
+      },
+      {
+        "partId": "a10",
+        "difficulty": 2,
+        "task": "term_n",
+        "prompt": "מהו האיבר העשירי בסדרה?",
+        "correct": "11"
+      },
+      {
+        "partId": "is_member_189",
+        "difficulty": 3,
+        "task": "is_member",
+        "prompt": "האם 189 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "findn_191",
+        "difficulty": 4,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא 191? (כתוב n)",
+        "correct": "100"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "1991"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "answers": [
+          "a_n=-7+(n-1)2",
+          "an=-7+(n-1)2",
+          "a_n=-7+2(n-1)",
+          "an=-7+2(n-1)",
+          "-7+2(n-1)",
+          "-7+(n-1)2",
+          "a_n = -7 + (n-1)·2"
+        ],
+        "correct": "a_n = -7 + (n-1)·2"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=-7,\\ d=2"
+  },
+  {
+    "unitId": "seq_a1_10_d_m2",
+    "type": "arith_seq",
+    "data": {
+      "a1": 10,
+      "d": -2
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "10,8,6,4"
+      },
+      {
+        "partId": "a10",
+        "difficulty": 2,
+        "task": "term_n",
+        "prompt": "מהו האיבר העשירי בסדרה?",
+        "correct": "-8"
+      },
+      {
+        "partId": "is_member_-50",
+        "difficulty": 3,
+        "task": "is_member",
+        "prompt": "האם -50 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "findn_-188",
+        "difficulty": 4,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא -188? (כתוב n)",
+        "correct": "100"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "-1988"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "answers": [
+          "a_n=10+(n-1)-2",
+          "an=10+(n-1)-2",
+          "a_n=10+-2(n-1)",
+          "an=10+-2(n-1)",
+          "10+-2(n-1)",
+          "10+(n-1)-2",
+          "a_n = 10 + (n-1)·-2"
+        ],
+        "correct": "a_n = 10 + (n-1)·-2"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=10,\\ d=-2"
+  },
+  {
+    "unitId": "seq_a1_3_d_7",
+    "type": "arith_seq",
+    "data": {
+      "a1": 3,
+      "d": 7
+    },
+    "parts": [
+      {
+        "partId": "first4",
+        "difficulty": 1,
+        "task": "first_terms",
+        "prompt": "רשום את ארבעת האיברים הראשונים בסדרה",
+        "correct": "3,10,17,24"
+      },
+      {
+        "partId": "a10",
+        "difficulty": 2,
+        "task": "term_n",
+        "prompt": "מהו האיבר העשירי בסדרה?",
+        "correct": "66"
+      },
+      {
+        "partId": "is_member_143",
+        "difficulty": 3,
+        "task": "is_member",
+        "prompt": "האם 143 הוא איבר בסדרה? (כן/לא)",
+        "correct": "כן"
+      },
+      {
+        "partId": "findn_696",
+        "difficulty": 4,
+        "task": "find_n",
+        "prompt": "איזה איבר בסדרה הוא 696? (כתוב n)",
+        "correct": "100"
+      },
+      {
+        "partId": "a1000",
+        "difficulty": 5,
+        "task": "term_n",
+        "prompt": "מהו האיבר במקום ה־1000?",
+        "correct": "6996"
+      },
+      {
+        "partId": "formula",
+        "difficulty": 4,
+        "task": "formula",
+        "prompt": "כתוב ביטוי לאיבר ה־n (a_n)",
+        "answers": [
+          "a_n=3+(n-1)7",
+          "an=3+(n-1)7",
+          "a_n=3+7(n-1)",
+          "an=3+7(n-1)",
+          "3+7(n-1)",
+          "3+(n-1)7",
+          "a_n = 3 + (n-1)·7"
+        ],
+        "correct": "a_n = 3 + (n-1)·7"
+      }
+    ],
+    "stemHe": "נתונה סדרה חשבונית:",
+    "stemTex": "a_1=3,\\ d=7"
+  }
+]

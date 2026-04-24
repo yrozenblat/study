@@ -1,0 +1,15 @@
+{
+  "quizId": "math_add_sub",
+  "numQuestions": 12,
+  "renderer": "open",
+  "selectionWeights": {
+    "new": 5,
+    "weak": 4,
+    "medium": 2,
+    "strong": 1
+  },
+  "weakThreshold": 0.60,
+  "mediumThreshold": 0.85,
+  "noveltyK": 1.5,
+  "minNewRatio": 0.15
+}
