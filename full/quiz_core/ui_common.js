@@ -3,6 +3,8 @@ let QuizCore = (() => {
   let currentConfig = null;
   let hasChecked = false;
   let currentCategoryGroups = [];
+  let checkedCategories = new Set();
+  let categoryScores = {};
 
   function showLoadError(msg) {
     const container = document.getElementById('quiz-container');
@@ -260,9 +262,9 @@ function setCheckButtonEnabled(enabled) {
         margin-bottom: 10px;
       }
       .category-header {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        gap: 10px;
         background: #eff6ff;
         border: 1px solid #bfdbfe;
         border-radius: 8px;
@@ -270,6 +272,26 @@ function setCheckButtonEnabled(enabled) {
         margin: 18px 0 6px;
       }
       .category-header:first-child { margin-top: 4px; }
+      .category-header-title {
+        flex: 1;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1d4ed8;
+      }
+      .category-score {
+        font-size: 0.9rem;
+        font-weight: 700;
+        min-width: 32px;
+        text-align: center;
+      }
+      .btn-check-category {
+        background: #3b82f6 !important;
+        color: #fff !important;
+        padding: 5px 14px !important;
+        font-size: 0.82rem !important;
+        margin-left: 0 !important;
+        white-space: nowrap;
+      }
       .category-section { margin-bottom: 2px; }
     `;
     document.head.appendChild(style);
@@ -325,6 +347,8 @@ function setCheckButtonEnabled(enabled) {
 
     // Allow checking again only after starting a new quiz.
     hasChecked = false;
+    checkedCategories = new Set();
+    categoryScores = {};
     setCheckButtonEnabled(true);
     updateDailyQuizSummary();
   }
@@ -702,8 +726,14 @@ function renderVocabDrag(questions) {
   function checkQuiz() {
     if (!currentQuestions.length || !currentConfig) return;
 
-    // Prevent multiple submissions. After checking once, user must start a new quiz.
     if (hasChecked) return;
+
+    // For categorized, locking is managed per-category; don't lock the global button here.
+    if (currentConfig.renderer === 'categorized') {
+      return checkCategorized();
+    }
+
+    // Prevent multiple submissions for all other renderers.
     hasChecked = true;
     setCheckButtonEnabled(false);
 
@@ -715,8 +745,6 @@ function renderVocabDrag(questions) {
       return checkOpenChoice();
     } else if (currentConfig.renderer === 'unitParts') {
       return checkUnitPartsAll();
-    } else if (currentConfig.renderer === 'categorized') {
-      return checkCategorized();
     } else {
       return checkMcq();
     }
@@ -1264,7 +1292,24 @@ function renderVocabDrag(questions) {
     categoryGroups.forEach(group => {
       const header = document.createElement('div');
       header.className = 'category-header';
-      header.textContent = group.title;
+
+      const headerTitle = document.createElement('span');
+      headerTitle.className = 'category-header-title';
+      headerTitle.textContent = group.title;
+      header.appendChild(headerTitle);
+
+      const catScore = document.createElement('span');
+      catScore.className = 'category-score';
+      catScore.dataset.category = group.category;
+      header.appendChild(catScore);
+
+      const catBtn = document.createElement('button');
+      catBtn.textContent = 'בדוק חלק';
+      catBtn.className = 'btn-check-category';
+      catBtn.dataset.category = group.category;
+      catBtn.onclick = () => checkOneCategory(group.category);
+      header.appendChild(catBtn);
+
       container.appendChild(header);
 
       const section = document.createElement('div');
@@ -1331,71 +1376,109 @@ function renderVocabDrag(questions) {
     });
   }
 
-  function checkCategorized() {
-    if (!currentCategoryGroups.length || !currentConfig) return;
+  function checkOneCategory(categoryKey) {
+    if (checkedCategories.has(categoryKey) || !currentConfig) return;
+    const group = currentCategoryGroups.find(g => g.category === categoryKey);
+    if (!group) return;
+
+    checkedCategories.add(categoryKey);
     const normAns = (s) => normalizeMathAnswer(String(s ?? '').replace(/,/g, ''));
-    let totalCorrect = 0, totalCount = 0;
-    const catResults = [];
+    let catCorrect = 0;
 
-    currentCategoryGroups.forEach(group => {
-      let catCorrect = 0;
-      group.questions.forEach(q => {
-        const fb = document.getElementById('fb-' + q.id);
-        const inputQ = document.querySelector('.open-choice[data-qid="' + q.id + '__q"]');
-        const inputR = document.querySelector('.open-choice[data-qid="' + q.id + '__r"]');
+    group.questions.forEach(q => {
+      const fb = document.getElementById('fb-' + q.id);
+      const inputQ = document.querySelector('.open-choice[data-qid="' + q.id + '__q"]');
+      const inputR = document.querySelector('.open-choice[data-qid="' + q.id + '__r"]');
 
-        if (inputQ && inputR) {
-          inputQ.disabled = true; inputR.disabled = true;
-          const uQ = normAns(inputQ.value);
-          const uR = inputR.value.trim() === '' ? '0' : normAns(inputR.value);
-          const eQ = normAns(String(q.quotient)), eR = normAns(String(q.remainder));
-          const ok = uQ === eQ && uR === eR;
-          if (ok) { catCorrect++; totalCorrect++; }
-          totalCount++;
-          StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), ok);
-          if (fb) {
-            fb.classList.remove('correct', 'wrong');
-            if (!uQ && !uR) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
-            else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
-            else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
-          }
-          return;
-        }
-
-        const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
-        const raw = input ? input.value : '';
-        if (input) input.disabled = true;
-        const userAns = normAns(raw);
-        const expList = getExpectedAnswers(q).map(normAns);
-        const ok = userAns.length > 0 && expList.includes(userAns);
-        if (ok) { catCorrect++; totalCorrect++; }
-        totalCount++;
+      if (inputQ && inputR) {
+        inputQ.disabled = true; inputR.disabled = true;
+        const uQ = normAns(inputQ.value);
+        const uR = inputR.value.trim() === '' ? '0' : normAns(inputR.value);
+        const eQ = normAns(String(q.quotient)), eR = normAns(String(q.remainder));
+        const ok = uQ === eQ && uR === eR;
+        if (ok) catCorrect++;
         StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), ok);
-        if (!fb) return;
-        fb.classList.remove('correct', 'wrong');
-        if (!userAns) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + getExpectedAnswer(q); }
-        else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
-        else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + getExpectedAnswer(q); }
-      });
-      catResults.push({ title: group.title, correct: catCorrect, total: group.questions.length });
+        if (fb) {
+          fb.classList.remove('correct', 'wrong');
+          if (!uQ && !uR) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
+          else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
+          else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
+        }
+        return;
+      }
+
+      const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
+      const raw = input ? input.value : '';
+      if (input) input.disabled = true;
+      const userAns = normAns(raw);
+      const expList = getExpectedAnswers(q).map(normAns);
+      const ok = userAns.length > 0 && expList.includes(userAns);
+      if (ok) catCorrect++;
+      StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), ok);
+      if (!fb) return;
+      fb.classList.remove('correct', 'wrong');
+      if (!userAns) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + getExpectedAnswer(q); }
+      else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
+      else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + getExpectedAnswer(q); }
+    });
+
+    categoryScores[categoryKey] = { correct: catCorrect, total: group.questions.length };
+
+    // Update the per-category score badge in the header
+    const scoreEl = document.querySelector('.category-score[data-category="' + categoryKey + '"]');
+    if (scoreEl) {
+      scoreEl.textContent = catCorrect + '/' + group.questions.length;
+      const pct = group.questions.length ? Math.round(100 * catCorrect / group.questions.length) : 0;
+      scoreEl.style.color = pct >= 80 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
+    }
+
+    // Disable the per-category check button
+    const btnEl = document.querySelector('.btn-check-category[data-category="' + categoryKey + '"]');
+    if (btnEl) btnEl.disabled = true;
+
+    maybeFinalizeCategorized();
+  }
+
+  function maybeFinalizeCategorized() {
+    if (hasChecked) return;
+    if (!currentCategoryGroups.length) return;
+    if (checkedCategories.size < currentCategoryGroups.length) return;
+
+    let totalCorrect = 0, totalCount = 0;
+    currentCategoryGroups.forEach(g => {
+      const s = categoryScores[g.category] || { correct: 0, total: g.questions.length };
+      totalCorrect += s.correct;
+      totalCount += s.total;
     });
 
     const result = document.getElementById('result');
     if (result) {
       let html = '<div style="font-size:1rem;font-weight:700;margin-bottom:6px;">סה"כ: ' + totalCorrect + ' מתוך ' + totalCount + '</div>';
       html += '<div style="font-size:0.88rem;font-weight:400;line-height:2;">';
-      catResults.forEach(c => {
-        const pct = c.total ? Math.round(100 * c.correct / c.total) : 0;
+      currentCategoryGroups.forEach(g => {
+        const s = categoryScores[g.category] || { correct: 0, total: g.questions.length };
+        const pct = s.total ? Math.round(100 * s.correct / s.total) : 0;
         const col = pct >= 80 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
-        html += '<span style="display:inline-block;margin-left:16px;color:' + col + ';">' + c.title + ': ' + c.correct + '/' + c.total + '</span>';
+        html += '<span style="display:inline-block;margin-left:16px;color:' + col + ';">' + g.title + ': ' + s.correct + '/' + s.total + '</span>';
       });
       html += '</div>';
       result.innerHTML = html;
     }
+
     if (currentConfig && currentConfig.quizId && typeof StudyStorage !== 'undefined') {
       StudyStorage.recordQuizAttempt(currentConfig.quizId, { correct: totalCorrect, total: totalCount });
     }
     updateDailyQuizSummary();
+    hasChecked = true;
+    setCheckButtonEnabled(false);
+  }
+
+  function checkCategorized() {
+    if (!currentCategoryGroups.length || !currentConfig) return;
+    currentCategoryGroups.forEach(g => {
+      if (!checkedCategories.has(g.category)) checkOneCategory(g.category);
+    });
+    maybeFinalizeCategorized();
   }
 
   return { init, checkQuiz };
