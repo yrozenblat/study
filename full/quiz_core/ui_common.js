@@ -2,6 +2,7 @@ let QuizCore = (() => {
   let currentQuestions = [];
   let currentConfig = null;
   let hasChecked = false;
+  let currentCategoryGroups = [];
 
   function showLoadError(msg) {
     const container = document.getElementById('quiz-container');
@@ -258,6 +259,18 @@ function setCheckButtonEnabled(enabled) {
         color: #1d4ed8;
         margin-bottom: 10px;
       }
+      .category-header {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1d4ed8;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 18px 0 6px;
+      }
+      .category-header:first-child { margin-top: 4px; }
+      .category-section { margin-bottom: 2px; }
     `;
     document.head.appendChild(style);
   }
@@ -286,6 +299,9 @@ function setCheckButtonEnabled(enabled) {
     const stats = StudyStorage.getQuizStats(config.quizId);
     if (config.renderer === 'unitParts') {
       currentQuestions = selectUnitParts(questions, stats, config);
+    } else if (config.renderer === 'categorized') {
+      currentCategoryGroups = selectCategorized(questions, stats, config);
+      currentQuestions = currentCategoryGroups.reduce((acc, g) => acc.concat(g.questions), []);
     } else {
       currentQuestions = QuestionSelector.select(questions, stats, config);
     }
@@ -298,6 +314,8 @@ function setCheckButtonEnabled(enabled) {
       renderOpenChoice(currentQuestions);
     } else if (config.renderer === 'unitParts') {
       renderUnitParts(currentQuestions, config);
+    } else if (config.renderer === 'categorized') {
+      renderCategorized(currentCategoryGroups);
     } else {
       renderMcq(currentQuestions);
     }
@@ -697,6 +715,8 @@ function renderVocabDrag(questions) {
       return checkOpenChoice();
     } else if (currentConfig.renderer === 'unitParts') {
       return checkUnitPartsAll();
+    } else if (currentConfig.renderer === 'categorized') {
+      return checkCategorized();
     } else {
       return checkMcq();
     }
@@ -1214,6 +1234,170 @@ function renderVocabDrag(questions) {
     const total = fbs.length;
     finalizeQuizResult(correct, total, 'תוצאה');
   }
+  // ===== Categorized renderer =====
+
+  function selectCategorized(questions, stats, config) {
+    const perCat = Number(config.questionsPerCategory || 3);
+    const groups = {};
+    const order = [];
+    (questions || []).forEach(q => {
+      const cat = q.category || 'general';
+      if (!groups[cat]) {
+        groups[cat] = { category: cat, title: q.categoryTitle || cat, questions: [] };
+        order.push(cat);
+      }
+      groups[cat].questions.push(q);
+    });
+    return order.map(cat => {
+      const g = groups[cat];
+      const selected = QuestionSelector.select(g.questions, stats, Object.assign({}, config, { questionsPerQuiz: perCat }));
+      return { category: cat, title: g.title, questions: selected };
+    });
+  }
+
+  function renderCategorized(categoryGroups) {
+    const container = document.getElementById('quiz-container');
+    if (!container) return;
+    container.innerHTML = '';
+    let globalIdx = 0;
+
+    categoryGroups.forEach(group => {
+      const header = document.createElement('div');
+      header.className = 'category-header';
+      header.textContent = group.title;
+      container.appendChild(header);
+
+      const section = document.createElement('div');
+      section.className = 'category-section';
+      section.dataset.category = group.category;
+
+      group.questions.forEach(q => {
+        const wrap = document.createElement('div');
+        wrap.className = 'question';
+
+        if (typeof q.text === 'string' && q.text.includes('_____')) {
+          const line = document.createElement('div');
+          line.className = 'question-text';
+          line.style.direction = 'ltr';
+          const parts = q.text.split('_____');
+          const num = document.createElement('span');
+          num.textContent = (globalIdx + 1) + '. ';
+          line.appendChild(num);
+          line.appendChild(document.createTextNode(parts[0] || ''));
+
+          const inp = document.createElement('input');
+          inp.type = 'text'; inp.className = 'open-choice';
+          inp.dataset.qid = q.quotient !== undefined ? q.id + '__q' : q.id;
+          inp.autocomplete = 'off'; inp.spellcheck = false;
+          inp.style.cssText = 'direction:ltr;text-align:center;margin:0 6px;width:90px;';
+          line.appendChild(inp);
+
+          if (parts.length >= 3 && q.quotient !== undefined) {
+            line.appendChild(document.createTextNode(parts[1] || ''));
+            const inp2 = document.createElement('input');
+            inp2.type = 'text'; inp2.className = 'open-choice';
+            inp2.dataset.qid = q.id + '__r';
+            inp2.autocomplete = 'off'; inp2.spellcheck = false;
+            inp2.style.cssText = 'direction:ltr;text-align:center;margin:0 6px;width:60px;';
+            line.appendChild(inp2);
+            if (parts[2]) line.appendChild(document.createTextNode(parts[2]));
+          } else {
+            line.appendChild(document.createTextNode(parts.slice(1).join('_____') || ''));
+          }
+          wrap.appendChild(line);
+        } else {
+          const textDiv = document.createElement('div');
+          textDiv.className = 'question-text';
+          textDiv.innerHTML = buildQuestionHTML(globalIdx, q);
+          renderMathIfNeeded(textDiv);
+          wrap.appendChild(textDiv);
+          const inp = document.createElement('input');
+          inp.type = 'text'; inp.className = 'open-choice';
+          inp.dataset.qid = q.id;
+          inp.autocomplete = 'off'; inp.spellcheck = false;
+          inp.placeholder = 'תשובה';
+          inp.style.cssText = 'direction:ltr;margin-top:6px;min-width:120px;';
+          wrap.appendChild(inp);
+        }
+
+        const fb = document.createElement('div');
+        fb.className = 'feedback'; fb.id = 'fb-' + q.id;
+        wrap.appendChild(fb);
+        section.appendChild(wrap);
+        globalIdx++;
+      });
+
+      container.appendChild(section);
+    });
+  }
+
+  function checkCategorized() {
+    if (!currentCategoryGroups.length || !currentConfig) return;
+    const normAns = (s) => normalizeMathAnswer(String(s ?? '').replace(/,/g, ''));
+    let totalCorrect = 0, totalCount = 0;
+    const catResults = [];
+
+    currentCategoryGroups.forEach(group => {
+      let catCorrect = 0;
+      group.questions.forEach(q => {
+        const fb = document.getElementById('fb-' + q.id);
+        const inputQ = document.querySelector('.open-choice[data-qid="' + q.id + '__q"]');
+        const inputR = document.querySelector('.open-choice[data-qid="' + q.id + '__r"]');
+
+        if (inputQ && inputR) {
+          inputQ.disabled = true; inputR.disabled = true;
+          const uQ = normAns(inputQ.value);
+          const uR = inputR.value.trim() === '' ? '0' : normAns(inputR.value);
+          const eQ = normAns(String(q.quotient)), eR = normAns(String(q.remainder));
+          const ok = uQ === eQ && uR === eR;
+          if (ok) { catCorrect++; totalCorrect++; }
+          totalCount++;
+          StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), ok);
+          if (fb) {
+            fb.classList.remove('correct', 'wrong');
+            if (!uQ && !uR) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
+            else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
+            else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + q.quotient + ' שארית ' + q.remainder; }
+          }
+          return;
+        }
+
+        const input = document.querySelector('.open-choice[data-qid="' + q.id + '"]');
+        const raw = input ? input.value : '';
+        if (input) input.disabled = true;
+        const userAns = normAns(raw);
+        const expList = getExpectedAnswers(q).map(normAns);
+        const ok = userAns.length > 0 && expList.includes(userAns);
+        if (ok) { catCorrect++; totalCorrect++; }
+        totalCount++;
+        StudyStorage.updateQuestion(currentConfig.quizId, Strength.baseId(q.id), ok);
+        if (!fb) return;
+        fb.classList.remove('correct', 'wrong');
+        if (!userAns) { fb.classList.add('wrong'); fb.textContent = '✗ לא נכתבה תשובה. נכון: ' + getExpectedAnswer(q); }
+        else if (ok) { fb.classList.add('correct'); fb.textContent = '✓ נכון'; }
+        else { fb.classList.add('wrong'); fb.textContent = '✗ שגוי. נכון: ' + getExpectedAnswer(q); }
+      });
+      catResults.push({ title: group.title, correct: catCorrect, total: group.questions.length });
+    });
+
+    const result = document.getElementById('result');
+    if (result) {
+      let html = '<div style="font-size:1rem;font-weight:700;margin-bottom:6px;">סה"כ: ' + totalCorrect + ' מתוך ' + totalCount + '</div>';
+      html += '<div style="font-size:0.88rem;font-weight:400;line-height:2;">';
+      catResults.forEach(c => {
+        const pct = c.total ? Math.round(100 * c.correct / c.total) : 0;
+        const col = pct >= 80 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
+        html += '<span style="display:inline-block;margin-left:16px;color:' + col + ';">' + c.title + ': ' + c.correct + '/' + c.total + '</span>';
+      });
+      html += '</div>';
+      result.innerHTML = html;
+    }
+    if (currentConfig && currentConfig.quizId && typeof StudyStorage !== 'undefined') {
+      StudyStorage.recordQuizAttempt(currentConfig.quizId, { correct: totalCorrect, total: totalCount });
+    }
+    updateDailyQuizSummary();
+  }
+
   return { init, checkQuiz };
 })();
 

@@ -1,0 +1,16 @@
+{
+  "quizId": "math_test_rotem_he5",
+  "title": "הכנה למבחן – חשבון כיתה ה",
+  "renderer": "categorized",
+  "questionsPerCategory": 3,
+  "selectionWeights": {
+    "new": 5,
+    "weak": 4,
+    "medium": 2,
+    "strong": 1
+  },
+  "weakThreshold": 0.60,
+  "mediumThreshold": 0.85,
+  "noveltyK": 1.5,
+  "minNewRatio": 0.15
+}

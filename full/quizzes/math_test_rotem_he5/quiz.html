@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>הכנה למבחן – חשבון כיתה ה</title>
+  <script src="../../quiz_core/auth_config.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+  <script src="../../quiz_core/selection.js"></script>
+  <script src="../../quiz_core/ui_common.js"></script>
+</head>
+<body>
+  <h2>הכנה למבחן – חשבון כיתה ה</h2>
+  <button onclick="startQuiz()">מבחן חדש</button>
+  <button id="btn-check" onclick="checkQuiz()">בדוק</button>
+  <a href="stats.html" target="_blank">סטטיסטיקה</a>
+
+  <div id="quiz-container"></div>
+  <div id="result"></div>
+
+  <script>
+    function startQuiz() {
+      QuizCore.init({
+        configUrl: 'quiz_config.json',
+        questionsUrl: 'questions.json'
+      });
+    }
+    startQuiz();
+  </script>
+</body>
+</html>

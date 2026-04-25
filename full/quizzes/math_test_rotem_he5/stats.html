@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>סטטיסטיקה</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    .strength-rare { background: #ffe4b5; }
+    .strength-weak { background: #ffcccc; }
+    .strength-medium { background: #fff3cd; }
+    .strength-strong { background: #d4edda; }
+    #controls { margin-bottom: 10px; }
+  </style>
+  <script src="../../quiz_core/auth_config.js"></script>
+  <script src="../../quiz_core/storage.js"></script>
+  <script src="../../quiz_core/strength.js"></script>
+</head>
+<body>
+  <h2>סטטיסטיקה</h2>
+  <div id="controls">
+    <button onclick="loadStats()">רענן</button>
+    <button onclick="resetStats()">איפוס סטטיסטיקה</button>
+  </div>
+  <div id="attemptsSummary" style="margin:6px 0; color:#444;"></div>
+  <table id="statsTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>קטגוריה</th>
+        <th>שאלה</th>
+        <th>נכונות</th>
+        <th>סך הכל</th>
+        <th>% הצלחה</th>
+        <th>חוזק</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let QUIZ_ID = null;
+    let QUESTIONS = [];
+    let CONFIG = null;
+
+    async function initPage() {
+      try {
+        const cfgResp = await fetch('quiz_config.json', { cache: 'no-store' });
+        CONFIG = await cfgResp.json();
+        QUIZ_ID = CONFIG.quizId || 'unknown_quiz';
+        const title = 'סטטיסטיקה – ' + (CONFIG.title || QUIZ_ID);
+        document.title = title;
+        const h2 = document.querySelector('h2');
+        if (h2) h2.textContent = title;
+        const qResp = await fetch('questions.json', { cache: 'no-store' });
+        QUESTIONS = await qResp.json();
+      } catch (e) {
+        console.error('Failed to init stats page', e);
+      }
+    }
+
+    function updateAttemptsSummary() {
+      const summary = StudyStorage.getQuizAttemptSummary(QUIZ_ID);
+      const el = document.getElementById('attemptsSummary');
+      if (el) el.textContent = 'מספר מבחנים: ' + summary.attemptsCount;
+    }
+
+    async function loadStats() {
+      const stats = StudyStorage.getQuizStats(QUIZ_ID);
+      updateAttemptsSummary();
+      const tbody = document.querySelector('#statsTable tbody');
+      tbody.innerHTML = '';
+
+      QUESTIONS.forEach((q, idx) => {
+        const s = stats[q.id] || { correct: 0, total: 0 };
+        const ratio = s.total ? (s.correct / s.total) : 0;
+        const strength = (typeof Strength !== 'undefined') ? Strength.classifyLegacy(s) : 'medium';
+
+        const tr = document.createElement('tr');
+        tr.classList.add('strength-' + strength);
+
+        const tds = [
+          idx + 1,
+          q.categoryTitle || q.category || '',
+          q.text || q.question || '',
+          s.correct,
+          s.total,
+          (ratio * 100).toFixed(0) + '%',
+          strength
+        ];
+        tds.forEach(val => {
+          const td = document.createElement('td');
+          td.textContent = val;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function resetStats() {
+      const code = await StudyUI.promptPassword('סיסמה לאיפוס סטטיסטיקה:');
+      if (code === null) return;
+      if (StudyUI.isValidPassword(code)) {
+        StudyStorage.resetQuiz(QUIZ_ID);
+        loadStats();
+      } else {
+        alert('קוד שגוי');
+      }
+    }
+    initPage().then(loadStats);
+  </script>
+</body>
+</html>

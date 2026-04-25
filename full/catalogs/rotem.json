@@ -66,6 +66,12 @@
       "title": "מתמטיקה – כפל וחילוק",
       "page": "quizzes/math_mul_div_rotem_01/quiz.html",
       "stats": "quizzes/math_mul_div_rotem_01/stats.html"
+    },
+    {
+      "id": "math_test_rotem_he5",
+      "title": "הכנה למבחן – חשבון כיתה ה",
+      "page": "quizzes/math_test_rotem_he5/quiz.html",
+      "stats": "quizzes/math_test_rotem_he5/stats.html"
     }
   ]
 }
