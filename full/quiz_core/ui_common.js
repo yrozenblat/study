@@ -1278,7 +1278,7 @@ function renderVocabDrag(questions) {
     });
     return order.map(cat => {
       const g = groups[cat];
-      const selected = QuestionSelector.select(g.questions, stats, Object.assign({}, config, { questionsPerQuiz: perCat }));
+      const selected = QuestionSelector.select(g.questions, stats, Object.assign({}, config, { numQuestions: perCat }));
       return { category: cat, title: g.title, questions: selected };
     });
   }
