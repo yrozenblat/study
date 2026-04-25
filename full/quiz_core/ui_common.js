@@ -1265,7 +1265,7 @@ function renderVocabDrag(questions) {
   // ===== Categorized renderer =====
 
   function selectCategorized(questions, stats, config) {
-    const perCat = Number(config.questionsPerCategory || 3);
+    const perCat = Number(config.questionsPerCategory || 5);
     const groups = {};
     const order = [];
     (questions || []).forEach(q => {

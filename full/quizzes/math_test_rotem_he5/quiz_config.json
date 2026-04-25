@@ -2,7 +2,7 @@
   "quizId": "math_test_rotem_he5",
   "title": "הכנה למבחן – חשבון כיתה ה",
   "renderer": "categorized",
-  "questionsPerCategory": 3,
+  "questionsPerCategory": 5,
   "selectionWeights": {
     "new": 5,
     "weak": 4,
